@@ -10,7 +10,7 @@ function Login(fieldValues, auth, history, setError) {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      username: fieldValues.name,
+      email: fieldValues.email,
       password: fieldValues.password,
     }),
   })

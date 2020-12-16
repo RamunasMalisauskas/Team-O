@@ -1,9 +1,9 @@
 const loginFormData = [
   {
     id: 1,
-    type: "text",
-    name: "name",
-    placeholder: "enter login name",
+    type: "email",
+    name: "email",
+    placeholder: "enter login email",
     required: true,
   },
   {
