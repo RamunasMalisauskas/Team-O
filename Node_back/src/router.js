@@ -6,11 +6,12 @@ const midware = require("./midware");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
-
+// ### DEMO LINK ###
 router.get("/", (req, res) => {
   res.status(200).json("The API service works!");
 });
 
+//  ### LOGIN LINKS ####
 router.get("/register", (req, res) => {
   con.query(`SELECT * FROM users`, (err, result) => {
     if (err) return res.status(400).json({ msg: err });
@@ -36,13 +37,13 @@ router.post("/register", midware.validateUserData, (req, res) => {
           if (err) return res.status(400).json({ msg: err });
           con.query(
             // inserting values with mysql.escape function so that it can't be hack by input
-            `INSERT INTO users (email, password, team) VALUES (${mysql.escape(
+            `INSERT INTO users (email, password) VALUES (${mysql.escape(
               email
-            )}, ${mysql.escape(hash)}, ${mysql.escape(user.team)})`,
+            )}, ${mysql.escape(hash)})`,
             (err, result) => {
               if (err) return res.status(400).json({ msg: err });
               res.status(201).json({
-                msg: `${user.team} successfully registered`,
+                msg: `${email} successfully registered`,
               });
             }
           );
@@ -76,13 +77,11 @@ router.post("/login", midware.validateUserData, (req, res) => {
           // using bcrypt.compare function to decode and match passwords from input and DB
           bcrypt.compare(loginPass, storedPass, (compareErr, compareResult) => {
             if (compareErr || !compareResult)
-              res
-                .status(400)
-                .json({ msg: "username or password doesn't match" });
+              res.status(400).json({ msg: "email or password doesn't match" });
             else {
               // if the passwords match user token is created with jwt and secret key stored in environmental variables
               const token = jwt.sign(
-                { userID: result[0].id, user: username },
+                { userID: result[0].id, email: email },
                 process.env.SECRET_KEY,
                 // adding expirasion date of 72 hours
                 {
@@ -97,46 +96,6 @@ router.post("/login", midware.validateUserData, (req, res) => {
             }
           });
         }
-      }
-    );
-  }
-});
-
-router.get(`/books`, midware.LoggedIn, (req, res) => {
-  const verifyUser = req.userData;
-
-  if (verifyUser.userID !== 0) {
-    con.query(
-      `SELECT id, author, title FROM books WHERE user_id = ${mysql.escape(
-        verifyUser.userID
-      )}`,
-      (err, result) => {
-        if (err) return res.status(400).json({ msg: err });
-        else if (result.length === 0) {
-          return res
-            .status(400)
-            .json({ msg: "there is no records coresponding to this user" });
-        }
-        res.status(200).json(result);
-      }
-    );
-  } else {
-    return res.status(400).json({ msg: "userData ID is not defined" });
-  }
-});
-
-router.post("/books", midware.LoggedIn, (req, res) => {
-  const book = req.body;
-  const verifyUser = req.userData;
-
-  if (book.author && book.title) {
-    con.query(
-      `INSERT INTO books (user_id, author, title) VALUES ( ${mysql.escape(
-        verifyUser.userID
-      )}, ${mysql.escape(book.author)}, ${mysql.escape(book.title)})`,
-      (err, result) => {
-        if (err) return res.status(400).json({ msg: err });
-        res.status(200).json({ msg: "posted successfully" });
       }
     );
   }
