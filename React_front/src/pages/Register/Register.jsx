@@ -15,13 +15,16 @@ function Reg(fieldValues, auth, setError) {
     .then((res) => res.json())
     .then((data) => {
       if (data.token) {
+        // token with nessesery addon ("Bearer ") saved in context
         auth.setToken("Bearer " + data.token);
+        // notification informs about successful registry
         setError({
           status: true,
           msg: data.msg,
           color: "" || "registry completed",
         });
       } else {
+        // or displays error fetch from backend (data.msg)
         setError({
           status: true,
           color: "error",
@@ -31,7 +34,6 @@ function Reg(fieldValues, auth, setError) {
     })
     .catch((err) => {
       setError({ status: true, color: "error", msg: "server error" });
-      console.log(err);
     });
 }
 
@@ -46,6 +48,7 @@ function RegPage() {
   return (
     <>
       <Section>
+        {/* notification is shown depending on error status and changed with hooks */}
         {error.status && (
           <Notification
             notificationMessage={error.msg}
@@ -57,6 +60,8 @@ function RegPage() {
         <h1>register</h1>
 
         <FormTemplate
+          // Form component uses callback function to execute submit function
+          // also uses data from ulits folder to create form
           callback={(fieldValues) => Reg(fieldValues, auth, setError)}
           fields={LoginFormData}
           buttonText="Register"
