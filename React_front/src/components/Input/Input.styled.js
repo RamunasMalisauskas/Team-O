@@ -1,6 +1,8 @@
 import styled from "styled-components";
 
 export const Input = styled.input`
+  font-family: ${(props) => props.theme.primary.font};
+  font-weight: ${(props) => props.theme.secondary.fontSize};
   height: ${(props) => props.theme.standart.height};
   width: 100%;
   box-sizing: border-box;

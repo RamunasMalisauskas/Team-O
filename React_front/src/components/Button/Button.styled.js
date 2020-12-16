@@ -2,6 +2,8 @@ import styled from "styled-components";
 
 export const Button = styled.button`
   cursor: pointer;
+  font-family: ${(props) => props.theme.primary.font};
+  font-weight: ${(props) => props.theme.primary.fontSize};
   color: ${(props) =>
     props.color === "primary" ? props.theme.primary.color : "#000"};
   background: ${(props) => props.theme.primary.background};

@@ -5,7 +5,8 @@ export const SectionBlock = styled.section`
   display: ${(props) => (props.center === true ? "flex" : "block")};
   justify-content: ${(props) => (props.center === true ? "center" : "")};
   align-items: ${(props) => (props.center === true ? "center" : "")};
-  min-height: ${(props) => (props.center === true ? "100vh" : "")};
+  min-height: ${(props) =>
+    props.center === true ? props.theme.fullHeight : ""};
 `;
 
 export const ContainerBox = styled.div`
