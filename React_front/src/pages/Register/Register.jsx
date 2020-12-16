@@ -1,7 +1,10 @@
 import React, { useContext, useState } from "react";
+import { Link } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
 import { FormTemplate, Section, Notification } from "../../components/";
 import LoginFormData from "../../utils/LoginFormData";
+import logoImg from "../../assets/logo.svg";
+import * as S from "./Register.Styled";
 
 function Reg(fieldValues, auth, setError) {
   fetch("http://localhost:8080/register", {
@@ -47,27 +50,36 @@ function RegPage() {
 
   return (
     <>
-      <Section>
+      <Section center={true} background="rgba(241, 90, 36, 1)">
         {/* notification is shown depending on error status and changed with hooks */}
         {error.status && (
-          <Notification
-            notificationMessage={error.msg}
-            handleClick={() => setError({ status: false })}
-            color={error.color}
-          />
+          <S.ErrorBlock>
+            <Notification
+              notificationMessage={error.msg}
+              // button handler turns of notification
+              handleClick={() => setError({ status: false })}
+              color="error"
+            />
+          </S.ErrorBlock>
         )}
 
-        <h1>register</h1>
+        <S.Block>
+          <S.Title>REGISTER</S.Title>
 
-        <FormTemplate
-          // Form component uses callback function to execute submit function
-          // also uses data from ulits folder to create form
-          callback={(fieldValues) => Reg(fieldValues, auth, setError)}
-          fields={LoginFormData}
-          buttonText="Register"
-          buttonType="submit"
-        />
+          <FormTemplate
+            // Form component uses callback function to execute submit function
+            // also uses data from ulits folder to create form
+            callback={(fieldValues) => Reg(fieldValues, auth, setError)}
+            fields={LoginFormData}
+            buttonText="REGISTER"
+            buttonType="submit"
+          />
+        </S.Block>
       </Section>
+
+      <Link to="/">
+        <S.Logo src={logoImg} alt="teamo logo" />
+      </Link>
     </>
   );
 }
