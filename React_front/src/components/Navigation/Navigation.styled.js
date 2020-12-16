@@ -4,12 +4,16 @@ import { Link } from "react-router-dom";
 export const Header = styled.div`
   position: absolute;
   top: 0;
-  min-width: 100%;
+  width: 100%;
 `;
 
 export const Action = styled.div`
   display: flex;
   justify-content: space-around;
+  @media (max-width: 1068px) {
+    display: block;
+    background-color: rgba(241, 90, 36, 0.6);
+  }
 `;
 
 export const LinkBlock = styled.div`
@@ -25,6 +29,11 @@ export const LinkBlock = styled.div`
   &:hover {
     background-color: rgba(241, 90, 36, 0.6);
     transition: 1s;
+  }
+
+  @media (max-width: 1068px) {
+    display: block;
+    height: auto;
   }
 `;
 
