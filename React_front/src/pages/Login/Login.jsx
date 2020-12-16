@@ -1,9 +1,10 @@
-import React, { useContext } from "react";
-import { useHistory } from "react-router-dom";
+import React, { useContext, useState } from "react";
+import { useHistory, Link } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
 import { FormTemplate, Section, Notification } from "../../components/";
 import loginFormData from "../../utils/LoginFormData";
-import { useState } from "react";
+import logoImg from "../../assets/logo.svg";
+import * as S from "./Login.Styled";
 
 //  passing props to function
 function Login(fieldValues, auth, history, setError) {
@@ -40,7 +41,7 @@ function LoginPage() {
 
   return (
     <>
-      <Section>
+      <Section center={true} background="rgba(241, 90, 36, 1)">
         {/* notification is shown depending on error status and changed with hooks */}
         {error.status && (
           <Notification
@@ -52,8 +53,8 @@ function LoginPage() {
         )}
         <h1>LOGIN</h1>
         <FormTemplate
-        // Form component uses callback function to execute submit function
-        // also uses data from ulits folder to create form
+          // Form component uses callback function to execute submit function
+          // also uses data from ulits folder to create form
           callback={(fieldValues) =>
             Login(fieldValues, auth, history, setError)
           }
@@ -62,6 +63,10 @@ function LoginPage() {
           buttonType="submit"
         />
       </Section>
+
+      <Link to="/">
+        <S.Logo src={logoImg} alt="teamo logo" />
+      </Link>
     </>
   );
 }
