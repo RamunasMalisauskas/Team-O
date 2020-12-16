@@ -5,7 +5,7 @@ const theme = {
 
   transition: "0.8s",
 
-  stardart: {
+  standart: {
     height: "3em",
     gutterSize: "2em",
   },
