@@ -17,8 +17,9 @@ function Routes() {
       <Navigation loggedIn={!!auth.token} logout={() => auth.setToken("")} />
       <Switch>
         <Suspense fallback="loading">
-          <Route exact path="/" component={PlayerLazy} />
-          <Route exact path="/addbooks" component={TeamLazy} />
+          <Route exact path="/" component={HomeLazy} />
+          <Route exact path="/player" component={PlayerLazy} />
+          <Route exact path="/team" component={TeamLazy} />
           <Route exact path="/login" component={LoginLazy} />
           <Route exact path="/register" component={RegisterLazy} />
         </Suspense>
