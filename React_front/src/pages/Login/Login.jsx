@@ -44,24 +44,29 @@ function LoginPage() {
       <Section center={true} background="rgba(241, 90, 36, 1)">
         {/* notification is shown depending on error status and changed with hooks */}
         {error.status && (
-          <Notification
-            notificationMessage={error.msg}
-            // button handler turns of notification
-            handleClick={() => setError({ status: false })}
-            color="error"
-          />
+          <S.ErrorBlock>
+            <Notification
+              notificationMessage={error.msg}
+              // button handler turns of notification
+              handleClick={() => setError({ status: false })}
+              color="error"
+            />
+          </S.ErrorBlock>
         )}
-        <h1>LOGIN</h1>
-        <FormTemplate
-          // Form component uses callback function to execute submit function
-          // also uses data from ulits folder to create form
-          callback={(fieldValues) =>
-            Login(fieldValues, auth, history, setError)
-          }
-          fields={loginFormData}
-          buttonText="LOGIN"
-          buttonType="submit"
-        />
+
+        <S.Block>
+          <S.Title>LOGIN</S.Title>
+          <FormTemplate
+            // Form component uses callback function to execute submit function
+            // also uses data from ulits folder to create form
+            callback={(fieldValues) =>
+              Login(fieldValues, auth, history, setError)
+            }
+            fields={loginFormData}
+            buttonText="LOGIN"
+            buttonType="submit"
+          />
+        </S.Block>
       </Section>
 
       <Link to="/">
