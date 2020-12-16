@@ -15,6 +15,6 @@ export const Button = styled.button`
   &:hover {
     color: ${(props) => props.theme.secondary.color};
     background: ${(props) =>
-      props.color === "primary" ? props.theme.secondary.color : "#000"};
+      props.color === "primary" ? props.theme.primary.color : "#000"};
   }
 `;

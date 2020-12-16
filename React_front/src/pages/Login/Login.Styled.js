@@ -16,6 +16,10 @@ export const Block = styled.div`
   background: ${(props) => props.theme.primary.background};
 `;
 
+export const ButtonBlock = styled.div`
+  text-align: right;
+`;
+
 export const ErrorBlock = styled.div`
   position: absolute;
   top: ${(props) => props.theme.large.gutterSize};

@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { useHistory, Link } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
-import { FormTemplate, Section, Notification } from "../../components/";
+import { FormTemplate, Section, Notification, Button } from "../../components/";
 import loginFormData from "../../utils/LoginFormData";
 import logoImg from "../../assets/logo.svg";
 import * as S from "./Login.Styled";
@@ -55,6 +55,11 @@ function LoginPage() {
         )}
 
         <S.Block>
+          <S.ButtonBlock>
+            <Link to="/">
+              <Button color="primary">BACK ➜</Button>
+            </Link>
+          </S.ButtonBlock>
           <S.Title>LOGIN</S.Title>
           <FormTemplate
             // Form component uses callback function to execute submit function
