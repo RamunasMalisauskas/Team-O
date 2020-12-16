@@ -2,7 +2,10 @@ import styled from "styled-components";
 
 export const SectionBlock = styled.section`
   background: ${(props) => props.background};
-  border: ${(props) => (props.border === true ? "2px solid #000" : "0px")};
+  display: ${(props) => (props.center === true ? "flex" : "block")};
+  justify-content: ${(props) => (props.center === true ? "center" : "")};
+  align-items: ${(props) => (props.center === true ? "center" : "")};
+  min-height: ${(props) => (props.center === true ? "100vh" : "")};
 `;
 
 export const ContainerBox = styled.div`
