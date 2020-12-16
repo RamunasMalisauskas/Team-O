@@ -1,10 +1,10 @@
 import React, { useContext, useState } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
 import { FormTemplate, Section, Notification } from "../../components/";
-import regFormData from "../../utils/RegFormData";
+import LoginFormData from "../../utils/LoginFormData";
 
-function Login(fieldValues, auth, setError) {
-  fetch("http://localhost:8081/register", {
+function Reg(fieldValues, auth, setError) {
+  fetch("http://localhost:8080/register", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -35,7 +35,7 @@ function Login(fieldValues, auth, setError) {
     });
 }
 
-function LoginPage() {
+function RegPage() {
   const auth = useContext(AuthContext);
   const [error, setError] = useState({
     status: false,
@@ -57,8 +57,8 @@ function LoginPage() {
         <h1>register</h1>
 
         <FormTemplate
-          callback={(fieldValues) => Login(fieldValues, auth, setError)}
-          fields={regFormData}
+          callback={(fieldValues) => Reg(fieldValues, auth, setError)}
+          fields={LoginFormData}
           buttonText="Register"
           buttonType="submit"
         />
@@ -67,4 +67,4 @@ function LoginPage() {
   );
 }
 
-export default LoginPage;
+export default RegPage;

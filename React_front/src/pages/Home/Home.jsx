@@ -7,7 +7,7 @@ function Home() {
   const [data, setData] = useState();
 
   useEffect(() => {
-    fetch("http://localhost:8081/books", {
+    fetch("http://localhost:8080/players", {
       headers: {
         Authorization: `${auth.token}`,
       },
@@ -18,24 +18,21 @@ function Home() {
 
   return (
     <>
-      <Section background="#ff7f50">welcome to React BoilerPlate</Section>
-      <Section>{!data && "no books in database"}</Section>
+      <Section>{!data && "no players in database"}</Section>
       <Section>
         <table>
           <thead>
             {data && (
               <tr>
-                <th>Author</th>
-                <th>Title</th>
+                <th>player name</th>
               </tr>
             )}
           </thead>
           <tbody>
             {data &&
-              data.map((book) => (
-                <tr key={book.id}>
-                  <td>{book.author}</td>
-                  <td>{book.title}</td>
+              data.map((player) => (
+                <tr key={player.id}>
+                  <td>{player.name}</td>
                 </tr>
               ))}
           </tbody>
