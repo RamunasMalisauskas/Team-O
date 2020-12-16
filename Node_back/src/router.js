@@ -13,6 +13,7 @@ router.get("/", (req, res) => {
 
 //  ### LOGIN LINKS ####
 router.get("/register", (req, res) => {
+  // getting registry
   con.query(`SELECT * FROM users`, (err, result) => {
     if (err) return res.status(400).json({ msg: err });
     res.status(200).json(result);
@@ -101,6 +102,47 @@ router.post("/login", midware.validateUserData, (req, res) => {
   }
 });
 
+// ### PLAYER DB LINKS ####
 
+router.get(`/players`, midware.LoggedIn, (req, res) => {
+  //  renamed user data fetched from middleware
+  const vertifyUser = req.userData;
+  //  vertifing userID from middleware
+  if (vertifyUser.userID !== 0) {
+    con.query(`SELECT * FROM player`, (err, result) => {
+      if (err) {
+        return res.status(400).json({ msg: err });
+        // what happens when there is no players in database
+      } else if (result.length == 0) {
+        return res
+          .status(400)
+          .json({ msg: "there is no players added to database" });
+      } else {
+        res.status(200).json(result);
+      }
+    });
+  } else {
+    return res.status(400).json({ msg: "userData ID is not defined" });
+  }
+});
+
+router.post("/players", midware.LoggedIn, (req, res) => {
+  // organizing request data
+  const player = req.body.name;
+  const verifyUser = req.userData;
+
+  // vertification of request input
+  if (player) {
+    con.query(
+      `INSERT INTO player (name) VALUES (${mysql.escape(player)})`,
+      (err, result) => {
+        if (err) return res.status(400).json({ msg: err });
+        res.status(200).json({ msg: "posted successfully" });
+      }
+    );
+  } else {
+    return res.status(400).json({ msg: "no player name has been entered" });
+  }
+});
 
 module.exports = router;
