@@ -1,17 +1,24 @@
 import styled from "styled-components";
 
 export const Button = styled.button`
-  color: ${(props) => (props.color === "error" ? "#ff7f50" : "#000")};
-  background: #fff;
+  cursor: pointer;
+  font-family: ${(props) => props.theme.primary.font};
+  font-weight: ${(props) => props.theme.secondary.fontSize};
+  color: ${(props) =>
+    props.color === "error" ? props.theme.primary.color : "#000"};
+  background: ${(props) => props.theme.primary.background};
   padding: 0.5em;
   margin-left: 0.5em;
-  border-radius: 0.5em;
   border: ${(props) =>
-    props.color === "error" ? "2px solid #ff7f50" : "2px solid #000"};
-  cursor: pointer;
+    props.color === "error"
+      ? props.theme.primary.border
+      : props.theme.secondary.border};
   &:hover {
     color: white;
-    background: ${(props) => (props.color === "error" ? "#ff7f50" : "#000")};
+    background: ${(props) =>
+      props.color === "error"
+        ? props.theme.primary.color
+        : props.theme.secondary.color};
   }
 `;
 
@@ -20,10 +27,14 @@ export const Notification = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: ${(props) => (props.color === "error" ? "#ff7f50" : "#000")};
-  background: #fff;
+  font-family: ${(props) => props.theme.primary.font};
+  font-weight: ${(props) => props.theme.secondary.fontSize};
+  color: ${(props) =>
+    props.color === "error" ? props.theme.primary.color : "#000"};
+  background: ${(props) => props.theme.primary.background};
   padding: 2em;
-  border-radius: 0.5em;
   border: ${(props) =>
-    props.color === "error" ? "2px solid #ff7f50" : "2px solid #000"};
+    props.color === "error"
+      ? props.theme.primary.border
+      : props.theme.secondary.border};
 `;
