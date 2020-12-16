@@ -81,6 +81,7 @@ router.post("/login", midware.validateUserData, (req, res) => {
               res.status(400).json({ msg: "email or password doesn't match" });
             else {
               // if the passwords match user token is created with jwt and secret key stored in environmental variables
+              // inside token storing userID/ email/ admin rights/ experation date
               const token = jwt.sign(
                 { userID: result[0].id, email: email, admin: req.admin },
                 process.env.SECRET_KEY,
@@ -107,7 +108,6 @@ router.post("/login", midware.validateUserData, (req, res) => {
 router.get(`/players`, midware.LoggedIn, (req, res) => {
   //  renamed user data fetched from middleware
   const vertifyUser = req.userData;
-  console.log(vertifyUser);
   //  vertifing userID from middleware
   if (vertifyUser.userID !== 0) {
     con.query(`SELECT * FROM player`, (err, result) => {
@@ -130,19 +130,46 @@ router.get(`/players`, midware.LoggedIn, (req, res) => {
 router.post("/players", midware.LoggedIn, (req, res) => {
   // organizing request data
   const player = req.body.name;
-  const verifyUser = req.userData;
-
-  // vertification of request input
-  if (player) {
-    con.query(
-      `INSERT INTO player (name) VALUES (${mysql.escape(player)})`,
-      (err, result) => {
-        if (err) return res.status(400).json({ msg: err });
-        res.status(200).json({ msg: "posted successfully" });
-      }
-    );
+  const vertifyUser = req.userData;
+  // vertifing if the user has admin rights
+  if (vertifyUser.admin) {
+    // vertification of request input
+    if (player) {
+      con.query(
+        `INSERT INTO player (name) VALUES (${mysql.escape(player)})`,
+        (err, result) => {
+          if (err) return res.status(400).json({ msg: err });
+          res.status(200).json({ msg: "posted successfully" });
+        }
+      );
+    } else {
+      return res.status(400).json({ msg: "no player name has been entered" });
+    }
   } else {
-    return res.status(400).json({ msg: "no player name has been entered" });
+    return res.status(400).json({ msg: "only admin can enter players" });
+  }
+});
+
+router.delete("/players", midware.LoggedIn, (req, res) => {
+  // organizing request data
+  const id = req.body.id;
+  const vertifyUser = req.userData;
+  // vertifing if the user has admin rights
+  if (vertifyUser.admin) {
+    // vertification of request input
+    if (id) {
+      con.query(
+        `DELETE FROM player WHERE id = (${mysql.escape(id)})`,
+        (err, result) => {
+          if (err) return res.status(400).json({ msg: err });
+          res.status(200).json({ msg: "deleted successfully" });
+        }
+      );
+    } else {
+      return res.status(400).json({ msg: "no player selected" });
+    }
+  } else {
+    return res.status(400).json({ msg: "only admin can delete players" });
   }
 });
 
