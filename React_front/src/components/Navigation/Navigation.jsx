@@ -13,17 +13,17 @@ function Navigation({ loggedIn, logout }) {
       <S.Action>
         {loggedIn && (
           <>
-            <S.StyledLink to="/">Home</S.StyledLink>
-            <S.StyledLink to="/addbooks">Add Books</S.StyledLink>
+            <S.StyledLink to="/player">PLAYER</S.StyledLink>
+            <S.StyledLink to="/team">TEAM</S.StyledLink>
             <S.StyledLink onClick={logout} to="/login">
-              Logout
+              LOGOUT
             </S.StyledLink>
           </>
         )}
         {!loggedIn && (
           <>
-            <S.StyledLink to="/login">Login</S.StyledLink>
-            <S.StyledLink to="/register">Register</S.StyledLink>
+            <S.StyledLink to="/login">LOGIN</S.StyledLink>
+            <S.StyledLink to="/register">REGISTER</S.StyledLink>
           </>
         )}
       </S.Action>
