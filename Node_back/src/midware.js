@@ -4,15 +4,20 @@ require("dotenv").config();
 // validating the user input data by length
 module.exports = {
   validateUserData: (req, res, next) => {
-    const register = req.body;
+    const user = req.body;
 
-    if (!register.email || register.email.length < 2) {
+    if (!user.email || user.email.length < 2) {
       res.status(400).json({ msg: "username is too short" });
     }
 
-    if (!register.password || register.password.length < 6) {
+    if (!user.password || user.password.length < 6) {
       res.status(400).json({ msg: "username is too short" });
     }
+
+    // validating if the user is admin or not
+    const admin = user.email === process.env.ADMIN_EMAIL;
+    // and sending bolean data forward
+    req.admin = admin;
 
     next();
   },

@@ -82,7 +82,7 @@ router.post("/login", midware.validateUserData, (req, res) => {
             else {
               // if the passwords match user token is created with jwt and secret key stored in environmental variables
               const token = jwt.sign(
-                { userID: result[0].id, email: email },
+                { userID: result[0].id, email: email, admin: req.admin },
                 process.env.SECRET_KEY,
                 // adding expirasion date of 72 hours
                 {
@@ -107,6 +107,7 @@ router.post("/login", midware.validateUserData, (req, res) => {
 router.get(`/players`, midware.LoggedIn, (req, res) => {
   //  renamed user data fetched from middleware
   const vertifyUser = req.userData;
+  console.log(vertifyUser);
   //  vertifing userID from middleware
   if (vertifyUser.userID !== 0) {
     con.query(`SELECT * FROM player`, (err, result) => {
