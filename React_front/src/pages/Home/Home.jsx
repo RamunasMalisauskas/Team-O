@@ -11,8 +11,9 @@ function Home() {
 
   return (
     <>
-      <Navigation loggedIn={!!auth.token} logout={() => auth.setToken("")} />
       <S.PageBackground />
+
+      <Navigation loggedIn={!!auth.token} logout={() => auth.setToken("")} />
 
       <Link to="/">
         <S.Logo src={logoImg} alt="teamo logo" />
