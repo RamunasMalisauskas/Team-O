@@ -10,7 +10,8 @@ export const Header = styled.div`
 export const Action = styled.div`
   display: flex;
   justify-content: space-around;
-  @media (max-width: 1068px) {
+  
+  @media (max-width: 66em) {
     display: block;
     background-color: rgba(241, 90, 36, 0.6);
   }
@@ -31,7 +32,7 @@ export const LinkBlock = styled.div`
     transition: 1s;
   }
 
-  @media (max-width: 1068px) {
+  @media (max-width: 66em) {
     display: block;
     height: auto;
   }

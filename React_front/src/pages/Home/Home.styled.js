@@ -6,7 +6,8 @@ export const Logo = styled.img`
   position: absolute;
   bottom: 0px;
   left: 0px;
-  @media (max-width: 1068px) {
+  
+  @media (max-width: 66em) {
     height: 3em;
   }
 `;
@@ -17,7 +18,7 @@ export const PageBackground = styled.div`
   height: 100vh;
   width: 100%;
 
-  @media (max-width: 1068px) {
+  @media (max-width: 66em) {
     background: url(${backImg}) center center;
   }
 `;
