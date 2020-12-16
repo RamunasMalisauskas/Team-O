@@ -15,7 +15,7 @@ function Navigation({ loggedIn, logout }) {
               <S.StyledLink to="/team">TEAM</S.StyledLink>
             </S.LinkBlock>
             <S.LinkBlock>
-              <S.StyledLink onClick={logout} to="/login">
+              <S.StyledLink onClick={logout} to="/">
                 LOGOUT
               </S.StyledLink>
             </S.LinkBlock>
