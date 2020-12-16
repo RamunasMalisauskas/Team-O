@@ -1,5 +1,6 @@
 import React from "react";
 import * as S from "./Button.styled";
+import PropType from "prop-types";
 
 function Button({ children, handleClick, color, buttonType }) {
   return (
@@ -8,5 +9,11 @@ function Button({ children, handleClick, color, buttonType }) {
     </S.Button>
   );
 }
+
+Button.propTypes = {
+  handleClick: PropType.func,
+  color: PropType.string,
+  buttonType: PropType.string,
+};
 
 export default Button;

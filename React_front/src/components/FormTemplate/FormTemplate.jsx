@@ -33,6 +33,8 @@ function FormTemplate({ fields, callback, buttonText, buttonType }) {
 FormTemplate.propTypes = {
   fields: PropType.array,
   callback: PropType.func,
+  buttonText: PropType.string,
+  buttonType: PropType.string,
 };
 
 export default FormTemplate;

@@ -1,5 +1,6 @@
 import React from "react";
 import * as S from "./Notification.styled";
+import PropType from "prop-types";
 
 function Notification({ notificationMessage, handleClick, color }) {
   return (
@@ -11,5 +12,11 @@ function Notification({ notificationMessage, handleClick, color }) {
     </S.Notification>
   );
 }
+
+Notification.propTypes = {
+  handleClick: PropType.func,
+  notificationMessage: PropType.string,
+  color: PropType.string,
+};
 
 export default Notification;

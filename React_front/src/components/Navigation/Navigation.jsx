@@ -2,6 +2,7 @@ import React from "react";
 import * as S from "./Navigation.styled";
 import { Link } from "react-router-dom";
 import LogoImg from "../../assets/logo.png";
+import PropType from "prop-types";
 
 function Navigation({ loggedIn, logout }) {
   return (
@@ -30,5 +31,10 @@ function Navigation({ loggedIn, logout }) {
     </S.Header>
   );
 }
+
+Navigation.propTypes = {
+  loggedIn: PropType.bool,
+  logout: PropType.func,
+};
 
 export default Navigation;
