@@ -1,33 +1,44 @@
 const theme = {
-  gutterSize: "2em",
+  websiteWidth: "66em",
 
-  websiteWidth: "40em",
+  fullHeight: "100vh",
+
+  transition: "0.8s",
 
   stardart: {
-    heigth: "3em",
+    height: "3em",
+    gutterSize: "2em",
   },
 
   large: {
-    heigth: "5em",
+    height: "5em",
+    gutterSize: "3em",
+  },
+
+  huge: {
+    height: "9em",
   },
 
   small: {
-    heigth: "2em",
+    height: "2em",
+    gutterSize: "1em",
   },
 
   primary: {
-    color: "#ff7f50",
-    border: "2px solid",
-    borderImageSource: "linear-gradient(90deg, rgba(255,104,196,1) 0%, rgba(255,142,111,1) 100%)",
+    font: "Montserrat, sans-serif",
+    fontSize: "900",
+    color: "f15a24",
+    border: "2px solid f15a24",
     background: "#ffffff",
     hover: {
-      background: "#ff7f50",
+      background: "f15a24",
     },
   },
 
   secondary: {
+    fontSize: "500",
     color: "#ffffff",
-    background: "#000000",
+    background: "rgba(241, 90, 36, 0.6)",
     border: "2px solid #000000",
     hover: {
       background: "#ffffff",
