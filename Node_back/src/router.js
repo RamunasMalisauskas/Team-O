@@ -6,18 +6,26 @@ const midware = require("./midware");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
+
 // ### DEMO LINK ###
 router.get("/", (req, res) => {
   res.status(200).json("The API service works!");
 });
 
 //  ### LOGIN LINKS ####
-router.get("/register", (req, res) => {
-  // getting registry
-  con.query(`SELECT * FROM users`, (err, result) => {
-    if (err) return res.status(400).json({ msg: err });
-    res.status(200).json(result);
-  });
+router.get("/register", midware.LoggedIn, (req, res) => {
+  const admin = req.userData.admin;
+
+  // vertifing if the user has admin rights
+  // and  getting registry
+  if (admin) {
+    con.query(`SELECT * FROM users`, (err, result) => {
+      if (err) return res.status(400).json({ msg: err });
+      res.status(200).json(result);
+    });
+  } else {
+    return res.status(400).json({ msg: "only admin can see the registry" });
+  }
 });
 
 router.post("/register", midware.validateUserData, (req, res) => {
@@ -104,7 +112,6 @@ router.post("/login", midware.validateUserData, (req, res) => {
 });
 
 // ### PLAYER DB LINKS ####
-
 router.get(`/players`, midware.LoggedIn, (req, res) => {
   //  renamed user data fetched from middleware
   const vertifyUser = req.userData;
