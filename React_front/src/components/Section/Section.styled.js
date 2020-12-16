@@ -9,7 +9,7 @@ export const SectionBlock = styled.section`
 `;
 
 export const ContainerBox = styled.div`
-  max-width: 1068px;
+  max-width: ${(props) => props.theme.websiteWidth};
   margin: 0 auto;
   padding: 1em 2em;
 `;

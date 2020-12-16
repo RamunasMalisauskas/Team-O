@@ -10,39 +10,37 @@ export const Header = styled.div`
 export const Action = styled.div`
   display: flex;
   justify-content: space-around;
-  
-  @media (max-width: 66em) {
+
+  @media (max-width: ${(props) => props.theme.websiteWidth}) {
     display: block;
-    background-color: rgba(241, 90, 36, 0.6);
+    background-color: ${(props) => props.theme.secondary.color};
   }
 `;
 
 export const LinkBlock = styled.div`
-  font-family: "Montserrat", sans-serif;
-  font-weight: 900;
-  font-size: 2em;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  padding: 1em;
-  height: calc(100vh - 2em);
+  font-family: ${(props) => props.theme.primary.font};
+  font-weight: ${(props) => props.theme.primary.fontSize};
+  font-size: ${(props) => props.theme.small.height};
+  margin: 0 auto;
+  text-align: center;
+  padding: ${(props) => props.theme.small.gutterSize};
+  height: ${(props) => props.theme.fullHeight};
   width: 33%;
   &:hover {
-    background-color: rgba(241, 90, 36, 0.6);
-    transition: 1s;
+    background-color: ${(props) => props.theme.secondary.background};
+    transition: ${(props) => props.theme.transition};
   }
 
-  @media (max-width: 66em) {
+  @media (max-width: ${(props) => props.theme.websiteWidth}) {
     display: block;
-    height: auto;
   }
 `;
 
 export const StyledLink = styled(Link)`
-  color: #fff;
+  color: ${(props) => props.theme.secondary.color};
   cursor: pointer;
   text-decoration: none;
   &:not(:last-child) {
-    padding-right: 2em;
+    padding-right: ${(props) => props.theme.standart.gutterSize};
   }
 `;
