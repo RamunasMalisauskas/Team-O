@@ -41,7 +41,7 @@ function LoginPage() {
 
   return (
     <>
-      <Section center={true} background="rgba(109, 109, 109, 1)">
+      <Section center={true} background="rgba(241, 90, 36, 0.8)">
         {/* notification is shown depending on error status and changed with hooks */}
         {error.status && (
           <S.ErrorBlock>

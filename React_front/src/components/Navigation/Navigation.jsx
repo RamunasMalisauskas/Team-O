@@ -9,10 +9,10 @@ function Navigation({ loggedIn, logout }) {
         {loggedIn && (
           <>
             <S.LinkBlock>
-              <S.StyledLink to="/player">PLAYER</S.StyledLink>
+              <S.StyledLink to="/player">PLAYERS</S.StyledLink>
             </S.LinkBlock>
             <S.LinkBlock>
-              <S.StyledLink to="/team">TEAM</S.StyledLink>
+              <S.StyledLink to="/team">TEAMS</S.StyledLink>
             </S.LinkBlock>
             <S.LinkBlock>
               <S.StyledLink onClick={logout} to="/">
