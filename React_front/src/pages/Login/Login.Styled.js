@@ -7,7 +7,7 @@ export const Logo = styled.img`
   left: 0px;
 
   @media (max-width: ${(props) => props.theme.websiteWidth}) {
-    height: ${(props) => props.theme.large.height};
+    height: ${(props) => props.theme.standart.height};
   }
 `;
 
