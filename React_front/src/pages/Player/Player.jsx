@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
-import { Section } from "../../components";
+import { Section, Button } from "../../components";
 import { AuthContext } from "../../contexts/AuthContext";
 import * as S from "./Player.Styled";
 import logoImg from "../../assets/logo.svg";
@@ -34,17 +34,22 @@ function Player() {
             {!data && <S.Subtitle>no players in database</S.Subtitle>}
             <thead>
               {data && (
-                <tr>
-                  <th>player name</th>
-                </tr>
+                <S.TR>
+                  <S.TH>PLAYER NAME</S.TH>
+                </S.TR>
               )}
             </thead>
             <tbody>
               {data &&
                 data.map((player) => (
-                  <tr key={player.id}>
-                    <td>{player.name}</td>
-                  </tr>
+                  <S.TR key={player.id}>
+                    <S.TD>{player.name}</S.TD>
+
+                    <S.ButtonBlock>
+                      <Button size="small"> add to my team</Button>
+                      <Button size="small"> delete</Button>
+                    </S.ButtonBlock>
+                  </S.TR>
                 ))}
             </tbody>
           </S.Table>
