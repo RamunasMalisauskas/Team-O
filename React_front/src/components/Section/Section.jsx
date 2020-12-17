@@ -11,7 +11,7 @@ function Section({ background, center, children }) {
 }
 
 Section.propTypes = {
-  background: PropType.string,
+  background: PropType.func,
   center: PropType.bool,
 };
 
