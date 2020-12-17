@@ -73,4 +73,8 @@ export const TableButtonBlock = styled.div`
 export const Frame = styled.div`
   border: ${(props) => props.theme.primary.border};
   padding: ${(props) => props.theme.standart.gutterSize};
+
+  @media (max-width: ${(props) => props.theme.websiteWidth}) {
+    padding: ${(props) => props.theme.tiny.gutterSize};
+  }
 `;
