@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
-import { Section, Button } from "../../components";
+import { Section, Button, Input, Notification } from "../../components";
 import { AuthContext } from "../../contexts/AuthContext";
 import * as S from "./Player.Styled";
 import logoImg from "../../assets/logo.svg";
@@ -8,6 +8,8 @@ import logoImg from "../../assets/logo.svg";
 function Player() {
   const auth = useContext(AuthContext);
   const [data, setData] = useState();
+  const [error, setError] = useState({ status: false, msg: "", color: "" });
+  const [player, setPlayer] = useState({ status: false, name: "" });
 
   useEffect(() => {
     fetch("http://localhost:8080/players", {
@@ -27,32 +29,72 @@ function Player() {
         center={true}
         background={(props) => props.theme.secondary.background}
       >
+        {error.status && (
+          <Notification
+            notificationMessage={error.msg}
+            handleClick={() => setError({ status: false })}
+            color={error.color}
+          />
+        )}
+
         <S.Block>
           <S.Title>PLAYERS</S.Title>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+            }}
+          >
+            <S.InputBlock>
+              <Button handleClick={() => setPlayer({ status: true })}>
+                ADD PLAYER
+              </Button>
+            </S.InputBlock>
 
-          <S.Table>
+            {player.status && (
+              <S.InputBlock>
+                <Input
+                  placeholder="enter new players name"
+                  handleChange={(e) =>
+                    setPlayer({ name: e.target.value, status: true })
+                  }
+                />
+                <S.ButtonBlock>
+                  <Button
+                    color="primary"
+                    type="submit"
+                    handleClick={(e) => {
+                      console.log(player, auth, setError);
+                    }}
+                  >
+                    SAVE
+                  </Button>
+                  <Button
+                    handleClick={() => {
+                      setPlayer({ status: false });
+                    }}
+                  >
+                    X
+                  </Button>
+                </S.ButtonBlock>
+              </S.InputBlock>
+            )}
+          </form>
+
+          <S.Frame>
             {!data && <S.Subtitle>no players in database</S.Subtitle>}
-            <thead>
-              {data && (
-                <S.TR>
-                  <S.TH>PLAYER NAME</S.TH>
-                </S.TR>
-              )}
-            </thead>
-            <tbody>
-              {data &&
-                data.map((player) => (
-                  <S.TR key={player.id}>
-                    <S.TD>{player.name}</S.TD>
 
-                    <S.ButtonBlock>
-                      <Button size="small"> add to my team</Button>
-                      <Button size="small"> delete</Button>
-                    </S.ButtonBlock>
-                  </S.TR>
-                ))}
-            </tbody>
-          </S.Table>
+            {data &&
+              data.map((x) => (
+                <S.TableButtonBlock>
+                  <Input
+                    type="checkbox"
+                    handleChange={(e) => console.log(e.target.value)}
+                    checkbox={[{ value: x.name, label: x.name }]}
+                  />
+                  <Button>X</Button>
+                </S.TableButtonBlock>
+              ))}
+          </S.Frame>
         </S.Block>
       </Section>
 
