@@ -27,6 +27,10 @@ export const Block = styled.div`
   background: ${(props) => props.theme.primary.background};
 `;
 
+export const ButtonBlock = styled.div`
+  padding-bottom: ${(props) => props.theme.standart.gutterSize};
+`;
+
 export const Logo = styled.img`
   height: ${(props) => props.theme.standart.height};
   position: fixed;
@@ -41,28 +45,22 @@ export const Logo = styled.img`
 export const Subtitle = styled.h3`
   font-family: ${(props) => props.theme.primary.font};
   font-weight: ${(props) => props.theme.primary.fontSize};
-`;
-export const Table = styled.table`
   border: ${(props) => props.theme.primary.border};
   padding: ${(props) => props.theme.standart.gutterSize};
+
+  @media (max-width: ${(props) => props.theme.websiteWidth}) {
+    font-size: ${(props) => props.theme.tiny.height};
+    padding: ${(props) => props.theme.small.gutterSize};
+  }
+`;
+
+export const TableButtonBlock = styled.div`
   width: 100%;
-`;
-
-export const TH = styled.th`
-  font-family: ${(props) => props.theme.primary.font};
-  font-weight: ${(props) => props.theme.primary.fontSize};
-`;
-
-export const TR = styled.tr``;
-
-export const TD = styled.td`
-  padding-top: ${(props) => props.theme.standart.gutterSize};
-  font-family: ${(props) => props.theme.primary.font};
-  font-weight: ${(props) => props.theme.primary.fontSize};
-  border-bottom: ${(props) => props.theme.secondary.border};
-`;
-
-export const ButtonBlock = styled.div`
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: ${(props) => props.theme.secondary.border};
+  &:hover {
+    border-bottom: ${(props) => props.theme.primary.border};
+  }
 `;
