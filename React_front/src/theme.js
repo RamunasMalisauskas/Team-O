@@ -24,6 +24,11 @@ const theme = {
     gutterSize: "1em",
   },
 
+  tiny: {
+    height: "1em",
+    gutterSize: "0.5em",
+  },
+
   primary: {
     font: "Montserrat, sans-serif",
     fontSize: "900",
