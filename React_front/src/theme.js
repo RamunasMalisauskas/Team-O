@@ -50,7 +50,7 @@ const theme = {
   },
 
   complimentary: {
-    background: "rgba(249, 133, 255, 0.6)",
+    background: "rgba(189, 208, 30, 0.6)",
   },
 };
 
