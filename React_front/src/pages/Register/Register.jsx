@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
-import { FormTemplate, Section, Notification } from "../../components/";
+import { FormTemplate, Section, Notification, Button } from "../../components/";
 import LoginFormData from "../../utils/LoginFormData";
 import logoImg from "../../assets/logo.svg";
 import * as S from "./Register.Styled";
@@ -50,7 +50,12 @@ function RegPage() {
 
   return (
     <>
-      <Section center={true} background="rgba(241, 90, 36, 0.8)">
+      <S.PageBackground />
+
+      <Section
+        center={true}
+        background={(props) => props.theme.support.background}
+      >
         {/* notification is shown depending on error status and changed with hooks */}
         {error.status && (
           <S.ErrorBlock>
@@ -75,6 +80,12 @@ function RegPage() {
             buttonType="submit"
           />
         </S.Block>
+
+        <S.ButtonBlock>
+          <Link to="/">
+            <Button>BACK ➜</Button>
+          </Link>
+        </S.ButtonBlock>
       </Section>
 
       <Link to="/">

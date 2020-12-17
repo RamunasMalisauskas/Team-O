@@ -41,7 +41,12 @@ function LoginPage() {
 
   return (
     <>
-      <Section center={true} background="rgba(241, 90, 36, 0.8)">
+      <S.PageBackground />
+
+      <Section
+        center={true}
+        background={(props) => props.theme.secondary.background}
+      >
         {/* notification is shown depending on error status and changed with hooks */}
         {error.status && (
           <S.ErrorBlock>
@@ -53,13 +58,8 @@ function LoginPage() {
             />
           </S.ErrorBlock>
         )}
-
+        
         <S.Block>
-          <S.ButtonBlock>
-            <Link to="/">
-              <Button color="primary">BACK ➜</Button>
-            </Link>
-          </S.ButtonBlock>
           <S.Title>LOGIN</S.Title>
           <FormTemplate
             // Form component uses callback function to execute submit function
@@ -72,6 +72,12 @@ function LoginPage() {
             buttonType="submit"
           />
         </S.Block>
+
+        <S.ButtonBlock>
+          <Link to="/">
+            <Button>BACK ➜</Button>
+          </Link>
+        </S.ButtonBlock>
       </Section>
 
       <Link to="/">
