@@ -70,15 +70,16 @@ function Input({
       return (
         <S.RadioInput>
           {radio.map((r, i) => (
-            <div key={i}>
+            <S.CheckBox key={i}>
               <S.Radio
                 type="radio"
                 name="radio"
+                id={r.value}
                 value={r.value}
                 onClick={handleChange}
               />
-              <S.Label>{r.label}</S.Label>
-            </div>
+              <S.Label htmlFor={r.value}>{r.label}</S.Label>
+            </S.CheckBox>
           ))}
         </S.RadioInput>
       );
