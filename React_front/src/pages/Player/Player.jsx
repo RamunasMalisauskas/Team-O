@@ -37,6 +37,38 @@ function AddPlayer(player, auth, setError) {
     });
 }
 
+function RemovePlayer(player, auth, setError) {
+  fetch("http://localhost:8080/players", {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `${auth.token}`,
+    },
+    body: JSON.stringify({
+      id: player.id,
+    }),
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      if (!data) {
+        setError({
+          status: true,
+          msg: "there has been error with data",
+          color: "error",
+        });
+      } else {
+        setError({
+          status: true,
+          msg: data.msg || "success",
+          color: "",
+        });
+      }
+    })
+    .catch((err) => {
+      setError({ status: true, msg: err || "server error", color: "error" });
+    });
+}
+
 function Player() {
   const auth = useContext(AuthContext);
   const [data, setData] = useState();
@@ -94,7 +126,7 @@ function Player() {
                   <Button
                     color="primary"
                     type="submit"
-                    handleClick={(e) => {
+                    handleClick={() => {
                       AddPlayer(player, auth, setError);
                     }}
                   >
@@ -115,17 +147,39 @@ function Player() {
           <S.Frame>
             {!data && <S.Subtitle>no players in database</S.Subtitle>}
 
-            {data &&
-              data.map((x) => (
-                <S.TableButtonBlock>
-                  <Input
-                    type="checkbox"
-                    handleChange={(e) => console.log(e.target.value)}
-                    checkbox={[{ value: x.name, label: x.name }]}
-                  />
-                  <Button>X</Button>
-                </S.TableButtonBlock>
-              ))}
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+              }}
+            >
+              {data && (
+                <Button color="primary" handleClick={(e) => alert(player.name)}>
+                  ADD TO MY TEAM
+                </Button>
+              )}
+
+              {data &&
+                data.map((x, i) => (
+                  <S.TableButtonBlock key={i}>
+                    <Input
+                      type="checkbox"
+                      handleChange={(e) =>
+                        setPlayer({
+                          name: e.target.value,
+                          id: x.id,
+                        })
+                      }
+                      checkbox={[{ value: x.name, label: x.name }]}
+                    />
+                    <Button
+                      type="submit"
+                      handleClick={(e) => RemovePlayer(player, auth, setError)}
+                    >
+                      X
+                    </Button>
+                  </S.TableButtonBlock>
+                ))}
+            </form>
           </S.Frame>
         </S.Block>
       </Section>
