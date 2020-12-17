@@ -1,1 +1,0 @@
-INSERT INTO player (name) VALUES ("Anthony Davis")
