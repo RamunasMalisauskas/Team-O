@@ -7,8 +7,9 @@ import logoImg from "../../assets/logo.svg";
 
 // FETCH/POST function to add player to database
 // ir uses three props "player" (object selected from first form) ->
-// -> "auth" (getting it from context) and setError(hook is used to calling notification)
-function AddPlayer(player, auth, setError) {
+// -> "auth" (getting it from context) and setError(hook is used to calling notification) ->
+// -> setData is used to get updated data straight from DB
+function AddPlayer(player, auth, setError, setData) {
   fetch("http://localhost:8080/players", {
     method: "POST",
     headers: {
@@ -23,21 +24,20 @@ function AddPlayer(player, auth, setError) {
   })
     .then((res) => res.json())
     .then((data) => {
-      // notification in case there is a problem with data
-      if (!data) {
-        setError({
-          status: true,
-          msg: "there has been error with data",
-          color: "error",
-        });
-        // notification with success message, uses third prop
-      } else {
-        setError({
-          status: true,
-          msg: data.msg || "success",
-          color: "",
-        });
-      }
+      setError({
+        status: true,
+        msg: data.msg || "success",
+        color: "",
+      });
+    })
+    .then(() => {
+      fetch("http://localhost:8080/players", {
+        headers: {
+          Authorization: `${auth.token}`,
+        },
+      })
+        .then((res) => res.json())
+        .then((data) => setData(data));
     })
     .catch((err) => {
       // all messages are recieved from back-end but in case there isn't one (f.e. server is down) using or operator to send one.
@@ -46,8 +46,8 @@ function AddPlayer(player, auth, setError) {
 }
 
 // FETCH/DELETE function to remove player from database
-// same functionality as FETCH/POST
-function RemovePlayer(player, auth, setError) {
+// same functionality as FETCH/POST, also we're setting data again after deletion
+function RemovePlayer(player, auth, setError, setData) {
   fetch("http://localhost:8080/players", {
     method: "DELETE",
     headers: {
@@ -74,6 +74,16 @@ function RemovePlayer(player, auth, setError) {
           color: "",
         });
       }
+    })
+    // fetching updated data from DB after deletion
+    .then(() => {
+      fetch("http://localhost:8080/players", {
+        headers: {
+          Authorization: `${auth.token}`,
+        },
+      })
+        .then((res) => res.json())
+        .then((data) => setData(data));
     })
     .catch((err) => {
       setError({ status: true, msg: err || "server error", color: "error" });
@@ -141,7 +151,7 @@ function Player() {
                     color="primary"
                     type="submit"
                     handleClick={() => {
-                      AddPlayer(player, auth, setError);
+                      AddPlayer(player, auth, setError, setData);
                     }}
                   >
                     SAVE
@@ -191,7 +201,9 @@ function Player() {
                     />
                     <Button
                       type="submit"
-                      handleClick={(e) => RemovePlayer(player, auth, setError)}
+                      handleClick={(e) =>
+                        RemovePlayer(player, auth, setError, setData)
+                      }
                     >
                       X
                     </Button>
