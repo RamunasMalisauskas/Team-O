@@ -5,25 +5,32 @@ import { AuthContext } from "../../contexts/AuthContext";
 import * as S from "./Player.Styled";
 import logoImg from "../../assets/logo.svg";
 
+// FETCH/POST function to add player to database
+// ir uses three props "player" (object selected from first form) ->
+// -> "auth" (getting it from context) and setError(hook is used to calling notification)
 function AddPlayer(player, auth, setError) {
   fetch("http://localhost:8080/players", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      // token is used to validate session and admin rights
       Authorization: `${auth.token}`,
     },
+    //
     body: JSON.stringify({
       name: player.name,
     }),
   })
     .then((res) => res.json())
     .then((data) => {
+      // notification in case there is a problem with data
       if (!data) {
         setError({
           status: true,
           msg: "there has been error with data",
           color: "error",
         });
+        // notification with success message, uses third prop
       } else {
         setError({
           status: true,
@@ -33,10 +40,13 @@ function AddPlayer(player, auth, setError) {
       }
     })
     .catch((err) => {
+      // all messages are recieved from back-end but in case there isn't one (f.e. server is down) using or operator to send one.
       setError({ status: true, msg: err || "server error", color: "error" });
     });
 }
 
+// FETCH/DELETE function to remove player from database
+// same functionality as FETCH/POST
 function RemovePlayer(player, auth, setError) {
   fetch("http://localhost:8080/players", {
     method: "DELETE",
@@ -44,6 +54,7 @@ function RemovePlayer(player, auth, setError) {
       "Content-Type": "application/json",
       Authorization: `${auth.token}`,
     },
+    // backend is expecting id to remove player
     body: JSON.stringify({
       id: player.id,
     }),
@@ -72,9 +83,12 @@ function RemovePlayer(player, auth, setError) {
 function Player() {
   const auth = useContext(AuthContext);
   const [data, setData] = useState();
+  //  error has status for hidden/visible function, msg for notification text, and color to set notification to error or regular style
   const [error, setError] = useState({ status: false, msg: "", color: "" });
-  const [player, setPlayer] = useState({ status: false, name: "" });
+  //  player has name for the AddPlayer funcion id for RemovePlayer and status for component functionality
+  const [player, setPlayer] = useState({ status: false, name: "", id: "" });
 
+  // fetching players from DB
   useEffect(() => {
     fetch("http://localhost:8080/players", {
       headers: {
@@ -153,7 +167,7 @@ function Player() {
               }}
             >
               {data && (
-                <Button color="primary" handleClick={(e) => alert(player.name)}>
+                <Button color="primary" handleClick={(e) => console.log(player.name)}>
                   ADD TO MY TEAM
                 </Button>
               )}
