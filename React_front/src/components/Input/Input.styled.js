@@ -41,23 +41,31 @@ export const Select = styled.select`
 `;
 
 export const RadioInput = styled.div`
-  width: 100%;
-  cursor: pointer;
-  padding: 1em 0;
-  display: flex;
-  border: 0;
-  border-bottom: ${(props) => props.theme.primary.border};
+  padding: ${(props) => props.theme.small.gutterSize};
+  &:focus {
+    border-bottom: ${(props) => props.theme.primary.border};
+  }
+`;
+
+export const RadioContainer = styled.div`
+  box-sizing: border-box;
+  border-bottom: ${(props) => props.theme.secondary.border};
+  padding-top: ${(props) => props.theme.standart.gutterSize};
+  padding-bottom: ${(props) => props.theme.small.gutterSize};
   &:hover {
-    border: ${(props) => props.theme.secondary.border};
+    border-bottom: ${(props) => props.theme.primary.border};
   }
 `;
 
 export const Radio = styled.input`
-  cursor: pointer;
-  margin-left: ${(props) => props.theme.small.gutterSize};
+  &:checked + label {
+    color: ${(props) => props.theme.primary.color};
+  }
 `;
 
 export const Label = styled.label`
-  color: ${(props) => props.theme.primary.color};
-  padding-left: 0.25em;
+  cursor: pointer;
+  font-family: ${(props) => props.theme.primary.font};
+  font-weight: ${(props) => props.theme.primary.fontSize};
+  padding-left: ${(props) => props.theme.standart.gutterSize};
 `;

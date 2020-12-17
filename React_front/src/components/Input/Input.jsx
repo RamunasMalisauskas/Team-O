@@ -87,15 +87,16 @@ function Input({
       return (
         <S.RadioInput>
           {checkbox.map((c, i) => (
-            <div key={i}>
+            <S.RadioContainer key={i}>
               <S.Radio
                 type="checkbox"
                 name="checkbox"
+                id={c.value}
                 value={c.value}
                 onClick={handleChange}
               />
-              <S.Label>{c.label}</S.Label>
-            </div>
+              <S.Label for={c.value}>{c.label}</S.Label>
+            </S.RadioContainer>
           ))}
         </S.RadioInput>
       );
