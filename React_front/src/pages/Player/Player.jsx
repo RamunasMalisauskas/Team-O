@@ -167,7 +167,11 @@ function Player() {
               }}
             >
               {data && (
-                <Button color="primary" handleClick={(e) => console.log(player.name)}>
+                <Button
+                  sticky={true}
+                  color="primary"
+                  handleClick={(e) => console.log(player.name)}
+                >
                   ADD TO MY TEAM
                 </Button>
               )}
@@ -176,14 +180,14 @@ function Player() {
                 data.map((x, i) => (
                   <S.TableButtonBlock key={i}>
                     <Input
-                      type="checkbox"
+                      type="radio"
                       handleChange={(e) =>
                         setPlayer({
                           name: e.target.value,
                           id: x.id,
                         })
                       }
-                      checkbox={[{ value: x.name, label: x.name }]}
+                      radio={[{ value: x.name, label: x.name }]}
                     />
                     <Button
                       type="submit"
