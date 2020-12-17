@@ -49,15 +49,15 @@ export const RadioInput = styled.div`
 
 export const RadioContainer = styled.div`
   box-sizing: border-box;
-  border-bottom: ${(props) => props.theme.secondary.border};
-  padding-top: ${(props) => props.theme.standart.gutterSize};
   padding-bottom: ${(props) => props.theme.small.gutterSize};
+  border-bottom: ${(props) => props.theme.secondary.border};
   &:hover {
     border-bottom: ${(props) => props.theme.primary.border};
   }
 `;
 
 export const Radio = styled.input`
+  display: none;
   &:checked + label {
     color: ${(props) => props.theme.primary.color};
   }
@@ -65,7 +65,7 @@ export const Radio = styled.input`
 
 export const Label = styled.label`
   cursor: pointer;
+  padding: ${(props) => props.theme.small.gutterSize} 0;
   font-family: ${(props) => props.theme.primary.font};
   font-weight: ${(props) => props.theme.primary.fontSize};
-  padding-left: ${(props) => props.theme.standart.gutterSize};
 `;
