@@ -85,9 +85,9 @@ function Input({
 
     case "checkbox":
       return (
-        <S.RadioInput>
+        <>
           {checkbox.map((c, i) => (
-            <S.RadioContainer key={i}>
+            <S.CheckBox key={i}>
               <S.Radio
                 type="checkbox"
                 name="checkbox"
@@ -95,10 +95,10 @@ function Input({
                 value={c.value}
                 onClick={handleChange}
               />
-              <S.Label for={c.value}>{c.label}</S.Label>
-            </S.RadioContainer>
+              <S.Label htmlFor={c.value}>{c.label}</S.Label>
+            </S.CheckBox>
           ))}
-        </S.RadioInput>
+        </>
       );
     default:
       return (

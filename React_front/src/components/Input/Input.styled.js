@@ -47,7 +47,7 @@ export const RadioInput = styled.div`
   }
 `;
 
-export const RadioContainer = styled.div`
+export const CheckBox = styled.div`
   box-sizing: border-box;
   padding-bottom: ${(props) => props.theme.small.gutterSize};
   border-bottom: ${(props) => props.theme.secondary.border};
