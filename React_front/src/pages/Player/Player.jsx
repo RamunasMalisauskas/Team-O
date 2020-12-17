@@ -5,6 +5,38 @@ import { AuthContext } from "../../contexts/AuthContext";
 import * as S from "./Player.Styled";
 import logoImg from "../../assets/logo.svg";
 
+function AddPlayer(player, auth, setError) {
+  fetch("http://localhost:8080/players", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `${auth.token}`,
+    },
+    body: JSON.stringify({
+      name: player.name,
+    }),
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      if (!data) {
+        setError({
+          status: true,
+          msg: "there has been error with data",
+          color: "error",
+        });
+      } else {
+        setError({
+          status: true,
+          msg: data.msg || "success",
+          color: "",
+        });
+      }
+    })
+    .catch((err) => {
+      setError({ status: true, msg: err || "server error", color: "error" });
+    });
+}
+
 function Player() {
   const auth = useContext(AuthContext);
   const [data, setData] = useState();
@@ -63,7 +95,7 @@ function Player() {
                     color="primary"
                     type="submit"
                     handleClick={(e) => {
-                      console.log(player, auth, setError);
+                      AddPlayer(player, auth, setError);
                     }}
                   >
                     SAVE
