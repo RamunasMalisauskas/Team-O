@@ -28,7 +28,12 @@ export const Block = styled.div`
 `;
 
 export const ButtonBlock = styled.div`
-  padding-bottom: ${(props) => props.theme.standart.gutterSize};
+  display: flex;
+  justify-content: space-between;
+`;
+
+export const InputBlock = styled.div`
+  padding: ${(props) => props.theme.small.gutterSize} 0;
 `;
 
 export const Logo = styled.img`
@@ -63,4 +68,9 @@ export const TableButtonBlock = styled.div`
   &:hover {
     border-bottom: ${(props) => props.theme.primary.border};
   }
+`;
+
+export const Frame = styled.div`
+  border: ${(props) => props.theme.primary.border};
+  padding: ${(props) => props.theme.standart.gutterSize};
 `;
