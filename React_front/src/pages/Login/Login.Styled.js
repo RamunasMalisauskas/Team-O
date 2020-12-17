@@ -21,6 +21,10 @@ export const Block = styled.div`
 export const ButtonBlock = styled.div`
   margin-top: ${(props) => props.theme.standart.gutterSize};
   text-align: right;
+
+  @media (max-width: ${(props) => props.theme.websiteWidth}) {
+    display: none;
+  }
 `;
 
 export const ErrorBlock = styled.div`

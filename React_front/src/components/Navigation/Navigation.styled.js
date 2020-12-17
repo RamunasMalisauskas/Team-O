@@ -12,8 +12,8 @@ export const Action = styled.div`
   justify-content: space-around;
 
   @media (max-width: ${(props) => props.theme.websiteWidth}) {
+    background-color: ${(props) => props.theme.secondary.background};
     display: block;
-    background-color: ${(props) => props.theme.secondary.color};
   }
 `;
 
@@ -24,15 +24,23 @@ export const LinkBlock = styled.div`
   margin: 0 auto;
   text-align: center;
   padding: ${(props) => props.theme.small.gutterSize};
-  height: ${(props) => props.theme.fullHeight};
+  height: calc(100vh - 2em);
   width: 33%;
   &:hover {
     background-color: ${(props) => props.theme.secondary.background};
     transition: ${(props) => props.theme.transition};
+    &:nth-child(2) {
+      background-color: ${(props) => props.theme.support.background};
+    }
+    &:nth-child(3) {
+      background-color: ${(props) => props.theme.complimentary.background};
+    }
   }
 
   @media (max-width: ${(props) => props.theme.websiteWidth}) {
-    display: block;
+    height: inherit;
+    margin: inherit;
+    text-align: left;
   }
 `;
 
