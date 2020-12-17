@@ -44,6 +44,14 @@ const theme = {
       background: "#ffffff",
     },
   },
+
+  support: {
+    background: "rgba(104, 255, 192, 0.6)",
+  },
+
+  complimentary: {
+    background: "rgba(249, 133, 255, 0.6)",
+  },
 };
 
 export default theme;
