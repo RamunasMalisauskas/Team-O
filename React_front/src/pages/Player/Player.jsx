@@ -222,7 +222,32 @@ function Player() {
 
                   {team.status && (
                     <S.InputBlock sticky={true}>
-                      <S.Frame></S.Frame>
+                      <S.Frame>
+                        <S.ButtonBlock>
+                          {teamData &&
+                            teamData.map((x, i) => (
+                              <div key={i}>
+                                <Input
+                                  type="radio"
+                                  handleChange={(e) =>
+                                    console.log({
+                                      name: e.target.value,
+                                      id: player.id,
+                                    })
+                                  }
+                                  radio={[
+                                    { value: x.team_name, label: x.team_name },
+                                  ]}
+                                />
+                              </div>
+                            ))}
+                          <Button
+                            handleClick={() => setTeam({ status: false })}
+                          >
+                            X
+                          </Button>
+                        </S.ButtonBlock>
+                      </S.Frame>
                     </S.InputBlock>
                   )}
                 </>
