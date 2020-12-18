@@ -145,10 +145,26 @@ router.post("/players", midware.LoggedIn, (req, res) => {
     // vertification of request input
     if (player) {
       con.query(
-        `INSERT INTO player (name) VALUES (${mysql.escape(player)})`,
+        // validating if the entered name is unique aor already exist in database
+        // Selecting matching name from DB ->
+        `SELECT name FROM player WHERE name = '${player}'`,
         (err, result) => {
           if (err) return res.status(400).json({ msg: err });
-          res.status(200).json({ msg: "posted successfully" });
+          // -> and if there is results deliver the message ->
+          else if (result.length !== 0) {
+            return res
+              .status(400)
+              .json({ msg: "the player is already included in database" });
+          } else {
+            // -> if there is no match added to DB
+            con.query(
+              `INSERT INTO player (name) VALUES (${mysql.escape(player)})`,
+              (err, result) => {
+                if (err) return res.status(400).json({ msg: err });
+                res.status(200).json({ msg: "posted successfully" });
+              }
+            );
+          }
         }
       );
     } else {
