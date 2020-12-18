@@ -39,6 +39,10 @@ export const InputBlock = styled.div`
     props.sticky === true ? props.theme.large.gutterSize : ""};
 `;
 
+export const InputBrick = styled.div`
+  padding-top: ${(props) => props.theme.standart.gutterSize};
+`;
+
 export const Logo = styled.img`
   height: ${(props) => props.theme.standart.height};
   position: fixed;

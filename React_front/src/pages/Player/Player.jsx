@@ -90,6 +90,34 @@ function RemovePlayer(player, auth, setError, setData) {
     });
 }
 
+function AddTeamPlayer(team, auth, setError) {
+  fetch("http://localhost:8080/team", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      // token is used to validate session and admin rights
+      Authorization: `${auth.token}`,
+    },
+    //
+    body: JSON.stringify({
+      name: team.name,
+      player_id: team.player_id,
+    }),
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      setError({
+        status: true,
+        msg: data.msg || "success",
+        color: "",
+      });
+    })
+    .catch((err) => {
+      // all messages are recieved from back-end but in case there isn't one (f.e. server is down) using or operator to send one.
+      setError({ status: true, msg: err || "server error", color: "error" });
+    });
+}
+
 function Player() {
   const auth = useContext(AuthContext);
   const [data, setData] = useState({});
@@ -230,9 +258,10 @@ function Player() {
                                 <Input
                                   type="radio"
                                   handleChange={(e) =>
-                                    console.log({
+                                    setTeam({
+                                      status: true,
                                       name: e.target.value,
-                                      id: player.id,
+                                      player_id: player.id,
                                     })
                                   }
                                   radio={[
@@ -241,6 +270,15 @@ function Player() {
                                 />
                               </div>
                             ))}
+                          <Button
+                            color="primary"
+                            type="submit"
+                            handleClick={() => {
+                              AddTeamPlayer(team, auth, setError, setData);
+                            }}
+                          >
+                            SAVE
+                          </Button>
                           <Button
                             handleClick={() => setTeam({ status: false })}
                           >
@@ -257,17 +295,18 @@ function Player() {
               {data.length > 0 &&
                 data.map((x, i) => (
                   <S.TableButtonBlock key={i}>
-                    <Input
-                      type="radio"
-                      handleChange={(e) =>
-                        setPlayer({
-                          name: e.target.value,
-                          id: x.id,
-                        })
-                      }
-                      radio={[{ value: x.name, label: x.name }]}
-                    />
-
+                    <S.InputBrick>
+                      <Input
+                        type="radio"
+                        handleChange={(e) =>
+                          setPlayer({
+                            name: e.target.value,
+                            id: x.id,
+                          })
+                        }
+                        radio={[{ value: x.name, label: x.name }]}
+                      />
+                    </S.InputBrick>
                     <Button
                       type="submit"
                       handleClick={(e) =>
