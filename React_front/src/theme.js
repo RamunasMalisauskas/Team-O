@@ -31,7 +31,7 @@ const theme = {
 
   primary: {
     font: "Montserrat, sans-serif",
-    fontSize: "900",
+    fontSize: "800",
     color: "#f15a24",
     border: "2px solid #f15a24",
     background: "#ffffff",
