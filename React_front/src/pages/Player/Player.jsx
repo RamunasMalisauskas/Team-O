@@ -92,7 +92,7 @@ function RemovePlayer(player, auth, setError, setData) {
 
 function Player() {
   const auth = useContext(AuthContext);
-  const [data, setData] = useState();
+  const [data, setData] = useState({});
   //  error has status for hidden/visible function, msg for notification text, and color to set notification to error or regular style
   const [error, setError] = useState({ status: false, msg: "", color: "" });
   //  player has name for the AddPlayer funcion id for RemovePlayer and status for component functionality
@@ -106,7 +106,15 @@ function Player() {
       },
     })
       .then((res) => res.json())
-      .then((data) => setData(data));
+      .then((data) => {
+        // validatind fetched data
+        if (data.length > 0) {
+          setData(data);
+        } else {
+          // if there is nothing in database set notification as error with backend message
+          setData({ msg: data.msg });
+        }
+      });
   }, []);
 
   return (
@@ -169,24 +177,29 @@ function Player() {
           </form>
 
           <S.Frame>
-            {!data && <S.Subtitle>no players in database</S.Subtitle>}
+            {/* is allways displayed untill is rewriten with data.msg or data */}
+            {!data.msg && !data.length && <S.Subtitle>server error</S.Subtitle>}
+
+            {/* If there is a message (set in useEffect function) in data display message */}
+            {data.msg && <S.Subtitle>{data.msg}</S.Subtitle>}
 
             <form
               onSubmit={(e) => {
                 e.preventDefault();
               }}
             >
-              {data && (
+              {data.length > 0 && (
                 <Button
                   sticky={true}
                   color="primary"
-                  handleClick={(e) => console.log(player.name)}
+                  handleClick={(e) => console.log(data)}
                 >
                   ADD TO MY TEAM
                 </Button>
               )}
 
-              {data &&
+              {/* validating if data is array and then maping */}
+              {data.length > 0 &&
                 data.map((x, i) => (
                   <S.TableButtonBlock key={i}>
                     <Input
