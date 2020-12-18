@@ -115,6 +115,7 @@ router.post("/login", midware.validateUserData, (req, res) => {
 router.get(`/players`, midware.LoggedIn, (req, res) => {
   //  renamed user data fetched from middleware
   const vertifyUser = req.userData;
+
   //  vertifing userID from middleware
   if (vertifyUser.userID !== 0) {
     con.query(`SELECT * FROM player`, (err, result) => {
@@ -177,6 +178,28 @@ router.delete("/players", midware.LoggedIn, (req, res) => {
     }
   } else {
     return res.status(400).json({ msg: "only admin can delete players" });
+  }
+});
+
+// ### TEAM DB LINKS ###
+
+// getting single input data from team table by teams id
+router.get("/team", midware.LoggedIn, (req, res) => {
+  // organizing request data
+  const team = req.body;
+  const vertifyUser = req.userData;
+
+  // vertification of request input
+  if (vertifyUser.userID !== 0) {
+    con.query(
+      `SELECT * FROM team WHERE id = ${mysql.escape(team.id)}`,
+      (err, result) => {
+        if (err) return res.status(400).json({ msg: err });
+        res.status(200).json(result);
+      }
+    );
+  } else {
+    return res.status(400).json({ msg: "userData ID is not defined" });
   }
 });
 
