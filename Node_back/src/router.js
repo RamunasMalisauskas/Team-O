@@ -139,6 +139,7 @@ router.post("/players", midware.LoggedIn, (req, res) => {
   // organizing request data
   const player = req.body.name;
   const vertifyUser = req.userData;
+
   // vertifing if the user has admin rights
   if (vertifyUser.admin) {
     // vertification of request input
@@ -225,6 +226,29 @@ router.delete("/team", midware.LoggedIn, (req, res) => {
     );
   } else {
     return res.status(400).json({ msg: "userData ID is not defined" });
+  }
+});
+
+router.post("/team", midware.LoggedIn, (req, res) => {
+  // organizing request data
+  const team = req.body;
+  const vertifyUser = req.userData;
+
+  // vertification of request input
+  if (team.name && team.players) {
+    con.query(
+      `INSERT INTO team (user, team_name, players) VALUES (${mysql.escape(
+        vertifyUser.userID
+      )}, ${mysql.escape(team.name)}, ${mysql.escape(team.players)})`,
+      (err, result) => {
+        if (err) return res.status(400).json({ msg: err });
+        res.status(200).json({ msg: `posted successfully to ${team.name}` });
+      }
+    );
+  } else {
+    return res
+      .status(400)
+      .json({ msg: "no team name or player has been selected" });
   }
 });
 
