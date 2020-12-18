@@ -32,6 +32,12 @@ export const ButtonBlock = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  @media (max-width: ${(props) => props.theme.websiteWidth}) {
+    text-align: center;
+    margin: 0 auto;
+    display: block;
+  }
 `;
 
 export const InputBlock = styled.div`
