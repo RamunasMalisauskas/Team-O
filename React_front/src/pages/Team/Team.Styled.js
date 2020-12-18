@@ -8,10 +8,6 @@ export const PageBackground = styled.div`
   object-fit: cover;
   height: ${(props) => props.theme.fullHeight};
   width: 100%;
-
-  @media (max-width: ${(props) => props.theme.websiteWidth}) {
-    background: url(${backImg});
-  }
 `;
 
 export const Frame = styled.div`

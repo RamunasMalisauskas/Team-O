@@ -28,6 +28,16 @@ export const Block = styled.div`
   background: ${(props) => props.theme.primary.background};
 `;
 
+export const Frame = styled.div`
+  border: ${(props) => props.theme.primary.border};
+  padding: ${(props) => props.theme.standart.gutterSize};
+  background-color: ${(props) => props.theme.secondary.color};
+
+  @media (max-width: ${(props) => props.theme.websiteWidth}) {
+    padding: ${(props) => props.theme.tiny.gutterSize};
+  }
+`;
+
 export const ButtonBlock = styled.div`
   display: flex;
   justify-content: space-between;
@@ -98,15 +108,5 @@ export const TableButtonBlock = styled.div`
   border-bottom: ${(props) => props.theme.secondary.border};
   &:hover {
     border-bottom: ${(props) => props.theme.primary.border};
-  }
-`;
-
-export const Frame = styled.div`
-  border: ${(props) => props.theme.primary.border};
-  padding: ${(props) => props.theme.standart.gutterSize};
-  background-color: ${(props) => props.theme.secondary.color};
-
-  @media (max-width: ${(props) => props.theme.websiteWidth}) {
-    padding: ${(props) => props.theme.tiny.gutterSize};
   }
 `;

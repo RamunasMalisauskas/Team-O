@@ -13,12 +13,12 @@ export const Logo = styled.img`
 `;
 
 export const PageBackground = styled.div`
-  background: url(${backImg}) center left;
+  background: url(${backImg}) left center;
   object-fit: cover;
   height: ${(props) => props.theme.fullHeight};
   width: 100%;
 
   @media (max-width: 66em) {
-    background: url(${backImg}) center center;
+    background: url(${backImg}) center;
   }
 `;
