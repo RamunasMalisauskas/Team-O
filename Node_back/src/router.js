@@ -234,15 +234,18 @@ router.post("/team", midware.LoggedIn, (req, res) => {
   const team = req.body;
   const vertifyUser = req.userData;
 
-  // vertification of request input
+  // double vertification of request input
   if (team.name && team.players) {
     con.query(
+      // inserting into team user id (fetch from midware) and two inputs from request
       `INSERT INTO team (user, team_name, players) VALUES (${mysql.escape(
         vertifyUser.userID
       )}, ${mysql.escape(team.name)}, ${mysql.escape(team.players)})`,
       (err, result) => {
         if (err) return res.status(400).json({ msg: err });
-        res.status(200).json({ msg: `posted successfully to ${team.name}` });
+        res
+          .status(200)
+          .json({ msg: `player posted successfully to ${team.name}` });
       }
     );
   } else {
