@@ -192,7 +192,9 @@ router.get("/team", midware.LoggedIn, (req, res) => {
   // vertification of request input
   if (vertifyUser.userID !== 0) {
     con.query(
-      `SELECT * FROM team WHERE id = ${mysql.escape(team.id)}`,
+      `SELECT * FROM team WHERE team_name = ${mysql.escape(
+        team.name
+      )} AND user = ${mysql.escape(vertifyUser.userID)}`,
       (err, result) => {
         if (err) return res.status(400).json({ msg: err });
         res.status(200).json(result);
