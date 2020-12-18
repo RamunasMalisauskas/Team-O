@@ -6,8 +6,9 @@ import * as S from "./Player.Styled";
 import logoImg from "../../assets/logo.svg";
 
 // FETCH/POST function to add player to database
-// ir uses three props "player" (object selected from first form) ->
+// ir uses four props: object player with has name ->
 // -> "auth" (getting it from context) and setError(hook is used to calling notification) ->
+// -> setError for notification manegment ->
 // -> setData is used to get updated data straight from DB
 function AddPlayer(player, auth, setError, setData) {
   fetch("http://localhost:8080/players", {
@@ -22,6 +23,7 @@ function AddPlayer(player, auth, setError, setData) {
       name: player.name,
     }),
   })
+    // recieving responce from backend and converting it into notification message
     .then((res) => res.json())
     .then((data) => {
       setError({
@@ -89,6 +91,10 @@ function RemovePlayer(player, auth, setError, setData) {
     });
 }
 
+// FETCH/POST function to add selected player to team database
+// ir uses three props: object team which has team name and selected player name  ->
+// -> "auth" (getting it from context) and setError(hook is used to calling notification) ->
+// -> setError for notification manegment
 function AddTeamPlayer(team, auth, setError) {
   fetch("http://localhost:8080/team", {
     method: "POST",
@@ -103,6 +109,7 @@ function AddTeamPlayer(team, auth, setError) {
       player_name: team.player_name,
     }),
   })
+    // recieving responce from backend and converting it into notification message
     .then((res) => res.json())
     .then((data) => {
       setError({
@@ -146,7 +153,7 @@ function Player() {
       });
   }, []);
 
-  // fetching team names
+  // fetching team names from DB
   useEffect(() => {
     fetch("http://localhost:8080/teams", {
       headers: {
@@ -173,6 +180,7 @@ function Player() {
         center={true}
         background={(props) => props.theme.secondary.background}
       >
+        {/* Notification is turn on and of by "error" object status property */}
         {error.status && (
           <Notification
             notificationMessage={error.msg}
@@ -189,11 +197,13 @@ function Player() {
             }}
           >
             <S.InputBlock>
+            {/* using object "player" status property to turn on/off this section */}
+            {/* this button set's it on ->  */}
               <Button handleClick={() => setPlayer({ status: true })}>
                 ADD PLAYER
               </Button>
             </S.InputBlock>
-
+            {/* -> this section is responding to object's "player" status change */}
             {player.status && (
               <S.InputBlock>
                 <Input
@@ -230,6 +240,7 @@ function Player() {
               <S.Subtitle>loading...</S.Subtitle>
             )}
 
+            {/* this subtitle will be displayed if the server is up but there is no data fetched (look up first fetch second .then "else" part ) */}
             {data.msg && <S.Subtitle>{data.msg}</S.Subtitle>}
 
             <form
@@ -237,6 +248,7 @@ function Player() {
                 e.preventDefault();
               }}
             >
+              {/* after recieving data (testing with array.length method) from DB this section is visible */}
               {data.length > 0 && (
                 <>
                   <Button
@@ -246,12 +258,14 @@ function Player() {
                   >
                     ADD TO MY TEAM
                   </Button>
-
+                  {/*  same logic as before turning on/off part of section with object status, this time it's "team" */}
                   {team.status && (
                     <S.InputBlock sticky={true}>
                       <S.Frame>
                         <S.ButtonBlock>
                           {teamData &&
+                          // data from second fecth is maped and displayed ->
+                          // -> input is seting object with target.value and "player" object propery "name"
                             teamData.map((x, i) => (
                               <div key={i}>
                                 <Input
@@ -269,11 +283,12 @@ function Player() {
                                 />
                               </div>
                             ))}
+                            {/* button is submiting props to function */}
                           <Button
                             color="primary"
                             type="submit"
                             handleClick={() => {
-                              AddTeamPlayer(team, auth, setError, setData);
+                              AddTeamPlayer(team, auth, setError);
                             }}
                           >
                             SAVE
@@ -290,8 +305,9 @@ function Player() {
                 </>
               )}
 
-              {/* validating if data is array and then maping */}
+              {/* validating data from first fetch with array.length method */}
               {data.length > 0 &&
+              // mapping and displaying first fetch data
                 data.map((x, i) => (
                   <S.TableButtonBlock key={i}>
                     <S.InputBrick>
@@ -305,6 +321,7 @@ function Player() {
                         radio={[{ value: x.name, label: x.name }]}
                       />
                     </S.InputBrick>
+                    {/* remove button calls specific fetch/DELETE function */}
                     <Button
                       type="submit"
                       handleClick={(e) =>
