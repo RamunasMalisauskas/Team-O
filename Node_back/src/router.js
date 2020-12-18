@@ -145,7 +145,7 @@ router.post("/players", midware.LoggedIn, (req, res) => {
     // vertification of request input
     if (player) {
       con.query(
-        // validating if the entered name is unique aor already exist in database
+        // validating if the entered name is unique or already exist in database
         // Selecting matching name from DB ->
         `SELECT name FROM player WHERE name = '${player}'`,
         (err, result) => {
@@ -255,22 +255,39 @@ router.post("/team", midware.LoggedIn, (req, res) => {
   // double vertification of request input
   if (team.name && team.player_id) {
     con.query(
-      // fetching name of player from DB by recieved id
-      `SELECT * FROM player WHERE id = ${mysql.escape(team.player_id)}`,
+      // validating if the team name is unique or already exist in database
+      // Selecting matching name from DB ->
+      `SELECT team_name FROM team WHERE name = '${team.name}'`,
       (err, result) => {
         if (err) return res.status(400).json({ msg: err });
-        con.query(
-          // inserting into team: user id (fetch from midware) and team name in given through post and player name is taken from DB
-          `INSERT INTO team (user, team_name, players) VALUES (${mysql.escape(
-            vertifyUser.userID
-          )}, ${mysql.escape(team.name)}, ${mysql.escape(result[0].name)})`,
-          (err, result) => {
-            if (err) return res.status(400).json({ msg: err });
-            res
-              .status(200)
-              .json({ msg: `player posted successfully to ${team.name}` });
-          }
-        );
+        // -> and if there is results deliver the message ->
+        else if (result.length !== 0) {
+          return res
+            .status(400)
+            .json({ msg: "the team name is already in use" });
+        } else {
+          con.query(
+            // fetching name of player from DB by recieved id
+            `SELECT * FROM player WHERE id = ${mysql.escape(team.player_id)}`,
+            (err, result) => {
+              if (err) return res.status(400).json({ msg: err });
+              con.query(
+                // inserting into team: user id (fetch from midware) and team name in given through post and player name is taken from DB
+                `INSERT INTO team (user, team_name, players) VALUES (${mysql.escape(
+                  vertifyUser.userID
+                )}, ${mysql.escape(team.name)}, ${mysql.escape(
+                  result[0].name
+                )})`,
+                (err, result) => {
+                  if (err) return res.status(400).json({ msg: err });
+                  res.status(200).json({
+                    msg: `player posted successfully to ${team.name}`,
+                  });
+                }
+              );
+            }
+          );
+        }
       }
     );
   } else {

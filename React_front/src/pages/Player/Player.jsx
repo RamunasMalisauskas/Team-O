@@ -92,7 +92,7 @@ function RemovePlayer(player, auth, setError, setData) {
 
 function Player() {
   const auth = useContext(AuthContext);
-  const [data, setData] = useState({});
+  const [data, setData] = useState();
   //  error has status for hidden/visible function, msg for notification text, and color to set notification to error or regular style
   const [error, setError] = useState({ status: false, msg: "", color: "" });
   //  player has name for the AddPlayer funcion id for RemovePlayer and status for component functionality
@@ -178,17 +178,14 @@ function Player() {
 
           <S.Frame>
             {/* is allways displayed untill is rewriten with data.msg or data */}
-            {!data.msg && !data.length && <S.Subtitle>server error</S.Subtitle>}
-
-            {/* If there is a message (set in useEffect function) in data display message */}
-            {data.msg && <S.Subtitle>{data.msg}</S.Subtitle>}
+            {!data && <S.Subtitle>server error</S.Subtitle>}
 
             <form
               onSubmit={(e) => {
                 e.preventDefault();
               }}
             >
-              {data.length > 0 && (
+              {data && (
                 <Button
                   sticky={true}
                   color="primary"
@@ -199,7 +196,7 @@ function Player() {
               )}
 
               {/* validating if data is array and then maping */}
-              {data.length > 0 &&
+              {data &&
                 data.map((x, i) => (
                   <S.TableButtonBlock key={i}>
                     <Input
