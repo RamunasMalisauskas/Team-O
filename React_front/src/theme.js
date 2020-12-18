@@ -52,6 +52,7 @@ const theme = {
 
   support: {
     background: "rgba(104, 255, 192, 0.6)",
+    border: "2px solid #68ffc0",
   },
 
   complimentary: {
