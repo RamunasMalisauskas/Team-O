@@ -190,7 +190,7 @@ router.get("/team", midware.LoggedIn, (req, res) => {
   const team = req.body;
   const vertifyUser = req.userData;
 
-  // vertification of request input
+  // vertification of valid user
   if (vertifyUser.userID !== 0) {
     con.query(
       // selecting player name and id by matching team name and double checking the user id (so it's avalibe only to this player)
@@ -204,6 +204,31 @@ router.get("/team", midware.LoggedIn, (req, res) => {
     );
   } else {
     return res.status(400).json({ msg: "userData ID is not defined" });
+  }
+});
+
+router.get("/all_teams", midware.LoggedIn, (req, res) => {
+  // organizing request data
+  const team = req.body;
+  const vertifyUser = req.userData;
+
+  // vertifing if the user has admin rights
+  if (vertifyUser.admin) {
+    // vertification of valid user
+    if (vertifyUser.userID !== 0) {
+      con.query(
+        // selecting player name and id by matching team name and double checking the user id (so it's avalibe only to this player)
+        `SELECT id, team_name, players FROM team`,
+        (err, result) => {
+          if (err) return res.status(400).json({ msg: err });
+          res.status(200).json(result);
+        }
+      );
+    } else {
+      return res.status(400).json({ msg: "userData ID is not defined" });
+    }
+  } else {
+    return res.status(400).json({ msg: "only admin can see all teams" });
   }
 });
 
@@ -238,7 +263,7 @@ router.delete("/team", midware.LoggedIn, (req, res) => {
   const team = req.body;
   const vertifyUser = req.userData;
 
-  // vertification of request input
+  // vertification of valid user
   if (vertifyUser.userID !== 0) {
     con.query(
       // deleting team by team name and user id
