@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import backImg from "../../assets/playerImg.jpg";
+import { Link } from "react-router-dom";
 
 export const PageBackground = styled.div`
   position: fixed;
@@ -30,6 +31,7 @@ export const Block = styled.div`
 export const ButtonBlock = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
 `;
 
 export const InputBlock = styled.div`
@@ -63,6 +65,22 @@ export const Subtitle = styled.h3`
   @media (max-width: ${(props) => props.theme.websiteWidth}) {
     font-size: ${(props) => props.theme.tiny.height};
     padding: ${(props) => props.theme.small.gutterSize};
+  }
+`;
+
+export const P = styled.p`
+  font-family: ${(props) => props.theme.primary.font};
+  font-weight: ${(props) => props.theme.primary.fontSize};
+`;
+
+export const StyledLink = styled(Link)`
+  color: ${(props) => props.theme.primary.color};
+  font-family: ${(props) => props.theme.primary.font};
+  font-weight: ${(props) => props.theme.secondary.fontSize};
+  cursor: pointer;
+  text-decoration: none;
+  &:not(:last-child) {
+    padding-right: ${(props) => props.theme.standart.gutterSize};
   }
 `;
 

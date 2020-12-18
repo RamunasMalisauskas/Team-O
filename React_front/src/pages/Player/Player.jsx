@@ -128,9 +128,9 @@ function Player() {
   const auth = useContext(AuthContext);
   const [data, setData] = useState({});
   const [teamData, setTeamData] = useState({});
-  //  error has status for hidden/visible function, msg for notification text, and color to set notification to error or regular style
+  //  object error has status for hidden/visible function, msg for notification text, and color to set notification to error or regular style
   const [error, setError] = useState({ status: false, msg: "", color: "" });
-  //  player has name for the AddPlayer funcion id for RemovePlayer and status for component functionality
+  //  object player has name for the AddPlayer funcion, id for RemovePlayer and status for component functionality
   const [player, setPlayer] = useState({ status: false, name: "", id: "" });
   const [team, setTeam] = useState({ status: false, name: "" });
 
@@ -180,7 +180,7 @@ function Player() {
         center={true}
         background={(props) => props.theme.secondary.background}
       >
-        {/* Notification is turn on and of by "error" object status property */}
+        {/* Notification is turn on and off by "error" object status property */}
         {error.status && (
           <Notification
             notificationMessage={error.msg}
@@ -197,8 +197,8 @@ function Player() {
             }}
           >
             <S.InputBlock>
-            {/* using object "player" status property to turn on/off this section */}
-            {/* this button set's it on ->  */}
+              {/* using object "player" status property to turn on/off this section */}
+              {/* this button set's it on ->  */}
               <Button handleClick={() => setPlayer({ status: true })}>
                 ADD PLAYER
               </Button>
@@ -263,9 +263,20 @@ function Player() {
                     <S.InputBlock sticky={true}>
                       <S.Frame>
                         <S.ButtonBlock>
-                          {teamData &&
-                          // data from second fecth is maped and displayed ->
-                          // -> input is seting object with target.value and "player" object propery "name"
+                          {/* displaying recieved messege from back end (if user has no team set up yet) */}
+                          {teamData.msg && (
+                            <>
+                              <S.P>{teamData.msg}</S.P>
+                              <S.StyledLink to="/team">
+                                create your team
+                              </S.StyledLink>
+                            </>
+                          )}
+
+                          {/* after recieving data from DB (testing with array.length method) this section is visible */}
+                          {teamData.length > 0 &&
+                            // data from second fecth is maped and displayed ->
+                            // -> input is seting object with target.value and "player" object propery "name"
                             teamData.map((x, i) => (
                               <div key={i}>
                                 <Input
@@ -283,16 +294,20 @@ function Player() {
                                 />
                               </div>
                             ))}
-                            {/* button is submiting props to function */}
-                          <Button
-                            color="primary"
-                            type="submit"
-                            handleClick={() => {
-                              AddTeamPlayer(team, auth, setError);
-                            }}
-                          >
-                            SAVE
-                          </Button>
+                          {/* button is submiting props to function ->
+                          -> he has to be visible only when there is teamData fetched from DB */}
+                          {teamData.length > 0 && (
+                            <Button
+                              color="primary"
+                              type="submit"
+                              handleClick={() => {
+                                AddTeamPlayer(team, auth, setError);
+                              }}
+                            >
+                              SAVE
+                            </Button>
+                          )}
+                          {/* button to close this part of section */}
                           <Button
                             handleClick={() => setTeam({ status: false })}
                           >
@@ -307,7 +322,7 @@ function Player() {
 
               {/* validating data from first fetch with array.length method */}
               {data.length > 0 &&
-              // mapping and displaying first fetch data
+                // mapping and displaying first fetch data
                 data.map((x, i) => (
                   <S.TableButtonBlock key={i}>
                     <S.InputBrick>
