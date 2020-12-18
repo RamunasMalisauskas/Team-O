@@ -1,10 +1,10 @@
 import styled from "styled-components";
-import backImg from "../../assets/playerImg.jpg";
+import backImg from "../../assets/teamImg.jpg";
 
 export const PageBackground = styled.div`
   position: fixed;
   z-index: -1;
-  background: url(${backImg}) center top;
+  background: url(${backImg}) center;
   object-fit: cover;
   height: ${(props) => props.theme.fullHeight};
   width: 100%;
@@ -15,7 +15,7 @@ export const PageBackground = styled.div`
 `;
 
 export const Frame = styled.div`
-  border: ${(props) => props.theme.primary.border};
+  border: ${(props) => props.theme.support.border};
   padding: ${(props) => props.theme.standart.gutterSize};
   background-color: ${(props) => props.theme.secondary.color};
 
