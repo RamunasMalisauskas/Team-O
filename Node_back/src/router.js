@@ -39,7 +39,7 @@ router.post("/register", midware.validateUserData, (req, res) => {
     (err, result) => {
       if (err) return res.status(400).json({ msg: err });
       else if (result != 0) {
-        res.status(400).json({ msg: "user already created under this email" });
+        res.status(203).json({ msg: "user already created under this email" });
         // encrypting the users password and created hash will be stored into DB (not original password)
       } else {
         bcrypt.hash(user.password, 10, (err, hash) => {
@@ -68,9 +68,9 @@ router.post("/login", midware.validateUserData, (req, res) => {
 
   // validating input length
   if (email.length === 0) {
-    res.status(400).json({ msg: "please type in username" });
+    res.status(203).json({ msg: "please type in username" });
   } else if (loginPass.length === 0) {
-    res.status(400).json({ msg: "please type in password" });
+    res.status(203).json({ msg: "please type in password" });
   } else {
     con.query(
       // validating by selecting data from specific DB collum
@@ -79,14 +79,14 @@ router.post("/login", midware.validateUserData, (req, res) => {
         if (err) return res.status(400).json({ msg: err });
         // and  checking if the user exist in DB
         else if (result.length === 0) {
-          res.status(400).json({ msg: "user not found in database" });
+          res.status(203).json({ msg: "user not found in database" });
         } else {
           // if user exist getting his password
           const storedPass = result[0].password;
           // using bcrypt.compare function to decode and match passwords from input and DB
           bcrypt.compare(loginPass, storedPass, (compareErr, compareResult) => {
             if (compareErr || !compareResult)
-              res.status(400).json({ msg: "email or password doesn't match" });
+              res.status(203).json({ msg: "email or password doesn't match" });
             else {
               // if the passwords match user token is created with jwt and secret key stored in environmental variables
               // inside token storing userID/ email/ admin rights/ experation date
@@ -124,14 +124,14 @@ router.get(`/players`, midware.LoggedIn, (req, res) => {
         // what happens when there is no players in database
       } else if (result.length == 0) {
         return res
-          .status(400)
+          .status(203)
           .json({ msg: "there is no players added to database" });
       } else {
         res.status(200).json(result);
       }
     });
   } else {
-    return res.status(400).json({ msg: "userData ID is not defined" });
+    return res.status(401).json({ msg: "userData ID is not defined" });
   }
 });
 
@@ -153,7 +153,7 @@ router.post("/players", midware.LoggedIn, (req, res) => {
           // -> and if there is results deliver the message ->
           else if (result.length !== 0) {
             return res
-              .status(400)
+              .status(204)
               .json({ msg: "the player is already included in database" });
           } else {
             // -> if there is no match added to DB
@@ -161,17 +161,17 @@ router.post("/players", midware.LoggedIn, (req, res) => {
               `INSERT INTO player (name) VALUES (${mysql.escape(player)})`,
               (err, result) => {
                 if (err) return res.status(400).json({ msg: err });
-                res.status(200).json({ msg: "posted successfully" });
+                res.status(201).json({ msg: "posted successfully" });
               }
             );
           }
         }
       );
     } else {
-      return res.status(400).json({ msg: "no player name has been entered" });
+      return res.status(203).json({ msg: "no player name has been entered" });
     }
   } else {
-    return res.status(400).json({ msg: "only admin can enter players" });
+    return res.status(401).json({ msg: "only admin can enter players" });
   }
 });
 
@@ -191,10 +191,10 @@ router.delete("/players", midware.LoggedIn, (req, res) => {
         }
       );
     } else {
-      return res.status(400).json({ msg: "no player selected" });
+      return res.status(203).json({ msg: "no player selected" });
     }
   } else {
-    return res.status(400).json({ msg: "only admin can delete players" });
+    return res.status(401).json({ msg: "only admin can delete players" });
   }
 });
 
@@ -218,7 +218,7 @@ router.get("/team", midware.LoggedIn, (req, res) => {
       }
     );
   } else {
-    return res.status(400).json({ msg: "userData ID is not defined" });
+    return res.status(401).json({ msg: "userData ID is not defined" });
   }
 });
 
@@ -240,10 +240,10 @@ router.get("/all_teams", midware.LoggedIn, (req, res) => {
         }
       );
     } else {
-      return res.status(400).json({ msg: "userData ID is not defined" });
+      return res.status(401).json({ msg: "userData ID is not defined" });
     }
   } else {
-    return res.status(400).json({ msg: "only admin can see all teams" });
+    return res.status(401).json({ msg: "only admin can see all teams" });
   }
 });
 
@@ -263,7 +263,7 @@ router.post("/team", midware.LoggedIn, (req, res) => {
         // -> and if there is results deliver the message ->
         else if (result.length !== 0) {
           return res
-            .status(400)
+            .status(203)
             .json({ msg: "the team name is already in use" });
         } else {
           con.query(
@@ -280,7 +280,7 @@ router.post("/team", midware.LoggedIn, (req, res) => {
                 )})`,
                 (err, result) => {
                   if (err) return res.status(400).json({ msg: err });
-                  res.status(200).json({
+                  res.status(201).json({
                     msg: `player posted successfully to ${team.name}`,
                   });
                 }
@@ -292,7 +292,7 @@ router.post("/team", midware.LoggedIn, (req, res) => {
     );
   } else {
     return res
-      .status(400)
+      .status(203)
       .json({ msg: "no team name or player has been selected" });
   }
 });
@@ -315,7 +315,7 @@ router.delete("/team", midware.LoggedIn, (req, res) => {
       }
     );
   } else {
-    return res.status(400).json({ msg: "userData ID is not defined" });
+    return res.status(401).json({ msg: "userData ID is not defined" });
   }
 });
 module.exports = router;
