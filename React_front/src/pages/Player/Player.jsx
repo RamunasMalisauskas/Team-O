@@ -93,6 +93,7 @@ function RemovePlayer(player, auth, setError, setData) {
 function Player() {
   const auth = useContext(AuthContext);
   const [data, setData] = useState({});
+  const [teamData, setTeamData] = useState({});
   //  error has status for hidden/visible function, msg for notification text, and color to set notification to error or regular style
   const [error, setError] = useState({ status: false, msg: "", color: "" });
   //  player has name for the AddPlayer funcion id for RemovePlayer and status for component functionality
@@ -114,6 +115,25 @@ function Player() {
         } else {
           // if there is nothing in database set notification as error with backend message
           setData({ msg: data.msg });
+        }
+      });
+  }, []);
+
+  // fetching team names
+  useEffect(() => {
+    fetch("http://localhost:8080/teams", {
+      headers: {
+        Authorization: `${auth.token}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        // validatind fetched data
+        if (data.length > 0) {
+          setTeamData(data);
+        } else {
+          // if there is nothing in database set notification as error with backend message
+          setTeamData({ msg: data.msg });
         }
       });
   }, []);
@@ -202,21 +222,7 @@ function Player() {
 
                   {team.status && (
                     <S.InputBlock sticky={true}>
-                      <S.Frame>
-                        <S.ButtonBlock>
-                          <Button handleClick={() => console.log(player.id)}>
-                            ADD TO THE TEAM
-                          </Button>
-
-                          <Button
-                            handleClick={() => {
-                              setTeam({ status: false });
-                            }}
-                          >
-                            X
-                          </Button>
-                        </S.ButtonBlock>
-                      </S.Frame>
+                      <S.Frame></S.Frame>
                     </S.InputBlock>
                   )}
                 </>
