@@ -12,7 +12,7 @@ router.get("/", (req, res) => {
   res.status(200).json("The API service works!");
 });
 
-//  ### LOGIN LINKS ####
+//  ### LOGIN LINKS ###
 router.get("/register", midware.LoggedIn, (req, res) => {
   const admin = req.userData.admin;
 
@@ -183,7 +183,6 @@ router.delete("/players", midware.LoggedIn, (req, res) => {
 });
 
 // ### TEAM DB LINKS ###
-
 // getting single input data from team table by teams name and user id
 router.get("/team", midware.LoggedIn, (req, res) => {
   // organizing request data
@@ -193,7 +192,7 @@ router.get("/team", midware.LoggedIn, (req, res) => {
   // vertification of valid user
   if (vertifyUser.userID !== 0) {
     con.query(
-      // selecting player name and id by matching team name and double checking the user id (so it's avalibe only to this player)
+      // selecting player name and id by matching team name and double checking the user id (so it's avalibe only to this user)
       `SELECT id, players FROM team WHERE team_name = ${mysql.escape(
         team.name
       )} AND user = ${mysql.escape(vertifyUser.userID)}`,
@@ -238,17 +237,24 @@ router.post("/team", midware.LoggedIn, (req, res) => {
   const vertifyUser = req.userData;
 
   // double vertification of request input
-  if (team.name && team.players) {
+  if (team.name && team.player_id) {
     con.query(
-      // inserting into team user id (fetch from midware) and two inputs from request
-      `INSERT INTO team (user, team_name, players) VALUES (${mysql.escape(
-        vertifyUser.userID
-      )}, ${mysql.escape(team.name)}, ${mysql.escape(team.players)})`,
+      // fetching name of player from DB by recieved id
+      `SELECT * FROM player WHERE id = ${mysql.escape(team.player_id)}`,
       (err, result) => {
         if (err) return res.status(400).json({ msg: err });
-        res
-          .status(200)
-          .json({ msg: `player posted successfully to ${team.name}` });
+        con.query(
+          // inserting into team: user id (fetch from midware) and team name in given through post and player name is taken from DB
+          `INSERT INTO team (user, team_name, players) VALUES (${mysql.escape(
+            vertifyUser.userID
+          )}, ${mysql.escape(team.name)}, ${mysql.escape(result[0].name)})`,
+          (err, result) => {
+            if (err) return res.status(400).json({ msg: err });
+            res
+              .status(200)
+              .json({ msg: `player posted successfully to ${team.name}` });
+          }
+        );
       }
     );
   } else {
