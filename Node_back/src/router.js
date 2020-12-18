@@ -244,8 +244,8 @@ router.get("/teams", midware.LoggedIn, (req, res) => {
         if (err) {
           return res.status(400).json({ msg: err });
           // what happens when there is no players in database
-        } else if (result.length == 0) {
-          return res.status(400).json({ msg: "you have no teams" });
+        } else if (result.length === 0) {
+          return res.status(200).json({ msg: "you have no teams" });
         } else {
           res.status(200).json(result);
         }
