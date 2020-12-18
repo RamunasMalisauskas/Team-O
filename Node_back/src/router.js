@@ -238,11 +238,19 @@ router.get("/teams", midware.LoggedIn, (req, res) => {
       // selecting  data by matching user id (so it's avalibe only to this user) ->
       `SELECT team_name FROM team WHERE user = ${mysql.escape(
         vertifyUser.userID
-        // -> and returning grouped (unique) team names of every user 
+        // -> and returning grouped (unique) team names of every user
       )} GROUP by team_name`,
       (err, result) => {
-        if (err) return res.status(400).json({ msg: err });
-        res.status(200).json(result);
+        if (err) {
+          return res.status(400).json({ msg: err });
+          // what happens when there is no players in database
+        } else if (result.length == 0) {
+          return res
+            .status(400)
+            .json({ msg: "no teams" });
+        } else {
+          res.status(200).json(result);
+        }
       }
     );
   } else {
