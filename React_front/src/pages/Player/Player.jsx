@@ -92,11 +92,12 @@ function RemovePlayer(player, auth, setError, setData) {
 
 function Player() {
   const auth = useContext(AuthContext);
-  const [data, setData] = useState();
+  const [data, setData] = useState({});
   //  error has status for hidden/visible function, msg for notification text, and color to set notification to error or regular style
   const [error, setError] = useState({ status: false, msg: "", color: "" });
   //  player has name for the AddPlayer funcion id for RemovePlayer and status for component functionality
   const [player, setPlayer] = useState({ status: false, name: "", id: "" });
+  const [team, setTeam] = useState({ status: false, name: "" });
 
   // fetching players from DB
   useEffect(() => {
@@ -150,9 +151,9 @@ function Player() {
               <S.InputBlock>
                 <Input
                   placeholder="enter new players name"
-                  handleChange={(e) =>
-                    setPlayer({ name: e.target.value, status: true })
-                  }
+                  handleChange={(e) => {
+                    setPlayer({ name: e.target.value, status: true });
+                  }}
                 />
                 <S.ButtonBlock>
                   <Button
@@ -178,25 +179,51 @@ function Player() {
 
           <S.Frame>
             {/* is allways displayed untill is rewriten with data.msg or data */}
-            {!data && <S.Subtitle>server error</S.Subtitle>}
+            {!data.msg && !data.length > 0 && (
+              <S.Subtitle>loading...</S.Subtitle>
+            )}
+
+            {data.msg && <S.Subtitle>{data.msg}</S.Subtitle>}
 
             <form
               onSubmit={(e) => {
                 e.preventDefault();
               }}
             >
-              {data && (
-                <Button
-                  sticky={true}
-                  color="primary"
-                  handleClick={(e) => console.log(data)}
-                >
-                  ADD TO MY TEAM
-                </Button>
+              {data.length > 0 && (
+                <>
+                  <Button
+                    sticky={true}
+                    color="primary"
+                    handleClick={() => setTeam({ status: true })}
+                  >
+                    ADD TO MY TEAM
+                  </Button>
+
+                  {team.status && (
+                    <S.InputBlock sticky={true}>
+                      <S.Frame>
+                        <S.ButtonBlock>
+                          <Button handleClick={() => console.log(player.id)}>
+                            ADD TO THE TEAM
+                          </Button>
+
+                          <Button
+                            handleClick={() => {
+                              setTeam({ status: false });
+                            }}
+                          >
+                            X
+                          </Button>
+                        </S.ButtonBlock>
+                      </S.Frame>
+                    </S.InputBlock>
+                  )}
+                </>
               )}
 
               {/* validating if data is array and then maping */}
-              {data &&
+              {data.length > 0 &&
                 data.map((x, i) => (
                   <S.TableButtonBlock key={i}>
                     <Input
@@ -209,6 +236,7 @@ function Player() {
                       }
                       radio={[{ value: x.name, label: x.name }]}
                     />
+
                     <Button
                       type="submit"
                       handleClick={(e) =>

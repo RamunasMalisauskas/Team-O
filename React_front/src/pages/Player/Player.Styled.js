@@ -34,6 +34,9 @@ export const ButtonBlock = styled.div`
 
 export const InputBlock = styled.div`
   padding: ${(props) => props.theme.small.gutterSize} 0;
+  position: ${(props) => (props.sticky === true ? "sticky" : "")};
+  top: ${(props) =>
+    props.sticky === true ? props.theme.large.gutterSize : ""};
 `;
 
 export const Logo = styled.img`
@@ -73,6 +76,7 @@ export const TableButtonBlock = styled.div`
 export const Frame = styled.div`
   border: ${(props) => props.theme.primary.border};
   padding: ${(props) => props.theme.standart.gutterSize};
+  background-color: ${(props) => props.theme.secondary.color};
 
   @media (max-width: ${(props) => props.theme.websiteWidth}) {
     padding: ${(props) => props.theme.tiny.gutterSize};
