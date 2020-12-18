@@ -13,7 +13,6 @@ router.get("/", (req, res) => {
   res.status(200).json("The API service works!");
 });
 
-
 //  ### LOGIN LINKS ###
 
 router.get("/register", midware.LoggedIn, (req, res) => {
@@ -114,7 +113,6 @@ router.post("/login", midware.validateUserData, (req, res) => {
   }
 });
 
-
 // ### PLAYER DB LINKS ####
 
 router.get(`/players`, midware.LoggedIn, (req, res) => {
@@ -203,11 +201,10 @@ router.delete("/players", midware.LoggedIn, (req, res) => {
   }
 });
 
-
 // ### TEAM DB LINKS ###
 
 // getting single input data from team table by teams name and user id
-router.get("/team", midware.LoggedIn, (req, res) => {
+router.get("/team_players", midware.LoggedIn, (req, res) => {
   // organizing request data
   const team = req.body;
   const vertifyUser = req.userData;
@@ -219,6 +216,30 @@ router.get("/team", midware.LoggedIn, (req, res) => {
       `SELECT id, players FROM team WHERE team_name = ${mysql.escape(
         team.name
       )} AND user = ${mysql.escape(vertifyUser.userID)}`,
+      (err, result) => {
+        if (err) return res.status(400).json({ msg: err });
+        res.status(200).json(result);
+      }
+    );
+  } else {
+    return res.status(400).json({ msg: "userData ID is not defined" });
+  }
+});
+
+// getting users teams
+router.get("/teams", midware.LoggedIn, (req, res) => {
+  // organizing request data
+  const team = req.body;
+  const vertifyUser = req.userData;
+
+  // vertification of valid user
+  if (vertifyUser.userID !== 0) {
+    con.query(
+      // selecting  data by matching user id (so it's avalibe only to this user) ->
+      `SELECT team_name FROM team WHERE user = ${mysql.escape(
+        vertifyUser.userID
+        // -> and returning grouped (unique) team names of every user 
+      )} GROUP by team_name`,
       (err, result) => {
         if (err) return res.status(400).json({ msg: err });
         res.status(200).json(result);
@@ -264,7 +285,7 @@ router.post("/team", midware.LoggedIn, (req, res) => {
     con.query(
       // validating if the entered name is unique or already exist in database
       // Selecting matching name from DB ->
-      `SELECT team_name FROM team WHERE name = '${team.name}'`,
+      `SELECT team_name FROM team WHERE team_name = '${team.name}'`,
       (err, result) => {
         if (err) return res.status(400).json({ msg: err });
         // -> and if there is results deliver the message ->
