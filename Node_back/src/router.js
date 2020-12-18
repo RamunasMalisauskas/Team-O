@@ -193,35 +193,13 @@ router.get("/team", midware.LoggedIn, (req, res) => {
   // vertification of request input
   if (vertifyUser.userID !== 0) {
     con.query(
-      // selectin data by team and double checking the user id
-      `SELECT * FROM team WHERE team_name = ${mysql.escape(
+      // selecting player name and id by matching team name and double checking the user id (so it's avalibe only to this player)
+      `SELECT id, players FROM team WHERE team_name = ${mysql.escape(
         team.name
       )} AND user = ${mysql.escape(vertifyUser.userID)}`,
       (err, result) => {
         if (err) return res.status(400).json({ msg: err });
         res.status(200).json(result);
-      }
-    );
-  } else {
-    return res.status(400).json({ msg: "userData ID is not defined" });
-  }
-});
-
-router.delete("/team", midware.LoggedIn, (req, res) => {
-  // organizing request data
-  const team = req.body;
-  const vertifyUser = req.userData;
-
-  // vertification of request input
-  if (vertifyUser.userID !== 0) {
-    con.query(
-      // deleting team by team name and user id
-      `DELETE FROM team WHERE team_name = ${mysql.escape(
-        team.name
-      )} AND user = ${mysql.escape(vertifyUser.userID)}`,
-      (err, result) => {
-        if (err) return res.status(400).json({ msg: err });
-        res.status(200).json({ msg: `${team.name} has been deleted` });
       }
     );
   } else {
@@ -255,4 +233,25 @@ router.post("/team", midware.LoggedIn, (req, res) => {
   }
 });
 
+router.delete("/team", midware.LoggedIn, (req, res) => {
+  // organizing request data
+  const team = req.body;
+  const vertifyUser = req.userData;
+
+  // vertification of request input
+  if (vertifyUser.userID !== 0) {
+    con.query(
+      // deleting team by team name and user id
+      `DELETE FROM team WHERE team_name = ${mysql.escape(
+        team.name
+      )} AND user = ${mysql.escape(vertifyUser.userID)}`,
+      (err, result) => {
+        if (err) return res.status(400).json({ msg: err });
+        res.status(200).json({ msg: `${team.name} has been deleted` });
+      }
+    );
+  } else {
+    return res.status(400).json({ msg: "userData ID is not defined" });
+  }
+});
 module.exports = router;
