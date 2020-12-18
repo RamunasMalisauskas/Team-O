@@ -44,7 +44,6 @@ function AddPlayer(player, auth, setError, setData) {
       setError({ status: true, msg: err || "server error", color: "error" });
     });
 }
-
 // FETCH/DELETE function to remove player from database
 // same functionality as FETCH/POST, also we're setting data again after deletion
 function RemovePlayer(player, auth, setError, setData) {
@@ -101,7 +100,7 @@ function AddTeamPlayer(team, auth, setError) {
     //
     body: JSON.stringify({
       name: team.name,
-      player_id: team.player_id,
+      player_name: team.player_name,
     }),
   })
     .then((res) => res.json())
@@ -261,7 +260,7 @@ function Player() {
                                     setTeam({
                                       status: true,
                                       name: e.target.value,
-                                      player_id: player.id,
+                                      player_name: player.name,
                                     })
                                   }
                                   radio={[
@@ -301,7 +300,6 @@ function Player() {
                         handleChange={(e) =>
                           setPlayer({
                             name: e.target.value,
-                            id: x.id,
                           })
                         }
                         radio={[{ value: x.name, label: x.name }]}
