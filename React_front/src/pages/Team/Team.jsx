@@ -111,7 +111,7 @@ function Team() {
                       {x.team_name}
                     </Button>
                   ))}
-                <Button>PLUS</Button>
+                <Button color="support">ADD TEAM</Button>
               </S.FlexBlock>
 
               {teamData.length > 0 &&
@@ -138,7 +138,7 @@ function Team() {
           </Link>
         </S.ButtonBlock>
       </Section>
-      
+
       <Link to="/">
         <S.Logo src={logoImg} alt="teamo logo" />
       </Link>

@@ -14,12 +14,18 @@ export const Button = styled.button`
   border: ${(props) =>
     props.color === "primary"
       ? props.theme.primary.border
+      : props.color === "support"
+      ? props.theme.support.border
       : props.theme.secondary.border};
 
   &:hover {
     color: ${(props) => props.theme.secondary.color};
     background: ${(props) =>
-      props.color === "primary" ? props.theme.primary.color : "#000"};
+      props.color === "primary"
+        ? props.theme.primary.color
+        : props.color === "support"
+        ? props.theme.support.color
+        : "#000000"};
   }
 
   @media (max-width: ${(props) => props.theme.websiteWidth}) {
