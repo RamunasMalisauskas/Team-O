@@ -7,8 +7,7 @@ import logoImg from "../../assets/logo.svg";
 
 // FETCH/POST function to fetch selected team players. ->
 // -> team is passed as an object with name propery, auth is taken from context and setError is hook for notification manegment
-function TeamPlayers(team, auth, setError) {
-  console.log(team);
+function TeamPlayers(team, auth, setError, setTeamData) {
   fetch("http://localhost:8080/team_players", {
     method: "POST",
     headers: {
@@ -24,7 +23,7 @@ function TeamPlayers(team, auth, setError) {
     // recieving responce from backend and converting it into notification message
     .then((res) => res.json())
     .then((data) => {
-      console.log(data);
+      setTeamData(data);
     })
 
     .catch((err) => {
@@ -102,7 +101,12 @@ function Team() {
                     <Button
                       key={i}
                       handleClick={() => {
-                        TeamPlayers({ name: x.team_name }, auth, setError);
+                        TeamPlayers(
+                          { name: x.team_name },
+                          auth,
+                          setError,
+                          setTeamData
+                        );
                       }}
                     >
                       {x.team_name}
@@ -110,6 +114,21 @@ function Team() {
                   ))}
                 <Button>PLUS</Button>
               </S.FlexBlock>
+
+              {teamData.length > 0 &&
+                // mapping and displaying first fetch data
+                teamData.map((x, i) => (
+                  <S.TableButtonBlock key={i}>
+                    <S.InputBrick>
+                      <Input
+                        type="radio"
+                        radio={[{ value: x.players, label: x.players }]}
+                      />
+                    </S.InputBrick>
+                    {/* remove button calls specific fetch/DELETE function */}
+                    <Button type="submit">X</Button>
+                  </S.TableButtonBlock>
+                ))}
             </form>
           </S.Frame>
         </S.Block>

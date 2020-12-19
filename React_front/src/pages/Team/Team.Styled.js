@@ -60,3 +60,26 @@ export const FlexBlock = styled.div`
     display: block;
   }
 `;
+
+export const InputBlock = styled.div`
+  padding: ${(props) => props.theme.small.gutterSize} 0;
+  position: ${(props) => (props.sticky === true ? "sticky" : "")};
+  top: ${(props) =>
+    props.sticky === true ? props.theme.large.gutterSize : ""};
+`;
+
+export const InputBrick = styled.div`
+  padding-top: ${(props) => props.theme.standart.gutterSize};
+`;
+
+export const TableButtonBlock = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: ${(props) => props.theme.secondary.border};
+  &:hover {
+    border-bottom: ${(props) => props.theme.primary.border};
+  }
+`;
+
