@@ -275,7 +275,7 @@ router.post("/team_players", midware.LoggedIn, (req, res) => {
         // selecting player name and id by matching team name and double checking the user id (so it's avalibe only to this user)
         `SELECT id, players FROM team WHERE team_name = ${mysql.escape(
           team.name
-        )} AND user = ${mysql.escape(vertifyUser.userID)}`,
+        )} AND user = ${mysql.escape(vertifyUser.userID)} AND players IS NOT NULL` ,
         (err, result) => {
           if (err) return res.status(400).json({ msg: err });
           res.status(200).json(result);
