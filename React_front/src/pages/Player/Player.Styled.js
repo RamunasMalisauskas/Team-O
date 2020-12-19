@@ -51,6 +51,9 @@ export const FlexBlock = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: ${(props) => (props.sticky === true ? "sticky" : "")};
+  top: ${(props) =>
+    props.sticky === true ? props.theme.small.gutterSize : ""};
 
   @media (max-width: ${(props) => props.theme.websiteWidth}) {
     text-align: center;

@@ -258,7 +258,7 @@ function Player() {
               {/* after recieving data (testing with array.length method) from DB this section is visible */}
               {data.length > 0 && (
                 <>
-                  <S.FlexBlock>
+                  <S.FlexBlock sticky={true}>
                     <Button
                       sticky={true}
                       color="primary"
