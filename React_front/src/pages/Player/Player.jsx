@@ -216,7 +216,7 @@ function Player() {
                     setPlayer({ name: e.target.value, status: true });
                   }}
                 />
-                <S.ButtonBlock>
+                <S.FlexBlock>
                   <Button
                     color="primary"
                     type="submit"
@@ -231,9 +231,9 @@ function Player() {
                       setPlayer({ status: false });
                     }}
                   >
-                    X
+                    CLOSE
                   </Button>
-                </S.ButtonBlock>
+                </S.FlexBlock>
               </S.InputBlock>
             )}
           </form>
@@ -266,7 +266,7 @@ function Player() {
                   {team.status && (
                     <S.InputBlock sticky={true}>
                       <S.Frame>
-                        <S.ButtonBlock>
+                        <S.FlexBlock>
                           {/* displaying recieved messege from back end (if user has no team set up yet) */}
                           {teamData.msg && (
                             <>
@@ -315,9 +315,9 @@ function Player() {
                           <Button
                             handleClick={() => setTeam({ status: false })}
                           >
-                            X
+                            CLOSE
                           </Button>
-                        </S.ButtonBlock>
+                        </S.FlexBlock>
                       </S.Frame>
                     </S.InputBlock>
                   )}
@@ -354,6 +354,12 @@ function Player() {
             </form>
           </S.Frame>
         </S.Block>
+
+        <S.ButtonBlock>
+          <Link to="/">
+            <Button>BACK</Button>
+          </Link>
+        </S.ButtonBlock>
       </Section>
 
       <Link to="/">

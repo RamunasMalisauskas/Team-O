@@ -83,7 +83,7 @@ function RegPage() {
 
         <S.ButtonBlock>
           <Link to="/">
-            <Button>BACK ➜</Button>
+            <Button>BACK</Button>
           </Link>
         </S.ButtonBlock>
       </Section>
