@@ -184,7 +184,7 @@ function Team() {
           <S.StyledLink to="/player">
             <S.Title>PLAYERS</S.Title>
           </S.StyledLink>
-          
+
           <S.Title selected={true}>TEAMS</S.Title>
 
           <form
@@ -245,11 +245,7 @@ function Team() {
               }}
             >
               {/* if there is no team in DB message is recieved and displayed here */}
-              {data.msg && (
-                <>
-                  <S.P>{data.msg}</S.P>
-                </>
-              )}
+              {data.msg && <S.P>{data.msg}</S.P>}
 
               {data.length > 0 && <S.Subtitle>TEAMS:</S.Subtitle>}
 

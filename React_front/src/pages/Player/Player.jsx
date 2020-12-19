@@ -253,7 +253,7 @@ function Player() {
             )}
 
             {/* this subtitle will be displayed if the server is up but there is no data fetched (look up first fetch second .then "else" part ) */}
-            {data.msg && <S.Subtitle>{data.msg}</S.Subtitle>}
+            {data.msg && <S.P>{data.msg}</S.P>}
 
             <form
               onSubmit={(e) => {
