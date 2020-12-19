@@ -255,7 +255,8 @@ function Player() {
                 e.preventDefault();
               }}
             >
-              {/* after recieving data (testing with array.length method) from DB this section is visible */}
+              {/* after recieving data (testing with array.length method) from DB this section is visible-> 
+              -> after pressing add to by team btn remove button becomes hidden */}
               {data.length > 0 && (
                 <>
                   <S.FlexBlock sticky={true}>
@@ -269,12 +270,13 @@ function Player() {
                       ADD TO MY TEAM
                     </Button>
 
+                    {/* remove button activates remove player function and restarts player value in hook */}
                     {data.length > 0 && removeBtn && (
                       <Button
                         type="submit"
                         handleClick={(e) => {
                           RemovePlayer(player, auth, setError, setData);
-                          console.log(player);
+                          setPlayer({ name: "" });
                         }}
                       >
                         X
@@ -305,13 +307,13 @@ function Player() {
                               <div key={i}>
                                 <Input
                                   type="radio"
-                                  handleChange={(e) =>
+                                  handleChange={(e) => {
                                     setTeam({
                                       status: true,
                                       name: e.target.value,
                                       player_name: player.name,
-                                    })
-                                  }
+                                    });
+                                  }}
                                   radio={[
                                     { value: x.team_name, label: x.team_name },
                                   ]}
@@ -319,13 +321,15 @@ function Player() {
                               </div>
                             ))}
                           {/* button is submiting props to function ->
-                          -> he has to be visible only when there is teamData fetched from DB */}
+                          -> he has to be visible only when there is teamData fetched from DB -> 
+                          -> setPlayer restarts value of player in hook (all nessesery info is saved into "team")*/}
                           {teamData.length > 0 && (
                             <Button
                               color="primary"
                               type="submit"
                               handleClick={() => {
                                 AddTeamPlayer(team, auth, setError);
+                                setPlayer({ name: "" });
                               }}
                             >
                               SAVE
