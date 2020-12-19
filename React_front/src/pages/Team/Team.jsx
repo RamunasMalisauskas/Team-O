@@ -82,6 +82,8 @@ function Team() {
   //  new team object is uset to store and pass input data, to create new team
   const [newTeam, setNewTeam] = useState({ status: false, name: "" });
 
+  const [selectedTeam, setSelectedTeam] = useState();
+
   const [player, setPlayer] = useState();
   // error object is for notification manegment
   const [error, setError] = useState({ status: false, msg: "", color: "" });
@@ -202,7 +204,8 @@ function Team() {
                           { name: x.team_name },
                           auth,
                           setError,
-                          setTeamData
+                          setTeamData,
+                          setSelectedTeam({ team_name: x.team_name })
                         );
                       }}
                     >
@@ -225,6 +228,7 @@ function Team() {
                             name: e.target.value,
                             id: x.id,
                           });
+                          console.log(selectedTeam, player);
                         }}
                       />
                     </S.InputBrick>
