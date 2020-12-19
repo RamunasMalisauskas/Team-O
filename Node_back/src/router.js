@@ -115,6 +115,7 @@ router.post("/login", midware.validateUserData, (req, res) => {
 
 // ### PLAYER DB LINKS ####
 
+// fetching player list
 router.get(`/players`, midware.LoggedIn, (req, res) => {
   //  renamed user data fetched from middleware
   const vertifyUser = req.userData;
@@ -138,6 +139,7 @@ router.get(`/players`, midware.LoggedIn, (req, res) => {
   }
 });
 
+// adding new players
 router.post("/players", midware.LoggedIn, (req, res) => {
   // organizing request data
   const player = req.body.name;
@@ -178,6 +180,7 @@ router.post("/players", midware.LoggedIn, (req, res) => {
   }
 });
 
+// deleting player from DB
 router.delete("/players", midware.LoggedIn, (req, res) => {
   // organizing request data
   const id = req.body.id;
@@ -203,7 +206,7 @@ router.delete("/players", midware.LoggedIn, (req, res) => {
 
 // ### TEAM DB LINKS ###
 
-// getting users teams
+// getting all one user teams
 router.get("/teams", midware.LoggedIn, (req, res) => {
   // organizing request data
   const team = req.body;
@@ -286,8 +289,51 @@ router.post("/team_players", midware.LoggedIn, (req, res) => {
   }
 });
 
-// inserting players in selected team
-router.post("/team", midware.LoggedIn, (req, res) => {
+// adding new team to BD
+router.post("/add_team", midware.LoggedIn, (req, res) => {
+  // organizing request data
+  const team = req.body.name;
+  const vertifyUser = req.userData;
+
+  // vertification of valid user
+  if (vertifyUser.userID !== 0) {
+    // vertification of request input
+    if (team) {
+      con.query(
+        // validating if the entered name is unique or already exist in database
+        // Selecting matching name from DB ->
+        `SELECT team_name FROM team WHERE team_name = '${team}'`,
+        (err, result) => {
+          if (err) return res.status(400).json({ msg: err });
+          // -> and if there is matching results: deliver the message ->
+          else if (result.length !== 0) {
+            return res
+              .status(200)
+              .json({ msg: "this team name is already in use" });
+          } else {
+            // -> if there is no match: add data to DB
+            con.query(
+              `INSERT INTO team (user, team_name) VALUES ( ${mysql.escape(
+                vertifyUser.userID
+              )} ,${mysql.escape(team)})`,
+              (err, result) => {
+                if (err) return res.status(400).json({ msg: err });
+                res.status(200).json({ msg: "posted successfully" });
+              }
+            );
+          }
+        }
+      );
+    } else {
+      return res.status(400).json({ msg: "no team name has been entered" });
+    }
+  } else {
+    return res.status(400).json({ msg: "userData ID is not defined" });
+  }
+});
+
+// inserting player in selected team
+router.post("/add_players_to_team", midware.LoggedIn, (req, res) => {
   // organizing request data
   const team = req.body;
   const vertifyUser = req.userData;
@@ -327,8 +373,8 @@ router.post("/team", midware.LoggedIn, (req, res) => {
   }
 });
 
-// deleting players from selected team
-router.delete("/team", midware.LoggedIn, (req, res) => {
+// deleting all players from selected team
+router.delete("/team_players", midware.LoggedIn, (req, res) => {
   // organizing request data
   const team = req.body;
   const vertifyUser = req.userData;
