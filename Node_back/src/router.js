@@ -203,33 +203,6 @@ router.delete("/players", midware.LoggedIn, (req, res) => {
 
 // ### TEAM DB LINKS ###
 
-// getting single input data from team table by teams name and user id
-router.post("/team_players", midware.LoggedIn, (req, res) => {
-  // organizing request data
-  const team = req.body;
-  const vertifyUser = req.userData;
-
-  // vertification of valid user
-  if (vertifyUser.userID !== 0) {
-    if (team.name) {
-      con.query(
-        // selecting player name and id by matching team name and double checking the user id (so it's avalibe only to this user)
-        `SELECT id, players FROM team WHERE team_name = ${mysql.escape(
-          team.name
-        )} AND user = ${mysql.escape(vertifyUser.userID)}`,
-        (err, result) => {
-          if (err) return res.status(400).json({ msg: err });
-          res.status(200).json(result);
-        }
-      );
-    } else {
-      return res.status(200).json({ msg: "no team is selected" });
-    }
-  } else {
-    return res.status(400).json({ msg: "userData ID is not defined" });
-  }
-});
-
 // getting users teams
 router.get("/teams", midware.LoggedIn, (req, res) => {
   // organizing request data
@@ -260,6 +233,7 @@ router.get("/teams", midware.LoggedIn, (req, res) => {
   }
 });
 
+// admin getting all teams from DB
 router.get("/all_teams", midware.LoggedIn, (req, res) => {
   // organizing request data
   const team = req.body;
@@ -285,6 +259,34 @@ router.get("/all_teams", midware.LoggedIn, (req, res) => {
   }
 });
 
+// getting team players from selected team
+router.post("/team_players", midware.LoggedIn, (req, res) => {
+  // organizing request data
+  const team = req.body;
+  const vertifyUser = req.userData;
+
+  // vertification of valid user
+  if (vertifyUser.userID !== 0) {
+    if (team.name) {
+      con.query(
+        // selecting player name and id by matching team name and double checking the user id (so it's avalibe only to this user)
+        `SELECT id, players FROM team WHERE team_name = ${mysql.escape(
+          team.name
+        )} AND user = ${mysql.escape(vertifyUser.userID)}`,
+        (err, result) => {
+          if (err) return res.status(400).json({ msg: err });
+          res.status(200).json(result);
+        }
+      );
+    } else {
+      return res.status(200).json({ msg: "no team is selected" });
+    }
+  } else {
+    return res.status(400).json({ msg: "userData ID is not defined" });
+  }
+});
+
+// inserting players in selected team
 router.post("/team", midware.LoggedIn, (req, res) => {
   // organizing request data
   const team = req.body;
@@ -297,7 +299,7 @@ router.post("/team", midware.LoggedIn, (req, res) => {
       `SELECT * FROM team WHERE players = ${mysql.escape(team.player_name)}`,
       (err, result) => {
         if (err) return res.status(400).json({ msg: err });
-        // -> if he is sending message
+        // -> if he is on a team: sending message
         else if (result.length !== 0) {
           return res
             .status(200)
@@ -325,6 +327,7 @@ router.post("/team", midware.LoggedIn, (req, res) => {
   }
 });
 
+// deleting players from selected team
 router.delete("/team", midware.LoggedIn, (req, res) => {
   // organizing request data
   const team = req.body;
@@ -339,7 +342,7 @@ router.delete("/team", midware.LoggedIn, (req, res) => {
       )} AND user = ${mysql.escape(vertifyUser.userID)}`,
       (err, result) => {
         if (err) return res.status(400).json({ msg: err });
-        res.status(200).json({ msg: `${team.name} has been deleted` });
+        res.status(200).json({ msg: `${team.name} players removed from team` });
       }
     );
   } else {
