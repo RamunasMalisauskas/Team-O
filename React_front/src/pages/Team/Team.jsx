@@ -73,6 +73,62 @@ function TeamPlayers(team, auth, setError, setTeamData) {
     });
 }
 
+// FETCH/DELETE function to remove player from database
+// same functionality as FETCH/POST, also we're setting data again after deletion
+function RemoveTeamPlayer(selectedTeam, player, auth, setError, setTeamData) {
+  fetch("http://localhost:8080/remove_team_player", {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `${auth.token}`,
+    },
+    // backend is expecting id to remove player
+    body: JSON.stringify({
+      team_name: selectedTeam.team_name,
+      player_name: player.name,
+    }),
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      if (!data) {
+        setError({
+          status: true,
+          msg: "there has been error with data",
+          color: "error",
+        });
+      } else {
+        setError({
+          status: true,
+          msg: data.msg || "success",
+          color: "",
+        });
+      }
+    })
+    // fetching updated data from DB after deletion
+    .then(() => {
+      fetch("http://localhost:8080/team_players", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          // token is used to validate session and admin rights
+          Authorization: `${auth.token}`,
+        },
+        //
+        body: JSON.stringify({
+          name: selectedTeam.team_name,
+        }),
+      })
+        // recieving responce from backend and converting it into notification message
+        .then((res) => res.json())
+        .then((data) => {
+          setTeamData(data);
+        });
+    })
+    .catch((err) => {
+      setError({ status: true, msg: err || "server error", color: "error" });
+    });
+}
+
 function Team() {
   const auth = useContext(AuthContext);
   // main data is used to store team name
@@ -204,9 +260,10 @@ function Team() {
                           { name: x.team_name },
                           auth,
                           setError,
-                          setTeamData,
-                          setSelectedTeam({ team_name: x.team_name })
+                          setTeamData
                         );
+                        setPlayer({ name: "" });
+                        setSelectedTeam({ team_name: x.team_name });
                       }}
                     >
                       {x.team_name}
@@ -228,12 +285,25 @@ function Team() {
                             name: e.target.value,
                             id: x.id,
                           });
-                          console.log(selectedTeam, player);
                         }}
                       />
                     </S.InputBrick>
 
-                    <Button type="submit">X</Button>
+                    <Button
+                      type="submit"
+                      handleClick={() => {
+                        RemoveTeamPlayer(
+                          selectedTeam,
+                          player,
+                          auth,
+                          setError,
+                          setTeamData
+                        );
+                        setPlayer({ name: "" });
+                      }}
+                    >
+                      X
+                    </Button>
                   </S.TableButtonBlock>
                 ))}
             </form>
