@@ -96,7 +96,7 @@ function RemovePlayer(player, auth, setError, setData) {
 // -> "auth" (getting it from context) and setError(hook is used to calling notification) ->
 // -> setError for notification manegment
 function AddTeamPlayer(team, auth, setError) {
-  fetch("http://localhost:8080/team", {
+  fetch("http://localhost:8080/add_players_to_team", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
