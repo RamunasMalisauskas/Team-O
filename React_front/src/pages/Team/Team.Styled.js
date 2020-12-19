@@ -43,3 +43,8 @@ export const Logo = styled.img`
     height: ${(props) => props.theme.standart.height};
   }
 `;
+
+export const P = styled.p`
+  font-family: ${(props) => props.theme.primary.font};
+  font-weight: ${(props) => props.theme.primary.fontSize};
+`;
