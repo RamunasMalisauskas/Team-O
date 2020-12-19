@@ -273,9 +273,12 @@ router.post("/team_players", midware.LoggedIn, (req, res) => {
     if (team.name) {
       con.query(
         // selecting player name and id by matching team name and double checking the user id (so it's avalibe only to this user)
+        // after creating he team, the first player is allways null, it's needed to be exepted from selection
         `SELECT id, players FROM team WHERE team_name = ${mysql.escape(
           team.name
-        )} AND user = ${mysql.escape(vertifyUser.userID)} AND players IS NOT NULL` ,
+        )} AND user = ${mysql.escape(
+          vertifyUser.userID
+        )} AND players IS NOT NULL`,
         (err, result) => {
           if (err) return res.status(400).json({ msg: err });
           res.status(200).json(result);
@@ -395,4 +398,34 @@ router.delete("/team_players", midware.LoggedIn, (req, res) => {
     return res.status(400).json({ msg: "userData ID is not defined" });
   }
 });
+
+// deleting selected player from selected team
+router.delete("/remove_team_player", midware.LoggedIn, (req, res) => {
+  // organizing request data
+  const selected = req.body;
+  const vertifyUser = req.userData;
+
+  // vertification of valid user
+  if (vertifyUser.userID !== 0) {
+    con.query(
+      // deleting team by team name and user id
+      `DELETE FROM team WHERE team_name = ${mysql.escape(
+        selected.team_name
+      )} AND user = ${mysql.escape(
+        vertifyUser.userID
+      )} AND players = ${mysql.escape(selected.player_name)} `,
+      (err, result) => {
+        if (err) return res.status(400).json({ msg: err });
+        res
+          .status(200)
+          .json({
+            msg: `${selected.player_name} removed from ${selected.team_name}`,
+          });
+      }
+    );
+  } else {
+    return res.status(400).json({ msg: "userData ID is not defined" });
+  }
+});
+
 module.exports = router;
