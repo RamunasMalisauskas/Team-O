@@ -5,6 +5,8 @@ import { AuthContext } from "../../contexts/AuthContext";
 import * as S from "./Team.Styled";
 import logoImg from "../../assets/logo.svg";
 
+// FETCH/POST function to fetch selected team players. ->
+// -> team is passed as an object with name propery, auth is taken from context and setError is hook for notification manegment
 function TeamPlayers(team, auth, setError) {
   console.log(team);
   fetch("http://localhost:8080/team_players", {
@@ -33,7 +35,9 @@ function TeamPlayers(team, auth, setError) {
 
 function Team() {
   const auth = useContext(AuthContext);
+  // main data is used to store team name
   const [data, setData] = useState({});
+
   const [teamData, setTeamData] = useState({});
   const [teamPlayerData, setTeamPlayerData] = useState({});
   const [error, setError] = useState({ status: false, msg: "", color: "" });
@@ -78,11 +82,13 @@ function Team() {
           <S.Title>TEAMS</S.Title>
 
           <S.Frame>
+            {/* form preventing to refresh and  monitoring submits */}
             <form
               onSubmit={(e) => {
                 e.preventDefault();
               }}
             >
+              {/* if there is no team in DB message is recieved and displayed here */}
               {data.msg && (
                 <>
                   <S.P>{data.msg}</S.P>
@@ -90,6 +96,7 @@ function Team() {
               )}
 
               <S.FlexBlock>
+                {/* validating first fetch data (as array) and displaying as buttons with team names */}
                 {data.length > 0 &&
                   data.map((x, i) => (
                     <Button
