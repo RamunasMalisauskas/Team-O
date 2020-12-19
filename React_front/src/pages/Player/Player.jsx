@@ -126,12 +126,16 @@ function AddTeamPlayer(team, auth, setError) {
 
 function Player() {
   const auth = useContext(AuthContext);
+  // main data is used for player list
   const [data, setData] = useState({});
+  // team data is used to store team list
   const [teamData, setTeamData] = useState({});
-  //  object error has status for hidden/visible function, msg for notification text, and color to set notification to error or regular style
+  // object error has status for hidden/visible function, msg for notification text, and color to set notification to error or regular style
   const [error, setError] = useState({ status: false, msg: "", color: "" });
-  //  object player has name for the AddPlayer funcion, id for RemovePlayer and status for component functionality
+  // object player has name for the AddPlayer funcion, id for RemovePlayer and status for component functionality ->
+  // - >it's also used as hook for creating new player
   const [player, setPlayer] = useState({ status: false, name: "", id: "" });
+  // used for assing player to team
   const [team, setTeam] = useState({ status: false, name: "" });
 
   // fetching players from DB
