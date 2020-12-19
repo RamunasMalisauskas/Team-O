@@ -281,8 +281,10 @@ router.post("/team_players", midware.LoggedIn, (req, res) => {
         )} AND players IS NOT NULL`,
         (err, result) => {
           if (err) return res.status(400).json({ msg: err });
-          if (result.length === 0 ) {
-            return res.status(200).json({msg: "there is no players on this team"});
+          if (result.length === 0) {
+            return res
+              .status(200)
+              .json({ msg: "there is no players on this team" });
           }
           res.status(200).json(result);
         }
@@ -410,22 +412,25 @@ router.delete("/remove_team_player", midware.LoggedIn, (req, res) => {
 
   // vertification of valid user
   if (vertifyUser.userID !== 0) {
-    con.query(
-      // deleting team by team name and user id
-      `DELETE FROM team WHERE team_name = ${mysql.escape(
-        selected.team_name
-      )} AND user = ${mysql.escape(
-        vertifyUser.userID
-      )} AND players = ${mysql.escape(selected.player_name)} `,
-      (err, result) => {
-        if (err) return res.status(400).json({ msg: err });
-        res
-          .status(200)
-          .json({
+    if (selected.player_name) {
+      con.query(
+        // deleting player from team by validating user id/ fetching team name and player name
+        `DELETE FROM team WHERE team_name = ${mysql.escape(
+          selected.team_name
+        )} AND user = ${mysql.escape(
+          vertifyUser.userID
+        )} AND players = ${mysql.escape(selected.player_name)} `,
+        (err, result) => {
+          if (err) return res.status(400).json({ msg: err });
+          // in case there is no player selected: sending back msg
+          res.status(200).json({
             msg: `${selected.player_name} removed from ${selected.team_name}`,
           });
-      }
-    );
+        }
+      );
+    } else {
+      return res.status(200).json({ msg: "no player selected" });
+    }
   } else {
     return res.status(400).json({ msg: "userData ID is not defined" });
   }
