@@ -260,25 +260,25 @@ function Player() {
                 <>
                   <S.FlexBlock sticky={true}>
                     <Button
-                      sticky={true}
                       color="primary"
-                      handleClick={() => setTeam({ status: true })}
+                      handleClick={() => {
+                        setTeam({ status: true });
+                        setRemoveBtn(false);
+                      }}
                     >
                       ADD TO MY TEAM
                     </Button>
 
                     {data.length > 0 && removeBtn && (
-                      <S.InputBrick>
-                        <Button
-                          type="submit"
-                          handleClick={(e) => {
-                            RemovePlayer(player, auth, setError, setData);
-                            console.log(player);
-                          }}
-                        >
-                          X
-                        </Button>
-                      </S.InputBrick>
+                      <Button
+                        type="submit"
+                        handleClick={(e) => {
+                          RemovePlayer(player, auth, setError, setData);
+                          console.log(player);
+                        }}
+                      >
+                        X
+                      </Button>
                     )}
                   </S.FlexBlock>
 
