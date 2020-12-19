@@ -15,7 +15,9 @@ export const PageBackground = styled.div`
   }
 `;
 
-export const Title = styled.h1`
+export const Title = styled.h2`
+  color: ${(props) =>
+    props.selected === true ? props.theme.primary.color : "#000"};
   text-align: right;
   font-family: ${(props) => props.theme.primary.font};
   font-weight: ${(props) => props.theme.primary.fontSize};
@@ -107,9 +109,7 @@ export const StyledLink = styled(Link)`
   font-weight: ${(props) => props.theme.secondary.fontSize};
   cursor: pointer;
   text-decoration: none;
-  &:not(:last-child) {
-    padding-right: ${(props) => props.theme.standart.gutterSize};
-  }
+
 `;
 
 export const TableButtonBlock = styled.div`

@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import backImg from "../../assets/teamImg.jpg";
+import { Link } from "react-router-dom";
 
 export const PageBackground = styled.div`
   position: fixed;
@@ -20,10 +21,20 @@ export const Frame = styled.div`
   }
 `;
 
-export const Title = styled.h1`
+export const Title = styled.h2`
+  color: ${(props) =>
+    props.selected === true ? props.theme.support.color : "#000"};
   text-align: right;
   font-family: ${(props) => props.theme.primary.font};
   font-weight: ${(props) => props.theme.primary.fontSize};
+`;
+
+export const StyledLink = styled(Link)`
+  color: ${(props) => props.theme.primary.color};
+  font-family: ${(props) => props.theme.primary.font};
+  font-weight: ${(props) => props.theme.secondary.fontSize};
+  cursor: pointer;
+  text-decoration: none;
 `;
 
 export const Block = styled.div`

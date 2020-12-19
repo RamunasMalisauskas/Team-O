@@ -197,7 +197,12 @@ function Player() {
         )}
 
         <S.Block>
-          <S.Title>PLAYERS</S.Title>
+          <S.Title selected={true}>PLAYERS</S.Title>
+
+          <S.StyledLink to="/team">
+            <S.Title>TEAMS</S.Title>
+          </S.StyledLink>
+
           <form
             onSubmit={(e) => {
               e.preventDefault();

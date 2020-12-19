@@ -181,7 +181,11 @@ function Team() {
         )}
 
         <S.Block>
-          <S.Title>TEAMS</S.Title>
+          <S.StyledLink to="/player">
+            <S.Title>PLAYERS</S.Title>
+          </S.StyledLink>
+          
+          <S.Title selected={true}>TEAMS</S.Title>
 
           <form
             onSubmit={(e) => {
@@ -274,9 +278,7 @@ function Team() {
 
               {teamData.length > 0 && <S.Subtitle>PLAYERS:</S.Subtitle>}
 
-              {teamData.msg && (
-                <S.Subtitle>{teamData.msg}</S.Subtitle>
-              )}
+              {teamData.msg && <S.Subtitle>{teamData.msg}</S.Subtitle>}
 
               {teamData.length > 0 &&
                 teamData.map((x, i) => (
