@@ -5,6 +5,47 @@ import { AuthContext } from "../../contexts/AuthContext";
 import * as S from "./Team.Styled";
 import logoImg from "../../assets/logo.svg";
 
+// FETCH/POST function to add new team to database
+// ir uses four props: object team with has name ->
+// -> "auth" (getting it from context) and setError(hook is used to calling notification) ->
+// -> setError for notification manegment ->
+// -> setData is used to get updated data straight from DB
+function AddTeam(team, auth, setError, setData) {
+  fetch("http://localhost:8080/add_team", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      // token is used to validate session and admin rights
+      Authorization: `${auth.token}`,
+    },
+    //
+    body: JSON.stringify({
+      name: team.name,
+    }),
+  })
+    // recieving responce from backend and converting it into notification message
+    .then((res) => res.json())
+    .then((data) => {
+      setError({
+        status: true,
+        msg: data.msg || "success",
+        color: "",
+      });
+    })
+    .then(() => {
+      fetch("http://localhost:8080/teams", {
+        headers: {
+          Authorization: `${auth.token}`,
+        },
+      })
+        .then((res) => res.json())
+        .then((data) => setData(data));
+    })
+    .catch((err) => {
+      // all messages are recieved from back-end but in case there isn't one (f.e. server is down) using or operator to send one.
+      setError({ status: true, msg: err || "server error", color: "error" });
+    });
+}
 // FETCH/POST function to fetch selected team players. ->
 // -> team is passed as an object with name propery, auth is taken from context and setError is hook for notification manegment
 function TeamPlayers(team, auth, setError, setTeamData) {
@@ -36,8 +77,13 @@ function Team() {
   const auth = useContext(AuthContext);
   // main data is used to store team name
   const [data, setData] = useState({});
+  //  second data is used to store team player info
   const [teamData, setTeamData] = useState({});
-  const [teamPlayerData, setTeamPlayerData] = useState({});
+  //  new team object is uset to store and pass input data, to create new team
+  const [newTeam, setNewTeam] = useState({ status: false, name: "" });
+
+  const [player, setPlayer] = useState();
+  // error object is for notification manegment
   const [error, setError] = useState({ status: false, msg: "", color: "" });
 
   // fetching team names from DB
@@ -79,7 +125,57 @@ function Team() {
         <S.Block>
           <S.Title>TEAMS</S.Title>
 
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+            }}
+          >
+            <S.InputBlock>
+              {/* using object "player" status property to turn on/off this section */}
+              {/* this button set's it on ->  */}
+              <Button
+                color="support"
+                handleClick={() => setNewTeam({ status: true })}
+              >
+                ADD TEAM
+              </Button>
+            </S.InputBlock>
+
+            {/* -> this section is responding to object's "player" status change */}
+            {newTeam.status && (
+              <S.InputBlock>
+                <Input
+                  placeholder="enter team name"
+                  handleChange={(e) => {
+                    setNewTeam({ name: e.target.value, status: true });
+                  }}
+                />
+                <S.FlexBlock>
+                  <Button
+                    color="support"
+                    type="submit"
+                    handleClick={() => {
+                      AddTeam(newTeam, auth, setError, setData);
+                    }}
+                  >
+                    SAVE
+                  </Button>
+                  <Button
+                    handleClick={() => {
+                      setNewTeam({ status: false });
+                    }}
+                  >
+                    CLOSE
+                  </Button>
+                </S.FlexBlock>
+              </S.InputBlock>
+            )}
+          </form>
+
           <S.Frame>
+            {/* is allways displayed untill is rewriten with data.msg or data */}
+            {!data.msg && !data.length > 0 && <S.P>loading...</S.P>}
+
             {/* form preventing to refresh and  monitoring submits */}
             <form
               onSubmit={(e) => {
@@ -92,6 +188,8 @@ function Team() {
                   <S.P>{data.msg}</S.P>
                 </>
               )}
+
+              {data.length > 0 && <S.Subtitle>TEAMS:</S.Subtitle>}
 
               <S.FlexBlock>
                 {/* validating first fetch data (as array) and displaying as buttons with team names */}
@@ -111,20 +209,26 @@ function Team() {
                       {x.team_name}
                     </Button>
                   ))}
-                <Button color="support">ADD TEAM</Button>
               </S.FlexBlock>
 
+              {teamData.length > 0 && <S.Subtitle>PLAYERS:</S.Subtitle>}
+
               {teamData.length > 0 &&
-                // mapping and displaying first fetch data
                 teamData.map((x, i) => (
                   <S.TableButtonBlock key={i}>
                     <S.InputBrick>
                       <Input
                         type="radio"
                         radio={[{ value: x.players, label: x.players }]}
+                        handleChange={(e) => {
+                          setPlayer({
+                            name: e.target.value,
+                            id: x.id,
+                          });
+                        }}
                       />
                     </S.InputBrick>
-                    {/* remove button calls specific fetch/DELETE function */}
+
                     <Button type="submit">X</Button>
                   </S.TableButtonBlock>
                 ))}

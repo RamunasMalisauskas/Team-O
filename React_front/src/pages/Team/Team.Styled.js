@@ -91,3 +91,15 @@ export const ButtonBlock = styled.div`
     display: none;
   }
 `;
+
+export const Subtitle = styled.h3`
+  font-family: ${(props) => props.theme.primary.font};
+  font-weight: ${(props) => props.theme.primary.fontSize};
+  border-bottom: ${(props) => props.theme.support.border};
+  padding: ${(props) => props.theme.tiny.gutterSize} 0;
+
+  @media (max-width: ${(props) => props.theme.websiteWidth}) {
+    font-size: ${(props) => props.theme.tiny.height};
+    padding: ${(props) => props.theme.small.gutterSize};
+  }
+`;
