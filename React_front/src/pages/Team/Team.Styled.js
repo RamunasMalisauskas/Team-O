@@ -83,3 +83,11 @@ export const TableButtonBlock = styled.div`
   }
 `;
 
+export const ButtonBlock = styled.div`
+  margin-top: ${(props) => props.theme.standart.gutterSize};
+  text-align: right;
+
+  @media (max-width: ${(props) => props.theme.websiteWidth}) {
+    display: none;
+  }
+`;

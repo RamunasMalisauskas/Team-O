@@ -36,7 +36,6 @@ function Team() {
   const auth = useContext(AuthContext);
   // main data is used to store team name
   const [data, setData] = useState({});
-
   const [teamData, setTeamData] = useState({});
   const [teamPlayerData, setTeamPlayerData] = useState({});
   const [error, setError] = useState({ status: false, msg: "", color: "" });
@@ -132,8 +131,14 @@ function Team() {
             </form>
           </S.Frame>
         </S.Block>
-      </Section>
 
+        <S.ButtonBlock>
+          <Link to="/">
+            <Button>BACK</Button>
+          </Link>
+        </S.ButtonBlock>
+      </Section>
+      
       <Link to="/">
         <S.Logo src={logoImg} alt="teamo logo" />
       </Link>
