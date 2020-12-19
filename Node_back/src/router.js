@@ -204,23 +204,27 @@ router.delete("/players", midware.LoggedIn, (req, res) => {
 // ### TEAM DB LINKS ###
 
 // getting single input data from team table by teams name and user id
-router.get("/team_players", midware.LoggedIn, (req, res) => {
+router.post("/team_players", midware.LoggedIn, (req, res) => {
   // organizing request data
   const team = req.body;
   const vertifyUser = req.userData;
 
   // vertification of valid user
   if (vertifyUser.userID !== 0) {
-    con.query(
-      // selecting player name and id by matching team name and double checking the user id (so it's avalibe only to this user)
-      `SELECT id, players FROM team WHERE team_name = ${mysql.escape(
-        team.name
-      )} AND user = ${mysql.escape(vertifyUser.userID)}`,
-      (err, result) => {
-        if (err) return res.status(400).json({ msg: err });
-        res.status(200).json(result);
-      }
-    );
+    if (team.name) {
+      con.query(
+        // selecting player name and id by matching team name and double checking the user id (so it's avalibe only to this user)
+        `SELECT id, players FROM team WHERE team_name = ${mysql.escape(
+          team.name
+        )} AND user = ${mysql.escape(vertifyUser.userID)}`,
+        (err, result) => {
+          if (err) return res.status(400).json({ msg: err });
+          res.status(200).json(result);
+        }
+      );
+    } else {
+      return res.status(200).json({ msg: "no team is selected" });
+    }
   } else {
     return res.status(400).json({ msg: "userData ID is not defined" });
   }
