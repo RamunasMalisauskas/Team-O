@@ -335,6 +335,7 @@ function Player() {
                         handleChange={(e) =>
                           setPlayer({
                             name: e.target.value,
+                            id: x.id,
                           })
                         }
                         radio={[{ value: x.name, label: x.name }]}
@@ -343,9 +344,9 @@ function Player() {
                     {/* remove button calls specific fetch/DELETE function */}
                     <Button
                       type="submit"
-                      handleClick={(e) =>
-                        RemovePlayer(player, auth, setError, setData)
-                      }
+                      handleClick={(e) => {
+                        RemovePlayer(player, auth, setError, setData);
+                      }}
                     >
                       X
                     </Button>
