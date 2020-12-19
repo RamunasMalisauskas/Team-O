@@ -262,6 +262,7 @@ function Team() {
                           setError,
                           setTeamData
                         );
+
                         setPlayer({ name: "" });
                         setSelectedTeam({ team_name: x.team_name });
                       }}
@@ -272,6 +273,10 @@ function Team() {
               </S.FlexBlock>
 
               {teamData.length > 0 && <S.Subtitle>PLAYERS:</S.Subtitle>}
+
+              {teamData.msg && (
+                <S.Subtitle>{teamData.msg}</S.Subtitle>
+              )}
 
               {teamData.length > 0 &&
                 teamData.map((x, i) => (

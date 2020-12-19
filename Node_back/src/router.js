@@ -281,6 +281,9 @@ router.post("/team_players", midware.LoggedIn, (req, res) => {
         )} AND players IS NOT NULL`,
         (err, result) => {
           if (err) return res.status(400).json({ msg: err });
+          if (result.length === 0 ) {
+            return res.status(200).json({msg: "there is no players on this team"});
+          }
           res.status(200).json(result);
         }
       );
