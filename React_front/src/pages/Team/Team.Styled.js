@@ -48,3 +48,15 @@ export const P = styled.p`
   font-family: ${(props) => props.theme.primary.font};
   font-weight: ${(props) => props.theme.primary.fontSize};
 `;
+
+export const FlexBlock = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  @media (max-width: ${(props) => props.theme.websiteWidth}) {
+    text-align: center;
+    margin: 0 auto;
+    display: block;
+  }
+`;

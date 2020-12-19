@@ -5,6 +5,32 @@ import { AuthContext } from "../../contexts/AuthContext";
 import * as S from "./Team.Styled";
 import logoImg from "../../assets/logo.svg";
 
+function TeamPlayers(team, auth, setError) {
+  console.log(team);
+  fetch("http://localhost:8080/team_players", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      // token is used to validate session and admin rights
+      Authorization: `${auth.token}`,
+    },
+    //
+    body: JSON.stringify({
+      name: team.name,
+    }),
+  })
+    // recieving responce from backend and converting it into notification message
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(data);
+    })
+
+    .catch((err) => {
+      // all messages are recieved from back-end but in case there isn't one (f.e. server is down) using or operator to send one.
+      setError({ status: true, msg: err || "server error", color: "error" });
+    });
+}
+
 function Team() {
   const auth = useContext(AuthContext);
   const [data, setData] = useState({});
@@ -52,22 +78,32 @@ function Team() {
           <S.Title>TEAMS</S.Title>
 
           <S.Frame>
-            {data.msg && (
-              <>
-                <S.P>{data.msg}</S.P>
-              </>
-            )}
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+              }}
+            >
+              {data.msg && (
+                <>
+                  <S.P>{data.msg}</S.P>
+                </>
+              )}
 
-            {data.length > 0 &&
-              data.map((x, i) => (
-                <Button
-                  key={i}
-                  handleClick={() => setTeamData({ name: x.team_name })}
-                >
-                  {x.team_name}
-                </Button>
-              ))}
-            <Button> PLUS</Button>
+              <S.FlexBlock>
+                {data.length > 0 &&
+                  data.map((x, i) => (
+                    <Button
+                      key={i}
+                      handleClick={() => {
+                        TeamPlayers({ name: x.team_name }, auth, setError);
+                      }}
+                    >
+                      {x.team_name}
+                    </Button>
+                  ))}
+                <Button>PLUS</Button>
+              </S.FlexBlock>
+            </form>
           </S.Frame>
         </S.Block>
       </Section>
