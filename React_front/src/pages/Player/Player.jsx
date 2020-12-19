@@ -103,6 +103,7 @@ function AddTeamPlayer(team, auth, setError) {
       // token is used to validate session and admin rights
       Authorization: `${auth.token}`,
     },
+
     //
     body: JSON.stringify({
       name: team.name,
@@ -137,6 +138,8 @@ function Player() {
   const [player, setPlayer] = useState({ status: false, name: "", id: "" });
   // used for assing player to team
   const [team, setTeam] = useState({ status: false, name: "" });
+
+  const [removeBtn, setRemoveBtn] = useState(false);
 
   // fetching players from DB
   useEffect(() => {
@@ -255,13 +258,30 @@ function Player() {
               {/* after recieving data (testing with array.length method) from DB this section is visible */}
               {data.length > 0 && (
                 <>
-                  <Button
-                    sticky={true}
-                    color="primary"
-                    handleClick={() => setTeam({ status: true })}
-                  >
-                    ADD TO MY TEAM
-                  </Button>
+                  <S.FlexBlock>
+                    <Button
+                      sticky={true}
+                      color="primary"
+                      handleClick={() => setTeam({ status: true })}
+                    >
+                      ADD TO MY TEAM
+                    </Button>
+
+                    {data.length > 0 && removeBtn && (
+                      <S.InputBrick>
+                        <Button
+                          type="submit"
+                          handleClick={(e) => {
+                            RemovePlayer(player, auth, setError, setData);
+                            console.log(player);
+                          }}
+                        >
+                          X
+                        </Button>
+                      </S.InputBrick>
+                    )}
+                  </S.FlexBlock>
+
                   {/*  same logic as before turning on/off part of section with object status, this time it's "team" */}
                   {team.status && (
                     <S.InputBlock sticky={true}>
@@ -323,7 +343,9 @@ function Player() {
                   )}
                 </>
               )}
-
+              {/* 
+              {data &&
+                (<div>TEST</div>)(data.length > 0 && <div>TEST PASSED</div>)} */}
               {/* validating data from first fetch with array.length method */}
               {data.length > 0 &&
                 // mapping and displaying first fetch data
@@ -332,24 +354,16 @@ function Player() {
                     <S.InputBrick>
                       <Input
                         type="radio"
-                        handleChange={(e) =>
+                        handleChange={(e) => {
                           setPlayer({
                             name: e.target.value,
                             id: x.id,
-                          })
-                        }
+                          });
+                          setRemoveBtn(true);
+                        }}
                         radio={[{ value: x.name, label: x.name }]}
                       />
                     </S.InputBrick>
-                    {/* remove button calls specific fetch/DELETE function */}
-                    <Button
-                      type="submit"
-                      handleClick={(e) => {
-                        RemovePlayer(player, auth, setError, setData);
-                      }}
-                    >
-                      X
-                    </Button>
                   </S.TableButtonBlock>
                 ))}
             </form>
