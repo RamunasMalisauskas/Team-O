@@ -15,9 +15,7 @@ export const Button = styled.button`
     props.color === "primary"
       ? props.theme.primary.border
       : props.theme.secondary.border};
-  position: ${(props) => (props.sticky === true ? "sticky" : "")};
-  top: ${(props) =>
-    props.sticky === true ? props.theme.small.gutterSize : ""};
+
   &:hover {
     color: ${(props) => props.theme.secondary.color};
     background: ${(props) =>
