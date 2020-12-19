@@ -41,7 +41,7 @@ export const Select = styled.select`
 `;
 
 export const RadioInput = styled.div`
-  padding: ${(props) => props.theme.small.gutterSize};
+  padding: ${(props) => props.theme.small.gutterSize} 0;
   &:focus {
     border-bottom: ${(props) => props.theme.primary.border};
   }
@@ -58,6 +58,7 @@ export const Radio = styled.input`
 
 export const Label = styled.label`
   cursor: pointer;
+  padding: ${(props) => props.theme.small.gutterSize} 0;
   font-family: ${(props) => props.theme.primary.font};
   font-weight: ${(props) => props.theme.primary.fontSize};
 `;
