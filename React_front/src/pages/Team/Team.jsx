@@ -166,9 +166,14 @@ function Team() {
   //  new team object is uset to store and pass input data, to create new team
   const [newTeam, setNewTeam] = useState({ status: false, name: "" });
 
-  const [selectedTeam, setSelectedTeam] = useState();
+  const [selectedTeam, setSelectedTeam] = useState({
+    status: false,
+    team_name: "",
+  });
 
   const [trade, setTrade] = useState({ state: false });
+
+  const [removeTeam, setRemoveTeam] = useState({ state: false });
 
   const [player, setPlayer] = useState();
   // error object is for notification manegment
@@ -297,7 +302,11 @@ function Team() {
                         );
                         // reseting selected player from previous team when swithcing teams
                         setPlayer({ name: "" });
-                        setSelectedTeam({ team_name: x.team_name });
+                        setSelectedTeam({
+                          status: true,
+                          team_name: x.team_name,
+                        });
+                        setRemoveTeam({ status: false });
                       }}
                     >
                       {x.team_name}
@@ -357,6 +366,8 @@ function Team() {
 
                       <div>
                         <Button
+                          type="submit"
+                          color="support"
                           handleClick={() => {
                             setTrade({ status: true });
                           }}
@@ -383,6 +394,47 @@ function Team() {
                     </S.FlexBlock>
                   </S.TableButtonBlock>
                 ))}
+
+              {removeTeam.status && (
+                <>
+                  <S.Subtitle>
+                    Are you sure about deleting entire team?
+                  </S.Subtitle>
+
+                  <Button
+                    type="submit"
+                    handleClick={() => {
+                      setRemoveTeam({ status: false });
+                    }}
+                  >
+                    NO
+                  </Button>
+
+                  <Button
+                    type="submit"
+                    color="support"
+                    handleClick={() => {
+                      console.log(selectedTeam);
+                    }}
+                  >
+                    YES
+                  </Button>
+                </>
+              )}
+
+              {selectedTeam.status && (
+                <S.InputBrick>
+                  <Button
+                    type="submit"
+                    color="support"
+                    handleClick={() => {
+                      setRemoveTeam({ status: true });
+                    }}
+                  >
+                    REBUILD
+                  </Button>
+                </S.InputBrick>
+              )}
             </form>
           </S.Frame>
         </S.Block>
