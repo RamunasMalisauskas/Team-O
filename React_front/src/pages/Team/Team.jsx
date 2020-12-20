@@ -10,7 +10,9 @@ import {
 } from "../../utils/Functions";
 import { AuthContext } from "../../contexts/AuthContext";
 import * as S from "./Team.Styled";
+import * as G from "../../themes/Global.styled";
 import logoImg from "../../assets/logo.svg";
+import backImg from "../../assets/teamImg.jpg";
 
 function Team() {
   const auth = useContext(AuthContext);
@@ -55,7 +57,7 @@ function Team() {
 
   return (
     <>
-      <S.PageBackground />
+      <G.PageBackground backImg={backImg} />
 
       <Section
         center={true}
@@ -70,11 +72,11 @@ function Team() {
           />
         )}
 
-        <S.Block>
+        <G.Block>
           <div>
-            <S.StyledLink to="/player">
+            <G.StyledLink to="/player">
               <S.Title>PLAYERS</S.Title>
-            </S.StyledLink>
+            </G.StyledLink>
 
             <S.Title selected={true}>TEAMS</S.Title>
           </div>
@@ -85,7 +87,7 @@ function Team() {
               e.preventDefault();
             }}
           >
-            <S.InputBlock>
+            <G.InputBlock>
               {/* using object "newTeam" status property to turn on/off this section */}
               {/* this button set's it on ->  */}
               <Button
@@ -94,11 +96,11 @@ function Team() {
               >
                 ADD TEAM
               </Button>
-            </S.InputBlock>
+            </G.InputBlock>
 
             {/* -> this section is responding to object's "newTeam" status change */}
             {newTeam.status && (
-              <S.InputBlock>
+              <G.InputBlock>
                 <Input
                   placeholder="enter team name"
                   handleChange={(e) => {
@@ -124,11 +126,11 @@ function Team() {
                     CLOSE
                   </Button>
                 </S.FlexBlock>
-              </S.InputBlock>
+              </G.InputBlock>
             )}
           </form>
 
-          <S.Frame>
+          <G.Frame border="support">
             {/* ### LOADING/BACKEND MESSAGES ### */}
             {/* is allways displayed untill is rewriten with data.msg or data */}
             {(data.msg || !data.length > 0) && (
@@ -218,9 +220,9 @@ function Team() {
                   {
                     // mapping team players as inputs
                     teamData.map((x, i) => (
-                      <S.TableButtonBlock key={i}>
+                      <G.TableButtonBlock key={i}>
                         <S.FlexBlock>
-                          <S.InputBrick>
+                          <G.InputBrick>
                             <Input
                               type="radio"
                               radio={[{ value: x.players, label: x.players }]}
@@ -231,7 +233,7 @@ function Team() {
                                 });
                               }}
                             />
-                          </S.InputBrick>
+                          </G.InputBrick>
 
                           <div>
                             <Button
@@ -262,7 +264,7 @@ function Team() {
                             </Button>
                           </div>
                         </S.FlexBlock>
-                      </S.TableButtonBlock>
+                      </G.TableButtonBlock>
                     ))
                   }
                 </>
@@ -299,7 +301,7 @@ function Team() {
               )}
 
               {selectedTeam.status && (
-                <S.InputBrick>
+                <G.InputBrick>
                   <Button
                     type="submit"
                     color="support"
@@ -309,21 +311,21 @@ function Team() {
                   >
                     REBUILD
                   </Button>
-                </S.InputBrick>
+                </G.InputBrick>
               )}
             </form>
-          </S.Frame>
-        </S.Block>
+          </G.Frame>
+        </G.Block>
 
-        <S.ButtonBlock>
+        <G.ButtonBlock>
           <Link to="/">
             <Button>BACK</Button>
           </Link>
-        </S.ButtonBlock>
+        </G.ButtonBlock>
       </Section>
 
       <Link to="/">
-        <S.Logo src={logoImg} alt="teamo logo" />
+        <G.Logo src={logoImg} alt="teamo logo" />
       </Link>
     </>
   );

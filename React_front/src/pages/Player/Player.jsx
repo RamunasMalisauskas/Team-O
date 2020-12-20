@@ -4,7 +4,9 @@ import { Section, Button, Input, Notification } from "../../components";
 import { AddPlayer, RemovePlayer, AddTeamPlayer } from "../../utils/Functions";
 import { AuthContext } from "../../contexts/AuthContext";
 import * as S from "./Player.Styled";
+import * as G from "../../themes/Global.styled";
 import logoImg from "../../assets/logo.svg";
+import backImg from "../../assets/playerImg.jpg";
 
 function Player() {
   const auth = useContext(AuthContext);
@@ -62,7 +64,7 @@ function Player() {
 
   return (
     <>
-      <S.PageBackground />
+      <G.PageBackground backImg={backImg} />
 
       <Section
         center={true}
@@ -77,12 +79,12 @@ function Player() {
           />
         )}
 
-        <S.Block>
+        <G.Block>
           <S.Title selected={true}>PLAYERS</S.Title>
 
-          <S.StyledLink to="/team">
+          <G.StyledLink to="/team">
             <S.Title>TEAMS</S.Title>
-          </S.StyledLink>
+          </G.StyledLink>
 
           <form
             onSubmit={(e) => {
@@ -90,16 +92,16 @@ function Player() {
             }}
           >
             {/* ### ADD PLAYER BLOCK ### */}
-            <S.InputBlock>
+            <G.InputBlock>
               {/* using object "player" status property to turn on/off this section */}
               {/* this button set's it on ->  */}
               <Button handleClick={() => setPlayer({ status: true })}>
                 ADD PLAYER
               </Button>
-            </S.InputBlock>
+            </G.InputBlock>
             {/* -> this section is responding to object's "player" status change */}
             {player.status && (
-              <S.InputBlock>
+              <G.InputBlock>
                 <Input
                   placeholder="enter new players name"
                   handleChange={(e) => {
@@ -124,11 +126,11 @@ function Player() {
                     CLOSE
                   </Button>
                 </S.FlexBlock>
-              </S.InputBlock>
+              </G.InputBlock>
             )}
           </form>
 
-          <S.Frame>
+          <G.Frame>
             {/* ### LOADING/BACKEND MESSAGES ### */}
             {/* is allways displayed untill is rewriten with data.msg or data */}
             {(data.msg || !data.length > 0) && (
@@ -172,16 +174,16 @@ function Player() {
 
                   {/*  same logic as before turning on/off part of section with object status, this time it's "team" */}
                   {team.status && (
-                    <S.InputBlock sticky={true}>
-                      <S.Frame>
+                    <G.InputBlock sticky={true}>
+                      <G.Frame>
                         <S.FlexBlock>
                           {/* displaying recieved messege from back end (if user has no team set up yet) */}
                           {teamData.msg && (
                             <>
                               <S.P>{teamData.msg}</S.P>
-                              <S.StyledLink to="/team">
+                              <G.StyledLink to="/team">
                                 create your team
-                              </S.StyledLink>
+                              </G.StyledLink>
                             </>
                           )}
 
@@ -228,8 +230,8 @@ function Player() {
                             CLOSE
                           </Button>
                         </S.FlexBlock>
-                      </S.Frame>
-                    </S.InputBlock>
+                      </G.Frame>
+                    </G.InputBlock>
                   )}
                 </>
               )}
@@ -239,8 +241,8 @@ function Player() {
               {data.length > 0 &&
                 // mapping and displaying first fetch data
                 data.map((x, i) => (
-                  <S.TableButtonBlock key={i}>
-                    <S.InputBrick>
+                  <G.TableButtonBlock key={i}>
+                    <G.InputBrick>
                       <Input
                         type="radio"
                         handleChange={(e) => {
@@ -252,22 +254,22 @@ function Player() {
                         }}
                         radio={[{ value: x.name, label: x.name }]}
                       />
-                    </S.InputBrick>
-                  </S.TableButtonBlock>
+                    </G.InputBrick>
+                  </G.TableButtonBlock>
                 ))}
             </form>
-          </S.Frame>
-        </S.Block>
+          </G.Frame>
+        </G.Block>
 
-        <S.ButtonBlock>
+        <G.ButtonBlock>
           <Link to="/">
             <Button>BACK</Button>
           </Link>
-        </S.ButtonBlock>
+        </G.ButtonBlock>
       </Section>
 
       <Link to="/">
-        <S.Logo src={logoImg} alt="teamo logo" />
+        <G.Logo src={logoImg} alt="teamo logo" />
       </Link>
     </>
   );
