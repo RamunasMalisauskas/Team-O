@@ -158,7 +158,7 @@ function Player() {
           setData({ msg: data.msg });
         }
       });
-  }, []);
+  }, [auth]);
 
   // fetching team names from DB
   useEffect(() => {
@@ -177,7 +177,7 @@ function Player() {
           setTeamData({ msg: data.msg });
         }
       });
-  }, []);
+  }, [auth]);
 
   return (
     <>

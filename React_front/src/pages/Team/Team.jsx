@@ -249,7 +249,7 @@ function Team() {
           setData({ msg: data.msg });
         }
       });
-  }, []);
+  }, [auth]);
 
   return (
     <>
