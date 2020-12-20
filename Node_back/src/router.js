@@ -149,14 +149,14 @@ router.post("/players", midware.LoggedIn, (req, res) => {
           else if (result.length !== 0) {
             return res
               .status(200)
-              .json({ msg: "the player is already included in database" });
+              .json({ msg: `${player} is already included in database` });
           } else {
             // -> if there is no match added to DB
             con.query(
               `INSERT INTO player (name) VALUES (${mysql.escape(player)})`,
               (err, result) => {
                 if (err) return res.status(400).json({ msg: err });
-                res.status(200).json({ msg: "posted successfully" });
+                res.status(200).json({ msg: `${player} created successfully` });
               }
             );
           }
@@ -246,7 +246,7 @@ router.post("/team_players", midware.LoggedIn, (req, res) => {
           if (result.length === 0) {
             return res
               .status(200)
-              .json({ msg: "there is no players on this team" });
+              .json({ msg: `there is no players on ${team.name} team` });
           }
           res.status(200).json(result);
         }
@@ -284,7 +284,7 @@ router.post("/add_team", midware.LoggedIn, (req, res) => {
           else if (result.length !== 0) {
             return res
               .status(200)
-              .json({ msg: "this team name is already in use" });
+              .json({ msg: `${team} name is already in use"` });
           } else {
             // -> if there is no match: add data to DB
             con.query(
@@ -293,7 +293,7 @@ router.post("/add_team", midware.LoggedIn, (req, res) => {
               )} ,${mysql.escape(team)})`,
               (err, result) => {
                 if (err) return res.status(400).json({ msg: err });
-                res.status(200).json({ msg: "posted successfully" });
+                res.status(200).json({ msg: `${team} created successfully` });
               }
             );
           }
