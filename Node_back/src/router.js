@@ -381,6 +381,31 @@ router.post("/add_players_to_team", midware.LoggedIn, (req, res) => {
   }
 });
 
+// inserting player in selected team
+router.post("/trade_player", midware.LoggedIn, (req, res) => {
+  // organizing request data
+  const team = req.body;
+  const vertifyUser = req.userData;
+
+  // double vertification of request input
+  if (team.name && team.player_name) {
+    con.query(
+      // inserting into team: user id (fetch from midware) and team name/ player name
+      `UPDATE team SET team_name = ${mysql.escape(
+        team.name
+      )}  WHERE players = ${mysql.escape(team.player_name)}`,
+      (err, result) => {
+        if (err) return res.status(400).json({ msg: err });
+        res.status(200).json({
+          msg: `player traded successfully to ${team.name}`,
+        });
+      }
+    );
+  } else {
+    return res.status(400).json({ msg: "no team or player has been selected" });
+  }
+});
+
 // deleting all players from selected team
 router.delete("/team_players", midware.LoggedIn, (req, res) => {
   // organizing request data
