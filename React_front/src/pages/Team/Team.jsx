@@ -129,12 +129,32 @@ function RemoveTeamPlayer(selectedTeam, player, auth, setError, setTeamData) {
     });
 }
 
-function TradePlayer(player, team, selectedTeam, setError, setTeamData) {
-  console.log({
-    player: player.name,
-    new_team: team.team_name,
-    old_team: selectedTeam.team_name,
-  });
+function TradePlayer(player, team, selectedTeam, auth, setError, setTeamData) {
+  console.log(player);
+  fetch("http://localhost:8080/trade_player", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      // token is used to validate session and admin rights
+      Authorization: `${auth.token}`,
+    },
+    //
+    body: JSON.stringify({
+      name: team.team_name,
+      player_name: player.name,
+      old_team: selectedTeam.team_name,
+    }),
+  })
+    // recieving responce from backend and converting it into notification message
+    .then((res) => res.json())
+    .then((data) => {
+      setTeamData(data);
+    })
+
+    .catch((err) => {
+      // all messages are recieved from back-end but in case there isn't one (f.e. server is down) using or operator to send one.
+      setError({ status: true, msg: err || "server error", color: "error" });
+    });
 }
 
 function Team() {
@@ -303,6 +323,7 @@ function Team() {
                           player,
                           { team_name: x.team_name },
                           selectedTeam,
+                          auth,
                           setError,
                           setTeamData
                         );
