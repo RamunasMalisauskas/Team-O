@@ -387,22 +387,46 @@ router.post("/trade_player", midware.LoggedIn, (req, res) => {
   const team = req.body;
   const vertifyUser = req.userData;
 
-  // double vertification of request input
-  if (team.name && team.player_name) {
-    con.query(
-      // inserting into team: user id (fetch from midware) and team name/ player name
-      `UPDATE team SET team_name = ${mysql.escape(
-        team.name
-      )}  WHERE players = ${mysql.escape(team.player_name)}`,
-      (err, result) => {
-        if (err) return res.status(400).json({ msg: err });
-        res.status(200).json({
-          msg: `player traded successfully to ${team.name}`,
-        });
-      }
-    );
+  // vertification of valid user
+  if (vertifyUser.userID !== 0) {
+    // vertification of request inputs
+    if (team.name && team.player_name && team.old_team) {
+      // matching team DB players by selecting old team and players and matchin with given player ->
+      con.query(
+        `SELECT players FROM team WHERE team_name = ${mysql.escape(
+          team.name
+        )} AND players = ${mysql.escape(team.player_name)}`,
+        (err, result) => {
+          if (err) return res.status(400).json({ msg: err });
+          //  -> if there is no results (both AND's didn't passed) following with trade ->
+          else if (result == 0) {
+            con.query(
+              // updating team name in table team with new_team name
+              `UPDATE team SET team_name = ${mysql.escape(
+                team.name
+              )}  WHERE players = ${mysql.escape(team.player_name)}`,
+              (err, result) => {
+                if (err) return res.status(400).json({ msg: err });
+                res.status(200).json({
+                  msg: `${team.player_name} traded successfully to ${team.name}`,
+                });
+              }
+            );
+            // -> if there was match of players - sending msg
+          } else {
+            return res.status(400).json({
+              msg: ` ${team.player_name} is already on ${team.name}`,
+            });
+          }
+        }
+      );
+    } else {
+      return res
+        .status(400)
+        .json({ msg: "no team or player has been selected" });
+    }
   } else {
-    return res.status(400).json({ msg: "no team or player has been selected" });
+    return res.status(400).json({ msg: "userData ID is not defined" });
   }
 });
 
