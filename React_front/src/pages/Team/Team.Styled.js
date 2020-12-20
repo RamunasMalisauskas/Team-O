@@ -44,6 +44,10 @@ export const Block = styled.div`
   background: ${(props) => props.theme.primary.background};
 `;
 
+export const Row = styled.div`
+  padding: ${(props) => props.theme.tiny.gutterSize} 0;
+`;
+
 export const Logo = styled.img`
   height: ${(props) => props.theme.standart.height};
   position: fixed;
@@ -65,6 +69,7 @@ export const FlexBlock = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
 
   @media (max-width: ${(props) => props.theme.websiteWidth}) {
     text-align: center;

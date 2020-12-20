@@ -349,27 +349,29 @@ function Team() {
                   {/* validating first fetch data (as array) and displaying as buttons with team names */}
                   <S.FlexBlock>
                     {data.map((x, i) => (
-                      <Button
-                        key={i}
-                        handleClick={() => {
-                          TeamPlayers(
-                            { name: x.team_name },
-                            auth,
-                            setError,
-                            setTeamData
-                          );
-                          // reseting selected player from previous team when swittiching teams
-                          setPlayer({ name: "" });
-                          setSelectedTeam({
-                            status: true,
-                            team_name: x.team_name,
-                          });
-                          // resseting remove team status thus closing remove block when swittiching teams
-                          setRemoveTeam({ status: false });
-                        }}
-                      >
-                        {x.team_name}
-                      </Button>
+                      <S.Row key={i}>
+                        <Button
+                          key={i}
+                          handleClick={() => {
+                            TeamPlayers(
+                              { name: x.team_name },
+                              auth,
+                              setError,
+                              setTeamData
+                            );
+                            // reseting selected player from previous team when swittiching teams
+                            setPlayer({ name: "" });
+                            setSelectedTeam({
+                              status: true,
+                              team_name: x.team_name,
+                            });
+                            // resseting remove team status thus closing remove block when swittiching teams
+                            setRemoveTeam({ status: false });
+                          }}
+                        >
+                          {x.team_name}
+                        </Button>
+                      </S.Row>
                     ))}
                   </S.FlexBlock>
                 </>
@@ -411,7 +413,7 @@ function Team() {
               {/* trade block is replacing this header when it's status changes */}
               {teamData.length > 0 && !trade.status && !removeTeam.status && (
                 <>
-                  <S.Subtitle>PLAYERS:</S.Subtitle>
+                  <S.Subtitle>{selectedTeam.team_name} PLAYERS:</S.Subtitle>
                   {
                     // mapping team players as inputs
                     teamData.map((x, i) => (
