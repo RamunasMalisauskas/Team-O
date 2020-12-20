@@ -71,7 +71,6 @@ function Team() {
         )}
 
         <S.Block>
-          {/* NAVIGATION */}
           <div>
             <S.StyledLink to="/player">
               <S.Title>PLAYERS</S.Title>
@@ -80,7 +79,7 @@ function Team() {
             <S.Title selected={true}>TEAMS</S.Title>
           </div>
 
-          {/* ADD TEAM FORM */}
+          {/* ### ADD TEAM BLOCK ### */}
           <form
             onSubmit={(e) => {
               e.preventDefault();
@@ -130,20 +129,19 @@ function Team() {
           </form>
 
           <S.Frame>
+            {/* ### LOADING/BACKEND MESSAGES ### */}
             {/* is allways displayed untill is rewriten with data.msg or data */}
-            {!data.msg && !data.length > 0 && <S.P>loading...</S.P>}
+            {(data.msg || !data.length > 0) && (
+              <S.Subtitle>{data.msg || `loading...`}</S.Subtitle>
+            )}
 
-            {/* MAIN FRAME BLOCK */}
+            {/* ### TEAM BLOCK ### */}
             {/* form preventing to refresh and  monitoring submits */}
             <form
               onSubmit={(e) => {
                 e.preventDefault();
               }}
             >
-              {/* NO TEAM IN DB MESSAGE */}
-              {/* if there is no team in DB message is recieved and displayed here */}
-              {data.msg && <S.P>{data.msg}</S.P>}
-
               {data.length > 0 && !trade.status && (
                 <>
                   <S.Subtitle>TEAMS:</S.Subtitle>
@@ -179,6 +177,7 @@ function Team() {
                 </>
               )}
 
+              {/* ### TRADE PLAYER BLOCK ### */}
               {data.length > 0 && trade.status && !removeTeam.status && (
                 <>
                   <S.Subtitle>SELECT TEAM TO FINISH TRADE:</S.Subtitle>
@@ -269,6 +268,7 @@ function Team() {
                 </>
               )}
 
+              {/* ### REMOVE TEAM BLOCK ### */}
               {removeTeam.status && (
                 <>
                   <S.Subtitle>

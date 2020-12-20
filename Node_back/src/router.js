@@ -293,7 +293,9 @@ router.post("/add_team", midware.LoggedIn, (req, res) => {
               )} ,${mysql.escape(team)})`,
               (err, result) => {
                 if (err) return res.status(400).json({ msg: err });
-                res.status(200).json({ msg: `${team} team created successfully` });
+                res
+                  .status(200)
+                  .json({ msg: `${team} team created successfully` });
               }
             );
           }
@@ -320,9 +322,9 @@ router.post("/add_players_to_team", midware.LoggedIn, (req, res) => {
         if (err) return res.status(400).json({ msg: err });
         // -> if he is on a team: sending message
         else if (result.length !== 0) {
-          return res
-            .status(200)
-            .json({ msg: "this player is already on this team" });
+          return res.status(200).json({
+            msg: `${team.player_name} is already on this ${team.name}`,
+          });
         } else {
           con.query(
             // inserting into team: user id (fetch from midware) and team name/ player name
@@ -332,7 +334,7 @@ router.post("/add_players_to_team", midware.LoggedIn, (req, res) => {
             (err, result) => {
               if (err) return res.status(400).json({ msg: err });
               res.status(200).json({
-                msg: `player posted successfully to ${team.name}`,
+                msg: `${team.player_name} posted successfully to ${team.name}`,
               });
             }
           );

@@ -19,7 +19,7 @@ function Player() {
   const [player, setPlayer] = useState({ status: false, name: "", id: "" });
   // used for assing player to team
   const [team, setTeam] = useState({ status: false, name: "" });
-
+  // used for remove botton toggle
   const [removeBtn, setRemoveBtn] = useState(false);
 
   // fetching players from DB
@@ -89,6 +89,7 @@ function Player() {
               e.preventDefault();
             }}
           >
+            {/* ### ADD PLAYER BLOCK ### */}
             <S.InputBlock>
               {/* using object "player" status property to turn on/off this section */}
               {/* this button set's it on ->  */}
@@ -128,19 +129,18 @@ function Player() {
           </form>
 
           <S.Frame>
+            {/* ### LOADING/BACKEND MESSAGES ### */}
             {/* is allways displayed untill is rewriten with data.msg or data */}
-            {!data.msg && !data.length > 0 && (
-              <S.Subtitle>loading...</S.Subtitle>
+            {(data.msg || !data.length > 0) && (
+              <S.Subtitle> {data.msg || "loading..."}</S.Subtitle>
             )}
-
-            {/* this subtitle will be displayed if the server is up but there is no data fetched (look up first fetch second .then "else" part ) */}
-            {data.msg && <S.P>{data.msg}</S.P>}
 
             <form
               onSubmit={(e) => {
                 e.preventDefault();
               }}
             >
+              {/* ### ADD TO TEAM BLOCK ### */}
               {/* after recieving data (testing with array.length method) from DB this section is visible-> 
               -> after pressing add to by team btn remove button becomes hidden */}
               {data.length > 0 && (
@@ -233,9 +233,8 @@ function Player() {
                   )}
                 </>
               )}
-              {/* 
-              {data &&
-                (<div>TEST</div>)(data.length > 0 && <div>TEST PASSED</div>)} */}
+
+              {/*  ### PLAYER LIST BLOCK ### */}
               {/* validating data from first fetch with array.length method */}
               {data.length > 0 &&
                 // mapping and displaying first fetch data
