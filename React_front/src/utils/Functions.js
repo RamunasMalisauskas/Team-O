@@ -6,7 +6,7 @@
 // -> setError for notification manegment ->
 // -> setData is used to get updated data straight from DB
 export const AddTeam = (team, auth, setError, setData) => {
-  fetch("http://localhost:8080/add_team", {
+  fetch(`${process.env.REACT_APP_NODE_ROUTES}/add_team`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -28,7 +28,7 @@ export const AddTeam = (team, auth, setError, setData) => {
       });
     })
     .then(() => {
-      fetch("http://localhost:8080/teams", {
+      fetch(`${process.env.REACT_APP_NODE_ROUTES}/teams`, {
         headers: {
           Authorization: `${auth.token}`,
         },
@@ -45,7 +45,7 @@ export const AddTeam = (team, auth, setError, setData) => {
 // FETCH/POST function to fetch selected team players. ->
 // -> team is passed as an object with name propery, auth is taken from context and setError is hook for notification manegment
 export const TeamPlayers = (team, auth, setError, setTeamData) => {
-  fetch("http://localhost:8080/team_players", {
+  fetch(`${process.env.REACT_APP_NODE_ROUTES}/team_players`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -82,7 +82,7 @@ export const TradePlayer = (
   setError,
   setTeamData
 ) => {
-  fetch("http://localhost:8080/trade_player", {
+  fetch(`${process.env.REACT_APP_NODE_ROUTES}/trade_player`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -117,7 +117,7 @@ export const RemoveTeamPlayer = (
   setError,
   setTeamData
 ) => {
-  fetch("http://localhost:8080/remove_team_player", {
+  fetch(`${process.env.REACT_APP_NODE_ROUTES}/remove_team_player`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
@@ -147,7 +147,7 @@ export const RemoveTeamPlayer = (
     })
     // fetching updated data from DB after deletion
     .then(() => {
-      fetch("http://localhost:8080/team_players", {
+      fetch(`${process.env.REACT_APP_NODE_ROUTES}/team_players`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -173,7 +173,7 @@ export const RemoveTeamPlayer = (
 // FETCH/DELETE function to remove team from database
 // same functionality as FETCH/POST, also we're setting data again after deletion
 export const RemoveTeam = (selectedTeam, auth, setError, setData) => {
-  fetch("http://localhost:8080/remove_team", {
+  fetch(`${process.env.REACT_APP_NODE_ROUTES}/remove_team`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
@@ -201,7 +201,7 @@ export const RemoveTeam = (selectedTeam, auth, setError, setData) => {
     })
     // fetching updated data from DB after deletion
     .then(() => {
-      fetch("http://localhost:8080/teams", {
+      fetch(`${process.env.REACT_APP_NODE_ROUTES}/teams`, {
         headers: {
           "Content-Type": "application/json",
           // token is used to validate session and admin rights
@@ -227,7 +227,7 @@ export const RemoveTeam = (selectedTeam, auth, setError, setData) => {
 // -> setError for notification manegment ->
 // -> setData is used to get updated data straight from DB
 export const AddPlayer = (player, auth, setError, setData) => {
-  fetch("http://localhost:8080/players", {
+  fetch(`${process.env.REACT_APP_NODE_ROUTES}/players`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -249,7 +249,7 @@ export const AddPlayer = (player, auth, setError, setData) => {
       });
     })
     .then(() => {
-      fetch("http://localhost:8080/players", {
+      fetch(`${process.env.REACT_APP_NODE_ROUTES}/players`, {
         headers: {
           Authorization: `${auth.token}`,
         },
@@ -266,7 +266,7 @@ export const AddPlayer = (player, auth, setError, setData) => {
 // FETCH/DELETE function to remove player from database
 // same functionality as FETCH/POST, also we're setting data again after deletion
 export const RemovePlayer = (player, auth, setError, setData) => {
-  fetch("http://localhost:8080/players", {
+  fetch(`${process.env.REACT_APP_NODE_ROUTES}/players`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
@@ -295,7 +295,7 @@ export const RemovePlayer = (player, auth, setError, setData) => {
     })
     // fetching updated data from DB after deletion
     .then(() => {
-      fetch("http://localhost:8080/players", {
+      fetch(`${process.env.REACT_APP_NODE_ROUTES}/players`, {
         headers: {
           Authorization: `${auth.token}`,
         },
@@ -313,7 +313,7 @@ export const RemovePlayer = (player, auth, setError, setData) => {
 // -> "auth" (getting it from context) and setError(hook is used to calling notification) ->
 // -> setError for notification manegment
 export const AddTeamPlayer = (team, auth, setError) => {
-  fetch("http://localhost:8080/add_players_to_team", {
+  fetch(`${process.env.REACT_APP_NODE_ROUTES}/add_players_to_team`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
