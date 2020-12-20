@@ -73,6 +73,38 @@ function TeamPlayers(team, auth, setError, setTeamData) {
     });
 }
 
+// FETCH/POST function to move player to new team in database
+// it uses six props: last three has the same logic as second fetch/post ->
+// -> "player" is selected with input before pressing trade button ->
+// -> "team" is seleced as button from displayed teams after pressing trade button ->
+// -> "selectedTeam" is fetched from object which is setted after selecting team
+function TradePlayer(player, team, selectedTeam, auth, setError, setTeamData) {
+  fetch("http://localhost:8080/trade_player", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      // token is used to validate session and admin rights
+      Authorization: `${auth.token}`,
+    },
+    //
+    body: JSON.stringify({
+      name: team.team_name,
+      player_name: player.name,
+      old_team: selectedTeam.team_name,
+    }),
+  })
+    // updating teamData after fetch
+    .then((res) => res.json())
+    .then((data) => {
+      setTeamData(data);
+    })
+
+    .catch((err) => {
+      // all messages are recieved from back-end but in case there isn't one (f.e. server is down) using or operator to send one.
+      setError({ status: true, msg: err || "server error", color: "error" });
+    });
+}
+
 // FETCH/DELETE function to remove player from database
 // same functionality as FETCH/POST, also we're setting data again after deletion
 function RemoveTeamPlayer(selectedTeam, player, auth, setError, setTeamData) {
@@ -129,34 +161,51 @@ function RemoveTeamPlayer(selectedTeam, player, auth, setError, setTeamData) {
     });
 }
 
-// FETCH/POST function to move player to new team in database
-// it uses six props: last three has the same logic as second fetch/post ->
-// -> "player" is selected with input before pressing trade button ->
-// -> "team" is seleced as button from displayed teams after pressing trade button ->
-// -> "selectedTeam" is fetched from object which is setted after selecting team
-function TradePlayer(player, team, selectedTeam, auth, setError, setTeamData) {
-  fetch("http://localhost:8080/trade_player", {
-    method: "POST",
+// FETCH/DELETE function to remove team from database
+// same functionality as FETCH/POST, also we're setting data again after deletion
+function RemoveTeam(selectedTeam, auth, setError, setData) {
+  fetch("http://localhost:8080/remove_team", {
+    method: "DELETE",
     headers: {
       "Content-Type": "application/json",
-      // token is used to validate session and admin rights
       Authorization: `${auth.token}`,
     },
-    //
     body: JSON.stringify({
-      name: team.team_name,
-      player_name: player.name,
-      old_team: selectedTeam.team_name,
+      name: selectedTeam.team_name,
     }),
   })
-    // updating teamData after fetch
     .then((res) => res.json())
     .then((data) => {
-      setTeamData(data);
+      if (!data) {
+        setError({
+          status: true,
+          msg: "there has been error with data",
+          color: "error",
+        });
+      } else {
+        setError({
+          status: true,
+          msg: data.msg || "success",
+          color: "",
+        });
+      }
     })
-
+    // fetching updated data from DB after deletion
+    .then(() => {
+      fetch("http://localhost:8080/teams", {
+        headers: {
+          "Content-Type": "application/json",
+          // token is used to validate session and admin rights
+          Authorization: `${auth.token}`,
+        },
+      })
+        // recieving updated team data and setting the main data
+        .then((res) => res.json())
+        .then((data) => {
+          setData(data);
+        });
+    })
     .catch((err) => {
-      // all messages are recieved from back-end but in case there isn't one (f.e. server is down) using or operator to send one.
       setError({ status: true, msg: err || "server error", color: "error" });
     });
 }
@@ -425,7 +474,7 @@ function Team() {
                     type="submit"
                     color="support"
                     handleClick={() => {
-                      console.log(selectedTeam);
+                      RemoveTeam(selectedTeam, auth, setError, setData);
                     }}
                   >
                     YES
