@@ -129,8 +129,12 @@ function RemoveTeamPlayer(selectedTeam, player, auth, setError, setTeamData) {
     });
 }
 
-function TradePlayer(player, team, setError, setTeamData) {
-  console.log(player.name, team.team_name);
+function TradePlayer(player, team, selectedTeam, setError, setTeamData) {
+  console.log({
+    player: player.name,
+    new_team: team.team_name,
+    old_team: selectedTeam.team_name,
+  });
 }
 
 function Team() {
@@ -144,7 +148,7 @@ function Team() {
 
   const [selectedTeam, setSelectedTeam] = useState();
 
-  const [tradeTeam, setTradeTeam] = useState({ state: false, name: "" });
+  const [trade, setTrade] = useState({ state: false });
 
   const [player, setPlayer] = useState();
   // error object is for notification manegment
@@ -253,14 +257,14 @@ function Team() {
               {/* if there is no team in DB message is recieved and displayed here */}
               {data.msg && <S.P>{data.msg}</S.P>}
 
-              {data.length > 0 && !tradeTeam.status && (
+              {data.length > 0 && !trade.status && (
                 <S.Subtitle>TEAMS:</S.Subtitle>
               )}
 
               <S.FlexBlock>
                 {/* validating first fetch data (as array) and displaying as buttons with team names */}
                 {data.length > 0 &&
-                  !tradeTeam.status &&
+                  !trade.status &&
                   data.map((x, i) => (
                     <Button
                       key={i}
@@ -281,13 +285,13 @@ function Team() {
                   ))}
               </S.FlexBlock>
 
-              {teamData.length > 0 && !tradeTeam.status && (
+              {teamData.length > 0 && !trade.status && (
                 <S.Subtitle>PLAYERS:</S.Subtitle>
               )}
 
               {teamData.msg && <S.Subtitle>{teamData.msg}</S.Subtitle>}
 
-              {data.length > 0 && tradeTeam.status && (
+              {data.length > 0 && trade.status && (
                 <>
                   <S.Subtitle>SELECT TEAM TO FINISH TRADE:</S.Subtitle>
 
@@ -298,9 +302,11 @@ function Team() {
                         TradePlayer(
                           player,
                           { team_name: x.team_name },
+                          selectedTeam,
                           setError,
                           setTeamData
                         );
+                        setTrade({ status: false });
                         // reseting selected player from previous team when swithcing teams
                         setPlayer({ name: "" });
                       }}
@@ -331,7 +337,7 @@ function Team() {
                       <div>
                         <Button
                           handleClick={() => {
-                            setTradeTeam({ status: true });
+                            setTrade({ status: true });
                           }}
                         >
                           TRADE
