@@ -6,8 +6,8 @@ module.exports = {
   validateUserData: (req, res, next) => {
     const user = req.body;
 
-    if (!user.email || user.email.length < 2) {
-      res.status(400).json({ msg: "username is too short" });
+    if (!user.email || user.email.length < 4) {
+      res.status(400).json({ msg: "email is too short" });
     }
 
     if (!user.password || user.password.length < 6) {

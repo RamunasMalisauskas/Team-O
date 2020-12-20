@@ -7,13 +7,11 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
-
 // ### DEMO LINK ###
 
 router.get("/", (req, res) => {
   res.status(200).json("The API service works!");
 });
-
 
 //  ### LOGIN LINKS ###
 
@@ -100,7 +98,6 @@ router.post("/login", midware.validateUserData, (req, res) => {
   }
 });
 
-
 // ### PLAYER DB LINKS ####
 
 // fetching player list
@@ -136,7 +133,12 @@ router.post("/players", midware.LoggedIn, (req, res) => {
   // vertifing if the user has admin rights
   if (vertifyUser.admin) {
     // vertification of request input
-    if (player) {
+    if (!player) {
+      return res.status(400).json({ msg: "no player name has been entered" });
+      // validating length of input
+    } else if (player.length > 22)
+      return res.status(400).json({ msg: "player name is too long" });
+    else {
       con.query(
         // validating if the entered name is unique or already exist in database
         // Selecting matching name from DB ->
@@ -160,8 +162,6 @@ router.post("/players", midware.LoggedIn, (req, res) => {
           }
         }
       );
-    } else {
-      return res.status(400).json({ msg: "no player name has been entered" });
     }
   } else {
     return res.status(400).json({ msg: "only admin can enter players" });
@@ -267,8 +267,13 @@ router.post("/add_team", midware.LoggedIn, (req, res) => {
 
   // vertification of valid user
   if (vertifyUser.userID !== 0) {
-    // vertification of request input
-    if (team) {
+    // validating request input
+    if (!team) {
+      return res.status(400).json({ msg: "no team name has been entered" });
+      // validating input length
+    } else if (team.length > 10) {
+      return res.status(400).json({ msg: "team name is too long" });
+    } else {
       con.query(
         // validating if the entered name is unique or already exist in database
         // Selecting matching name from DB ->
@@ -294,8 +299,6 @@ router.post("/add_team", midware.LoggedIn, (req, res) => {
           }
         }
       );
-    } else {
-      return res.status(400).json({ msg: "no team name has been entered" });
     }
   } else {
     return res.status(400).json({ msg: "userData ID is not defined" });
