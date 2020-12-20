@@ -453,6 +453,36 @@ router.delete("/team_players", midware.LoggedIn, (req, res) => {
   }
 });
 
+// deleting selected team
+router.delete("/remove_team", midware.LoggedIn, (req, res) => {
+  // organizing request data
+  const team = req.body.name;
+  const vertifyUser = req.userData;
+
+  // vertification of valid user
+  if (vertifyUser.userID !== 0) {
+    if (team) {
+      con.query(
+        // deleting player from team by validating user id/ fetching team name and player name
+        `DELETE FROM team WHERE team_name = ${mysql.escape(
+          team
+        )} AND user = ${mysql.escape(vertifyUser.userID)}`,
+        (err, result) => {
+          if (err) return res.status(400).json({ msg: err });
+          // in case there is no player selected: sending back msg
+          res.status(200).json({
+            msg: `${team} removed}`,
+          });
+        }
+      );
+    } else {
+      return res.status(200).json({ msg: "no team is selected" });
+    }
+  } else {
+    return res.status(400).json({ msg: "userData ID is not defined" });
+  }
+});
+
 // deleting selected player from selected team
 router.delete("/remove_team_player", midware.LoggedIn, (req, res) => {
   // organizing request data
