@@ -436,7 +436,7 @@ router.delete("/remove_team", midware.LoggedIn, (req, res) => {
           if (err) return res.status(400).json({ msg: err });
           // in case there is no player selected: sending back msg
           res.status(200).json({
-            msg: `${team} removed}`,
+            msg: `${team} removed`,
           });
         }
       );
