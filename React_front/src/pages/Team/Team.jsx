@@ -6,7 +6,7 @@ import * as S from "./Team.Styled";
 import logoImg from "../../assets/logo.svg";
 
 // FETCH/POST function to add new team to database
-// ir uses four props: object team with has name ->
+// it uses four props: object team with has name ->
 // -> "auth" (getting it from context) and setError(hook is used to calling notification) ->
 // -> setError for notification manegment ->
 // -> setData is used to get updated data straight from DB
@@ -129,8 +129,12 @@ function RemoveTeamPlayer(selectedTeam, player, auth, setError, setTeamData) {
     });
 }
 
+// FETCH/POST function to move player to new team in database
+// it uses six props: last three has the same logic as second fetch/post ->
+// -> "player" is selected with input before pressing trade button ->
+// -> "team" is seleced as button from displayed teams after pressing trade button ->
+// -> "selectedTeam" is fetched from object which is setted after selecting team
 function TradePlayer(player, team, selectedTeam, auth, setError, setTeamData) {
-  console.log(player);
   fetch("http://localhost:8080/trade_player", {
     method: "POST",
     headers: {
@@ -145,7 +149,7 @@ function TradePlayer(player, team, selectedTeam, auth, setError, setTeamData) {
       old_team: selectedTeam.team_name,
     }),
   })
-    // recieving responce from backend and converting it into notification message
+    // updating teamData after fetch
     .then((res) => res.json())
     .then((data) => {
       setTeamData(data);
@@ -165,16 +169,16 @@ function Team() {
   const [teamData, setTeamData] = useState({});
   //  new team object is uset to store and pass input data, to create new team
   const [newTeam, setNewTeam] = useState({ status: false, name: "" });
-
+  //  selected team object is used for player trade / team deletion functions
   const [selectedTeam, setSelectedTeam] = useState({
     status: false,
     team_name: "",
   });
-
+  // trade is used as control block for all elements/components that are nedded for trade function
   const [trade, setTrade] = useState({ state: false });
-
+  // trade is used as control block for all elements/components that are nedded for trade function
   const [removeTeam, setRemoveTeam] = useState({ state: false });
-
+  //  player hook is used for trade player function
   const [player, setPlayer] = useState();
   // error object is for notification manegment
   const [error, setError] = useState({ status: false, msg: "", color: "" });
@@ -228,7 +232,7 @@ function Team() {
             }}
           >
             <S.InputBlock>
-              {/* using object "player" status property to turn on/off this section */}
+              {/* using object "newTeam" status property to turn on/off this section */}
               {/* this button set's it on ->  */}
               <Button
                 color="support"
@@ -238,7 +242,7 @@ function Team() {
               </Button>
             </S.InputBlock>
 
-            {/* -> this section is responding to object's "player" status change */}
+            {/* -> this section is responding to object's "newTeam" status change */}
             {newTeam.status && (
               <S.InputBlock>
                 <Input
@@ -247,6 +251,7 @@ function Team() {
                     setNewTeam({ name: e.target.value, status: true });
                   }}
                 />
+
                 <S.FlexBlock>
                   <Button
                     color="support"
@@ -300,12 +305,13 @@ function Team() {
                           setError,
                           setTeamData
                         );
-                        // reseting selected player from previous team when swithcing teams
+                        // reseting selected player from previous team when swittiching teams
                         setPlayer({ name: "" });
                         setSelectedTeam({
                           status: true,
                           team_name: x.team_name,
                         });
+                        // resseting remove team status thus closing remove block when swittiching teams
                         setRemoveTeam({ status: false });
                       }}
                     >
@@ -314,16 +320,19 @@ function Team() {
                   ))}
               </S.FlexBlock>
 
+              {/*  if there is message from back-end it's displayed here */}
+              {teamData.msg && <S.Subtitle>{teamData.msg}</S.Subtitle>}
+
+              {/* trade block is replacing this header when it's status changes */}
               {teamData.length > 0 && !trade.status && (
                 <S.Subtitle>PLAYERS:</S.Subtitle>
               )}
-
-              {teamData.msg && <S.Subtitle>{teamData.msg}</S.Subtitle>}
 
               {data.length > 0 && trade.status && (
                 <>
                   <S.Subtitle>SELECT TEAM TO FINISH TRADE:</S.Subtitle>
 
+                  {/* mapping team buttons again with diferent function attached */}
                   {data.map((x, i) => (
                     <Button
                       key={i}
@@ -348,6 +357,7 @@ function Team() {
               )}
 
               {teamData.length > 0 &&
+                // mapping team players as inputs
                 teamData.map((x, i) => (
                   <S.TableButtonBlock key={i}>
                     <S.FlexBlock>
@@ -385,6 +395,7 @@ function Team() {
                               setError,
                               setTeamData
                             );
+                            // reseting player name with hook after remove
                             setPlayer({ name: "" });
                           }}
                         >
