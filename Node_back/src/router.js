@@ -156,7 +156,7 @@ router.post("/players", midware.LoggedIn, (req, res) => {
               `INSERT INTO player (name) VALUES (${mysql.escape(player)})`,
               (err, result) => {
                 if (err) return res.status(400).json({ msg: err });
-                res.status(200).json({ msg: `${player} created successfully` });
+                res.status(200).json({ msg: `${player} added successfully` });
               }
             );
           }
@@ -293,7 +293,7 @@ router.post("/add_team", midware.LoggedIn, (req, res) => {
               )} ,${mysql.escape(team)})`,
               (err, result) => {
                 if (err) return res.status(400).json({ msg: err });
-                res.status(200).json({ msg: `${team} created successfully` });
+                res.status(200).json({ msg: `${team} team created successfully` });
               }
             );
           }
