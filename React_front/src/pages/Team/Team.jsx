@@ -129,6 +129,10 @@ function RemoveTeamPlayer(selectedTeam, player, auth, setError, setTeamData) {
     });
 }
 
+function TradePlayer(player, team, setError, setTeamData) {
+  console.log(player.name, team.team_name);
+}
+
 function Team() {
   const auth = useContext(AuthContext);
   // main data is used to store team name
@@ -139,6 +143,8 @@ function Team() {
   const [newTeam, setNewTeam] = useState({ status: false, name: "" });
 
   const [selectedTeam, setSelectedTeam] = useState();
+
+  const [tradeTeam, setTradeTeam] = useState({ state: false, name: "" });
 
   const [player, setPlayer] = useState();
   // error object is for notification manegment
@@ -247,11 +253,14 @@ function Team() {
               {/* if there is no team in DB message is recieved and displayed here */}
               {data.msg && <S.P>{data.msg}</S.P>}
 
-              {data.length > 0 && <S.Subtitle>TEAMS:</S.Subtitle>}
+              {data.length > 0 && !tradeTeam.status && (
+                <S.Subtitle>TEAMS:</S.Subtitle>
+              )}
 
               <S.FlexBlock>
                 {/* validating first fetch data (as array) and displaying as buttons with team names */}
                 {data.length > 0 &&
+                  !tradeTeam.status &&
                   data.map((x, i) => (
                     <Button
                       key={i}
@@ -262,7 +271,7 @@ function Team() {
                           setError,
                           setTeamData
                         );
-
+                        // reseting selected player from previous team when swithcing teams
                         setPlayer({ name: "" });
                         setSelectedTeam({ team_name: x.team_name });
                       }}
@@ -272,41 +281,79 @@ function Team() {
                   ))}
               </S.FlexBlock>
 
-              {teamData.length > 0 && <S.Subtitle>PLAYERS:</S.Subtitle>}
+              {teamData.length > 0 && !tradeTeam.status && (
+                <S.Subtitle>PLAYERS:</S.Subtitle>
+              )}
 
               {teamData.msg && <S.Subtitle>{teamData.msg}</S.Subtitle>}
+
+              {data.length > 0 && tradeTeam.status && (
+                <>
+                  <S.Subtitle>SELECT TEAM TO FINISH TRADE:</S.Subtitle>
+
+                  {data.map((x, i) => (
+                    <Button
+                      key={i}
+                      handleClick={() => {
+                        TradePlayer(
+                          player,
+                          { team_name: x.team_name },
+                          setError,
+                          setTeamData
+                        );
+                        // reseting selected player from previous team when swithcing teams
+                        setPlayer({ name: "" });
+                      }}
+                    >
+                      {x.team_name}
+                    </Button>
+                  ))}
+                </>
+              )}
 
               {teamData.length > 0 &&
                 teamData.map((x, i) => (
                   <S.TableButtonBlock key={i}>
-                    <S.InputBrick>
-                      <Input
-                        type="radio"
-                        radio={[{ value: x.players, label: x.players }]}
-                        handleChange={(e) => {
-                          setPlayer({
-                            name: e.target.value,
-                            id: x.id,
-                          });
-                        }}
-                      />
-                    </S.InputBrick>
+                    <S.FlexBlock>
+                      <S.InputBrick>
+                        <Input
+                          type="radio"
+                          radio={[{ value: x.players, label: x.players }]}
+                          handleChange={(e) => {
+                            setPlayer({
+                              name: e.target.value,
+                              id: x.id,
+                            });
+                          }}
+                        />
+                      </S.InputBrick>
 
-                    <Button
-                      type="submit"
-                      handleClick={() => {
-                        RemoveTeamPlayer(
-                          selectedTeam,
-                          player,
-                          auth,
-                          setError,
-                          setTeamData
-                        );
-                        setPlayer({ name: "" });
-                      }}
-                    >
-                      X
-                    </Button>
+                      <div>
+                        <Button
+                          handleClick={() => {
+                            setTradeTeam({ status: true });
+                          }}
+                        >
+                          TRADE
+                        </Button>
+
+                        <Button
+                          type="submit"
+                          handleClick={() => {
+                            RemoveTeamPlayer(
+                              selectedTeam,
+                              player,
+                              auth,
+                              setError,
+                              setTeamData
+                            );
+                            setPlayer({ name: "" });
+                          }}
+                        >
+                          X
+                        </Button>
+                      </div>
+                    </S.FlexBlock>
                   </S.TableButtonBlock>
                 ))}
             </form>
