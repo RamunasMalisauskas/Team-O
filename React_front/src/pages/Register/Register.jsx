@@ -82,6 +82,10 @@ function RegPage() {
         </S.Block>
 
         <S.ButtonBlock>
+          <Link to="/login">
+            <Button color="support">LOGIN</Button>
+          </Link>
+
           <Link to="/">
             <Button>BACK</Button>
           </Link>

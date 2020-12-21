@@ -58,7 +58,7 @@ function LoginPage() {
             />
           </S.ErrorBlock>
         )}
-        
+
         <S.Block>
           <S.Title>LOGIN</S.Title>
           <FormTemplate
@@ -74,6 +74,10 @@ function LoginPage() {
         </S.Block>
 
         <S.ButtonBlock>
+          <Link to="/register">
+            <Button color="primary">REGISTER</Button>
+          </Link>
+
           <Link to="/">
             <Button>BACK</Button>
           </Link>
