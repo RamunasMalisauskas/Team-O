@@ -2,39 +2,12 @@ import React, { useContext, useState } from "react";
 import { useHistory, Link } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
 import { FormTemplate, Section, Notification, Button } from "../../components/";
+import { Login } from "../../utils/Functions";
 import loginFormData from "../../utils/LoginFormData";
 import logoImg from "../../assets/logo.svg";
 
 import * as G from "../../themes/Global.styled";
 import backImg from "../../assets/loginImg.jpg";
-
-//  passing props to function
-function Login(fieldValues, auth, history, setError) {
-  fetch(`${process.env.REACT_APP_NODE_ROUTES}/login`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      // posting values passed as props from form
-      email: fieldValues.email,
-      password: fieldValues.password,
-    }),
-  })
-    .then((res) => res.json())
-    .then((data) => {
-      if (data.token) {
-        // token with nessesery addon ("Bearer ") saved in context
-        auth.setToken("Bearer " + data.token);
-        // after token is successfuly added to context you are redirected to home page
-        history.push("/");
-      } else {
-        setError({ status: true, msg: data.msg || "input error" });
-      }
-    })
-    .catch((err) => {
-      // if error occor it's shown in notification
-      setError({ status: true, msg: "server error" });
-    });
-}
 
 function LoginPage() {
   const history = useHistory();

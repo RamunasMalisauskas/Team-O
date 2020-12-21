@@ -3,44 +3,10 @@ import { Link } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
 import { FormTemplate, Section, Notification, Button } from "../../components/";
 import regFormData from "../../utils/RegFormData";
+import { Reg } from "../../utils/Functions";
 import logoImg from "../../assets/logo.svg";
 import * as G from "../../themes/Global.styled";
 import backImg from "../../assets/loginImg.jpg";
-
-function Reg(fieldValues, auth, setError) {
-  fetch(`${process.env.REACT_APP_NODE_ROUTES}/register`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      email: fieldValues.email,
-      password: fieldValues.password,
-      password2: fieldValues.password2,
-    }),
-  })
-    .then((res) => res.json())
-    .then((data) => {
-      if (data.token) {
-        // token with nessesery addon ("Bearer ") saved in context
-        auth.setToken("Bearer " + data.token);
-        // notification informs about successful registry
-        setError({
-          status: true,
-          msg: data.msg,
-          color: "" || "registry completed",
-        });
-      } else {
-        // or displays error fetch from backend (data.msg)
-        setError({
-          status: true,
-          color: "error",
-          msg: data.msg || "input error",
-        });
-      }
-    })
-    .catch((err) => {
-      setError({ status: true, color: "error", msg: "server error" });
-    });
-}
 
 function RegPage() {
   const auth = useContext(AuthContext);

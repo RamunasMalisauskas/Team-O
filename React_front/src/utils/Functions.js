@@ -341,3 +341,70 @@ export const AddTeamPlayer = (team, auth, setError) => {
       setError({ status: true, msg: err || "server error", color: "error" });
     });
 };
+
+// ### LOGIN/REG PAGE FUNCTION ###
+
+// FETCH POST login function
+//  passing props to function
+export const Login = (fieldValues, auth, history, setError) => {
+  fetch(`${process.env.REACT_APP_NODE_ROUTES}/login`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      // posting values passed as props from form
+      email: fieldValues.email,
+      password: fieldValues.password,
+    }),
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.token) {
+        // token with nessesery addon ("Bearer ") saved in context
+        auth.setToken("Bearer " + data.token);
+        // after token is successfuly added to context you are redirected to home page
+        history.push("/");
+      } else {
+        setError({ status: true, msg: data.msg || "input error" });
+      }
+    })
+    .catch((err) => {
+      // if error occor it's shown in notification
+      setError({ status: true, msg: "server error" });
+    });
+};
+
+// FETCH POST register function
+export const Reg = (fieldValues, auth, setError) => {
+  fetch(`${process.env.REACT_APP_NODE_ROUTES}/register`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      email: fieldValues.email,
+      password: fieldValues.password,
+      password2: fieldValues.password2,
+    }),
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.token) {
+        // token with nessesery addon ("Bearer ") saved in context
+        auth.setToken("Bearer " + data.token);
+        // notification informs about successful registry
+        setError({
+          status: true,
+          msg: data.msg,
+          color: "" || "registry completed",
+        });
+      } else {
+        // or displays error fetch from backend (data.msg)
+        setError({
+          status: true,
+          color: "error",
+          msg: data.msg || "input error",
+        });
+      }
+    })
+    .catch((err) => {
+      setError({ status: true, color: "error", msg: "server error" });
+    });
+};

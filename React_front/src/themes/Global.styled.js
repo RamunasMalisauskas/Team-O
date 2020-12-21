@@ -55,7 +55,8 @@ export const PageBackground = styled.div`
 `;
 
 export const Block = styled.div`
-  min-width: ${(props) => (props.large === true ? "50vw" : "30vw")};
+  width: 50vw;
+  max-width: ${(props) => (props.large === true ? "50vw" : "40vw")};
   margin-top: ${(props) => props.theme.standart.gutterSize};
   padding: ${(props) => props.theme.large.gutterSize};
   background: ${(props) => props.theme.primary.background};
