@@ -171,7 +171,7 @@ function Team() {
                             setRemoveTeam({ status: false });
                           }}
                         >
-                          {x.team_name}
+                          {x.team_name.toUpperCase()}
                         </Button>
                       </S.Row>
                     ))}

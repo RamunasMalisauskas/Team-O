@@ -155,7 +155,7 @@ function Player() {
                         setPlayerPanel(false);
                       }}
                     >
-                      ADD TO MY TEAM
+                      ADD {player.name.toUpperCase()} TO MY TEAM
                     </Button>
 
                     {/* remove button activates remove player function and restarts player value in hook */}
