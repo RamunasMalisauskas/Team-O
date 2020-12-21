@@ -70,16 +70,16 @@ function Player() {
         center={true}
         background={(props) => props.theme.secondary.background}
       >
-        {/* Notification is turn on and off by "error" object status property */}
-        {error.status && (
-          <Notification
-            notificationMessage={error.msg}
-            handleClick={() => setError({ status: false })}
-            color={error.color}
-          />
-        )}
-
         <G.Block>
+          {/* Notification is turn on and off by "error" object status property */}
+          {error.status && (
+            <Notification
+              notificationMessage={error.msg}
+              handleClick={() => setError({ status: false })}
+              color={error.color}
+            />
+          )}
+
           <S.Title selected={true}>PLAYERS</S.Title>
 
           <G.StyledLink to="/team">

@@ -63,16 +63,16 @@ function Team() {
         center={true}
         background={(props) => props.theme.support.background}
       >
-        {/* Notification is turn on and off by "error" object status property */}
-        {error.status && (
-          <Notification
-            notificationMessage={error.msg}
-            handleClick={() => setError({ status: false })}
-            color={error.color}
-          />
-        )}
-
         <G.Block>
+          {/* Notification is turn on and off by "error" object status property */}
+          {error.status && (
+            <Notification
+              notificationMessage={error.msg}
+              handleClick={() => setError({ status: false })}
+              color={error.color}
+            />
+          )}
+
           <div>
             <G.StyledLink to="/player">
               <S.Title>PLAYERS</S.Title>
