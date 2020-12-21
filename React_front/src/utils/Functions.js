@@ -360,7 +360,9 @@ export const Login = (fieldValues, auth, history, setError) => {
     .then((data) => {
       if (data.token) {
         // token with nessesery addon ("Bearer ") saved in context
-        auth.setToken("Bearer " + data.token);
+        // and passing admin value from backend to context
+        auth.setToken({ token: "Bearer " + data.token }, { admin: data.admin });
+
         // after token is successfuly added to context you are redirected to home page
         history.push("/");
       } else {

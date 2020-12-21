@@ -57,6 +57,7 @@ router.post("/register", midware.validateUserData, (req, res) => {
 });
 
 router.post("/login", midware.validateUserData, (req, res) => {
+  const admin = req.admin;
   const email = req.body.email;
   const loginPass = req.body.password;
 
@@ -85,7 +86,7 @@ router.post("/login", midware.validateUserData, (req, res) => {
               // if the passwords match user token is created with jwt and secret key stored in environmental variables
               // inside token storing userID/ email/ admin rights/ experation date
               const token = jwt.sign(
-                { userID: result[0].id, email: email, admin: req.admin },
+                { userID: result[0].id, email: email, admin: admin },
                 process.env.SECRET_KEY,
                 // adding expirasion date of 72 hours
                 {
@@ -93,9 +94,11 @@ router.post("/login", midware.validateUserData, (req, res) => {
                 }
               );
               // and sending created token back
+
               res.status(202).json({
                 msg: "logged in ",
                 token,
+                admin,
               });
             }
           });
