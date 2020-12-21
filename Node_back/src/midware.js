@@ -8,10 +8,12 @@ module.exports = {
 
     if (!user.email || user.email.length < 4) {
       res.status(400).json({ msg: "email is too short" });
+    } else if (user.email.length > 40) {
+      res.status(400).json({ msg: "email is too long" });
     }
 
     if (!user.password || user.password.length < 6) {
-      res.status(400).json({ msg: "username is too short" });
+      res.status(400).json({ msg: "password is too short" });
     }
 
     // validating if the user is admin or not
