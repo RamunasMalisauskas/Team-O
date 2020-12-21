@@ -20,33 +20,40 @@ router.post("/register", midware.validateUserData, (req, res) => {
   const email = req.body.email;
   const user = req.body;
 
-  // checking the avalability of unique user to register
-  con.query(
-    `SELECT * FROM users WHERE email = ${mysql.escape(email)}`,
-    (err, result) => {
-      if (err) return res.status(400).json({ msg: err });
-      else if (result != 0) {
-        res.status(400).json({ msg: "user already created under this email" });
-        // encrypting the users password and created hash will be stored into DB (not original password)
-      } else {
-        bcrypt.hash(user.password, 10, (err, hash) => {
-          if (err) return res.status(400).json({ msg: err });
-          con.query(
-            // inserting values with mysql.escape function so that it can't be hack by input
-            `INSERT INTO users (email, password) VALUES (${mysql.escape(
-              email
-            )}, ${mysql.escape(hash)})`,
-            (err, result) => {
-              if (err) return res.status(400).json({ msg: err });
-              res.status(201).json({
-                msg: `${email} successfully registered`,
-              });
-            }
-          );
-        });
+  // validating repeated password
+  if (user.password !== user.password2) {
+    return res.status(400).json({ msg: `your password doesn't matched` });
+  } else {
+    // checking the avalability of unique user to register
+    con.query(
+      `SELECT * FROM users WHERE email = ${mysql.escape(email)}`,
+      (err, result) => {
+        if (err) return res.status(400).json({ msg: err });
+        else if (result != 0) {
+          res
+            .status(400)
+            .json({ msg: "user already created under this email" });
+          // encrypting the users password and created hash will be stored into DB (not original password)
+        } else {
+          bcrypt.hash(user.password, 10, (err, hash) => {
+            if (err) return res.status(400).json({ msg: err });
+            con.query(
+              // inserting values with mysql.escape function so that it can't be hack by input
+              `INSERT INTO users (email, password) VALUES (${mysql.escape(
+                email
+              )}, ${mysql.escape(hash)})`,
+              (err, result) => {
+                if (err) return res.status(400).json({ msg: err });
+                res.status(201).json({
+                  msg: `${email} successfully registered`,
+                });
+              }
+            );
+          });
+        }
       }
-    }
-  );
+    );
+  }
 });
 
 router.post("/login", midware.validateUserData, (req, res) => {

@@ -19,6 +19,7 @@ function Reg(fieldValues, auth, setError) {
     body: JSON.stringify({
       email: fieldValues.email,
       password: fieldValues.password,
+      password2: fieldValues.password2,
     }),
   })
     .then((res) => res.json())
