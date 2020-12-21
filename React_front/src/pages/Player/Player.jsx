@@ -70,7 +70,7 @@ function Player() {
         center={true}
         background={(props) => props.theme.secondary.background}
       >
-        <G.Block>
+        <G.Block large={true}>
           {/* Notification is turn on and off by "error" object status property */}
           {error.status && (
             <Notification

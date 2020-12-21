@@ -63,7 +63,7 @@ function Team() {
         center={true}
         background={(props) => props.theme.support.background}
       >
-        <G.Block>
+        <G.Block large={true}>
           {/* Notification is turn on and off by "error" object status property */}
           {error.status && (
             <Notification
