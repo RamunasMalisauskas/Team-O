@@ -3,20 +3,20 @@ import { Link } from "react-router-dom";
 import logoImg from "../../assets/logo.svg";
 import { Navigation } from "../../components";
 import { AuthContext } from "../../contexts/AuthContext";
-
-import * as S from "./Home.styled";
+import * as G from "../../themes/Global.styled";
+import backImg from "../../assets/background.jpg";
 
 function Home() {
   const auth = useContext(AuthContext);
 
   return (
     <>
-      <S.PageBackground />
+      <G.PageBackground backImg={backImg} />
 
       <Navigation loggedIn={!!auth.token} logout={() => auth.setToken("")} />
 
-      <Link to="/">
-        <S.Logo src={logoImg} alt="teamo logo" />
+      <Link to="/team">
+        <G.BigLogo src={logoImg} alt="teamo logo" />
       </Link>
     </>
   );
