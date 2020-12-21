@@ -181,7 +181,7 @@ router.delete("/players", midware.LoggedIn, (req, res) => {
         `DELETE FROM player WHERE id = (${mysql.escape(id)})`,
         (err, result) => {
           if (err) return res.status(400).json({ msg: err });
-          res.status(200).json({ msg: "deleted successfully" });
+          res.status(200).json({ msg: `player deleted successfully` });
         }
       );
     } else {
@@ -284,7 +284,7 @@ router.post("/add_team", midware.LoggedIn, (req, res) => {
           else if (result.length !== 0) {
             return res
               .status(200)
-              .json({ msg: `${team} name is already in use"` });
+              .json({ msg: `${team} name is already in use` });
           } else {
             // -> if there is no match: add data to DB
             con.query(
@@ -317,7 +317,9 @@ router.post("/add_players_to_team", midware.LoggedIn, (req, res) => {
   if (team.name && team.player_name) {
     con.query(
       // validating if the player already is on team ->
-      `SELECT * FROM team WHERE players = ${mysql.escape(team.player_name)}`,
+      `SELECT * FROM team WHERE players = ${mysql.escape(
+        team.player_name
+      )} AND user = ${mysql.escape(vertifyUser.userID)}`,
       (err, result) => {
         if (err) return res.status(400).json({ msg: err });
         // -> if he is on a team: sending message
