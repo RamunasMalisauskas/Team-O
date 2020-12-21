@@ -22,7 +22,7 @@ function Player() {
   // used for assing player to team
   const [team, setTeam] = useState({ status: false, name: "" });
   // used for remove botton toggle
-  const [removeBtn, setRemoveBtn] = useState(false);
+  const [playerPanel, setPlayerPanel] = useState(false);
 
   // fetching players from DB
   useEffect(() => {
@@ -145,31 +145,31 @@ function Player() {
               {/* ### ADD TO TEAM BLOCK ### */}
               {/* after recieving data (testing with array.length method) from DB this section is visible-> 
               -> after pressing add to by team btn remove button becomes hidden */}
-              {data.length > 0 && (
+              {data.length > 0 && playerPanel && (
                 <>
                   <S.FlexBlock sticky={true}>
                     <Button
                       color="primary"
                       handleClick={() => {
                         setTeam({ status: true });
-                        setRemoveBtn(false);
+                        setPlayerPanel(false);
                       }}
                     >
                       ADD TO MY TEAM
                     </Button>
 
                     {/* remove button activates remove player function and restarts player value in hook */}
-                    {data.length > 0 && removeBtn && (
-                      <Button
-                        type="submit"
-                        handleClick={(e) => {
-                          RemovePlayer(player, auth, setError, setData);
-                          setPlayer({ name: "" });
-                        }}
-                      >
-                        X
-                      </Button>
-                    )}
+
+                    <Button
+                      type="submit"
+                      handleClick={(e) => {
+                        RemovePlayer(player, auth, setError, setData);
+                        setPlayerPanel(false);
+                        setPlayer({ name: "" });
+                      }}
+                    >
+                      X
+                    </Button>
                   </S.FlexBlock>
 
                   {/*  same logic as before turning on/off part of section with object status, this time it's "team" */}
@@ -241,7 +241,7 @@ function Player() {
               {data.length > 0 &&
                 // mapping and displaying first fetch data
                 data.map((x, i) => (
-                  <G.TableButtonBlock key={i}>
+                  <G.TableButtonBlock border={x.id} key={i}>
                     <G.InputBrick>
                       <Input
                         type="radio"
@@ -250,7 +250,7 @@ function Player() {
                             name: e.target.value,
                             id: x.id,
                           });
-                          setRemoveBtn(true);
+                          setPlayerPanel(true);
                         }}
                         radio={[{ value: x.name, label: x.name }]}
                       />
