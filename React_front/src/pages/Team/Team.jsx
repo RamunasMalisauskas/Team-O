@@ -38,7 +38,7 @@ function Team() {
 
   // fetching team names from DB
   useEffect(() => {
-    fetch("http://localhost:8080/teams", {
+    fetch(`${process.env.REACT_APP_NODE_ROUTES}/teams`, {
       headers: {
         Authorization: `${auth.token}`,
       },

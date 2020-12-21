@@ -8,7 +8,7 @@ import * as S from "./Login.Styled";
 
 //  passing props to function
 function Login(fieldValues, auth, history, setError) {
-  fetch("http://localhost:8080/login", {
+  fetch(`${process.env.REACT_APP_NODE_ROUTES}/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({

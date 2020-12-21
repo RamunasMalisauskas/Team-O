@@ -1,13 +1,19 @@
 import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
-import { FormTemplate, Section, Notification, Button } from "../../components/";
-import LoginFormData from "../../utils/LoginFormData";
+import {
+  FormTemplate,
+  Section,
+  Notification,
+  Button,
+  Input,
+} from "../../components/";
+import regFormData from "../../utils/RegFormData";
 import logoImg from "../../assets/logo.svg";
 import * as S from "./Register.Styled";
 
 function Reg(fieldValues, auth, setError) {
-  fetch("http://localhost:8080/register", {
+  fetch(`${process.env.REACT_APP_NODE_ROUTES}/register`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -75,7 +81,7 @@ function RegPage() {
             // Form component uses callback function to execute submit function
             // also uses data from ulits folder to create form
             callback={(fieldValues) => Reg(fieldValues, auth, setError)}
-            fields={LoginFormData}
+            fields={regFormData}
             buttonText="REGISTER"
             buttonType="submit"
           />

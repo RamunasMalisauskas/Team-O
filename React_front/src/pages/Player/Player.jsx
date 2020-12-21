@@ -26,7 +26,7 @@ function Player() {
 
   // fetching players from DB
   useEffect(() => {
-    fetch("http://localhost:8080/players", {
+    fetch(`${process.env.REACT_APP_NODE_ROUTES}/players`, {
       headers: {
         Authorization: `${auth.token}`,
       },
@@ -45,7 +45,7 @@ function Player() {
 
   // fetching team names from DB
   useEffect(() => {
-    fetch("http://localhost:8080/teams", {
+    fetch(`${process.env.REACT_APP_NODE_ROUTES}/teams`, {
       headers: {
         Authorization: `${auth.token}`,
       },
