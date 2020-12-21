@@ -1,16 +1,11 @@
 import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
-import {
-  FormTemplate,
-  Section,
-  Notification,
-  Button,
-  Input,
-} from "../../components/";
+import { FormTemplate, Section, Notification, Button } from "../../components/";
 import regFormData from "../../utils/RegFormData";
 import logoImg from "../../assets/logo.svg";
-import * as S from "./Register.Styled";
+import * as G from "../../themes/Global.styled";
+import backImg from "../../assets/loginImg.jpg";
 
 function Reg(fieldValues, auth, setError) {
   fetch(`${process.env.REACT_APP_NODE_ROUTES}/register`, {
@@ -57,38 +52,42 @@ function RegPage() {
 
   return (
     <>
-      <S.PageBackground />
+      <G.PageBackground backImg={backImg} />
 
       <Section
         center={true}
         background={(props) => props.theme.support.background}
       >
         {/* notification is shown depending on error status and changed with hooks */}
-        {error.status && (
-          <S.ErrorBlock>
-            <Notification
-              notificationMessage={error.msg}
-              // button handler turns of notification
-              handleClick={() => setError({ status: false })}
-              color="error"
-            />
-          </S.ErrorBlock>
-        )}
 
-        <S.Block>
-          <S.Title>REGISTER</S.Title>
+        <G.Block>
+          {error.status && (
+            <G.ErrorBlock>
+              <Notification
+                notificationMessage={error.msg}
+                // button handler turns of notification
+                handleClick={() => setError({ status: false })}
+                color="error"
+              />
+            </G.ErrorBlock>
+          )}
+
+          <G.Title>REGISTER</G.Title>
 
           <FormTemplate
             // Form component uses callback function to execute submit function
             // also uses data from ulits folder to create form
-            callback={(fieldValues) => Reg(fieldValues, auth, setError)}
+            callback={(fieldValues) => {
+              Reg(fieldValues, auth, setError);
+              setError({ status: false });
+            }}
             fields={regFormData}
             buttonText="REGISTER"
             buttonType="submit"
           />
-        </S.Block>
+        </G.Block>
 
-        <S.ButtonBlock>
+        <G.ButtonBlock>
           <Link to="/login">
             <Button color="support">LOGIN</Button>
           </Link>
@@ -96,11 +95,11 @@ function RegPage() {
           <Link to="/">
             <Button>BACK</Button>
           </Link>
-        </S.ButtonBlock>
+        </G.ButtonBlock>
       </Section>
 
       <Link to="/">
-        <S.Logo src={logoImg} alt="teamo logo" />
+        <G.BigLogo src={logoImg} alt="teamo logo" />
       </Link>
     </>
   );

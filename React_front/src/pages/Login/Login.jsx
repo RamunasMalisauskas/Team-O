@@ -4,7 +4,9 @@ import { AuthContext } from "../../contexts/AuthContext";
 import { FormTemplate, Section, Notification, Button } from "../../components/";
 import loginFormData from "../../utils/LoginFormData";
 import logoImg from "../../assets/logo.svg";
-import * as S from "./Login.Styled";
+
+import * as G from "../../themes/Global.styled";
+import backImg from "../../assets/loginImg.jpg";
 
 //  passing props to function
 function Login(fieldValues, auth, history, setError) {
@@ -41,39 +43,42 @@ function LoginPage() {
 
   return (
     <>
-      <S.PageBackground />
+      <G.PageBackground backImg={backImg} />
 
       <Section
         center={true}
         background={(props) => props.theme.secondary.background}
       >
         {/* notification is shown depending on error status and changed with hooks */}
-        {error.status && (
-          <S.ErrorBlock>
-            <Notification
-              notificationMessage={error.msg}
-              // button handler turns of notification
-              handleClick={() => setError({ status: false })}
-              color="error"
-            />
-          </S.ErrorBlock>
-        )}
 
-        <S.Block>
-          <S.Title>LOGIN</S.Title>
+        <G.Block>
+          {error.status && (
+            <G.ErrorBlock>
+              <Notification
+                notificationMessage={error.msg}
+                // button handler turns of notification
+                handleClick={() => setError({ status: false })}
+                color="error"
+              />
+            </G.ErrorBlock>
+          )}
+
+          <G.Title>LOGIN</G.Title>
+
           <FormTemplate
             // Form component uses callback function to execute submit function
             // also uses data from ulits folder to create form
-            callback={(fieldValues) =>
-              Login(fieldValues, auth, history, setError)
-            }
+            callback={(fieldValues) => {
+              Login(fieldValues, auth, history, setError);
+              setError({ status: false });
+            }}
             fields={loginFormData}
             buttonText="LOGIN"
             buttonType="submit"
           />
-        </S.Block>
+        </G.Block>
 
-        <S.ButtonBlock>
+        <G.ButtonBlock>
           <Link to="/register">
             <Button color="primary">REGISTER</Button>
           </Link>
@@ -81,11 +86,11 @@ function LoginPage() {
           <Link to="/">
             <Button>BACK</Button>
           </Link>
-        </S.ButtonBlock>
+        </G.ButtonBlock>
       </Section>
 
       <Link to="/">
-        <S.Logo src={logoImg} alt="teamo logo" />
+        <G.BigLogo src={logoImg} alt="teamo logo" />
       </Link>
     </>
   );

@@ -1,6 +1,14 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
+// ### TITLES ###
+
+export const Title = styled.h1`
+  text-align: right;
+  font-family: ${(props) => props.theme.primary.font};
+  font-weight: ${(props) => props.theme.primary.fontSize};
+`;
+
 // ### LINKS ###
 
 export const StyledLink = styled(Link)`
@@ -24,6 +32,17 @@ export const Logo = styled.img`
   }
 `;
 
+export const BigLogo = styled.img`
+  height: ${(props) => props.theme.huge.height};
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
+
+  @media (max-width: ${(props) => props.theme.websiteWidth}) {
+    height: ${(props) => props.theme.standart.height};
+  }
+`;
+
 // ### BIG COMPONENT BLOCKS ###
 
 export const PageBackground = styled.div`
@@ -36,7 +55,7 @@ export const PageBackground = styled.div`
 `;
 
 export const Block = styled.div`
-  width: 50vw;
+  max-width: ${(props) => (props.large === true ? "50vw" : "30vw")};
   margin-top: ${(props) => props.theme.standart.gutterSize};
   padding: ${(props) => props.theme.large.gutterSize};
   background: ${(props) => props.theme.primary.background};
@@ -71,6 +90,10 @@ export const InputBlock = styled.div`
   position: ${(props) => (props.sticky === true ? "sticky" : "")};
   top: ${(props) =>
     props.sticky === true ? props.theme.large.gutterSize : ""};
+`;
+
+export const ErrorBlock = styled.div`
+  margin-top: ${(props) => props.theme.small.gutterSize};
 `;
 
 export const InputBrick = styled.div`
