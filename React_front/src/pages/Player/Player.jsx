@@ -152,10 +152,11 @@ function Player() {
                       color="primary"
                       handleClick={() => {
                         setTeam({ status: true });
-                        setPlayerPanel(false);
                       }}
                     >
-                      ADD {player.name.toUpperCase()} TO MY TEAM
+                      {/* if there  is player name is selected null value is given */}
+                      ADD {player.name ? player.name.toUpperCase() : ""} TO MY
+                      TEAM
                     </Button>
 
                     {/* remove button activates remove player function and restarts player value in hook */}
