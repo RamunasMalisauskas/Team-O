@@ -45,6 +45,8 @@ export const LinkBlock = styled.div`
 `;
 
 export const StyledLink = styled(Link)`
+  font-family: ${(props) => props.theme.primary.font};
+  font-weight: ${(props) => props.theme.primary.fontSize};
   color: ${(props) => props.theme.secondary.color};
   cursor: pointer;
   text-decoration: none;
