@@ -13,6 +13,48 @@ router.get("/", (req, res) => {
   res.status(200).json("The API service works!");
 });
 
+router.post("/users_table", (req, res) => {
+  con.query(
+    `CREATE TABLE users (id INT AUTO_INCREMENT KEY, email TEXT, password TEXT)`,
+    (err, result) => {
+      if (err) {
+        return res.status(400).json({ msg: err });
+        // what happens when there is no players in database
+      } else {
+        res.status(200).json({ msg: "users table created" });
+      }
+    }
+  );
+});
+
+router.post("/players_table", (req, res) => {
+  con.query(
+    `CREATE TABLE players (id INT AUTO_INCREMENT KEY, name TEXT)`,
+    (err, result) => {
+      if (err) {
+        return res.status(400).json({ msg: err });
+        // what happens when there is no players in database
+      } else {
+        res.status(200).json({ msg: "players table created" });
+      }
+    }
+  );
+});
+
+router.post("/teams_table", (req, res) => {
+  con.query(
+    `CREATE TABLE team (id INT AUTO_INCREMENT KEY, user INT, team_name TEXT, players TEXT)`,
+    (err, result) => {
+      if (err) {
+        return res.status(400).json({ msg: err });
+        // what happens when there is no players in database
+      } else {
+        res.status(200).json({ msg: "teams table created" });
+      }
+    }
+  );
+});
+
 //  ### LOGIN LINKS ###
 
 router.post("/register", midware.validateUserData, (req, res) => {
@@ -117,7 +159,7 @@ router.get(`/players`, midware.LoggedIn, (req, res) => {
 
   //  vertifing userID from middleware
   if (vertifyUser.userID !== 0) {
-    con.query(`SELECT * FROM player`, (err, result) => {
+    con.query(`SELECT * FROM players`, (err, result) => {
       if (err) {
         return res.status(400).json({ msg: err });
         // what happens when there is no players in database
@@ -152,7 +194,7 @@ router.post("/players", midware.LoggedIn, (req, res) => {
       con.query(
         // validating if the entered name is unique or already exist in database
         // Selecting matching name from DB ->
-        `SELECT name FROM player WHERE name = '${player}'`,
+        `SELECT name FROM players WHERE name = '${player}'`,
         (err, result) => {
           if (err) return res.status(400).json({ msg: err });
           // -> and if there is results deliver the message ->
@@ -163,7 +205,7 @@ router.post("/players", midware.LoggedIn, (req, res) => {
           } else {
             // -> if there is no match added to DB
             con.query(
-              `INSERT INTO player (name) VALUES (${mysql.escape(player)})`,
+              `INSERT INTO players (name) VALUES (${mysql.escape(player)})`,
               (err, result) => {
                 if (err) return res.status(400).json({ msg: err });
                 res.status(200).json({ msg: `${player} added successfully` });
@@ -188,7 +230,7 @@ router.delete("/players", midware.LoggedIn, (req, res) => {
     // vertification of request input
     if (id) {
       con.query(
-        `DELETE FROM player WHERE id = (${mysql.escape(id)})`,
+        `DELETE FROM players WHERE id = (${mysql.escape(id)})`,
         (err, result) => {
           if (err) return res.status(400).json({ msg: err });
           res.status(200).json({ msg: `player deleted successfully` });
