@@ -12,8 +12,8 @@ export const Title = styled.h2`
 export const Subtitle = styled.h3`
   font-family: ${(props) => props.theme.primary.font};
   font-weight: ${(props) => props.theme.primary.fontSize};
-  border: ${(props) => props.theme.primary.border};
-  padding: ${(props) => props.theme.standart.gutterSize};
+  border-bottom: ${(props) => props.theme.primary.border};
+  padding: ${(props) => props.theme.tiny.gutterSize} 0;
 
   @media (max-width: ${(props) => props.theme.websiteWidth}) {
     font-size: ${(props) => props.theme.tiny.height};
