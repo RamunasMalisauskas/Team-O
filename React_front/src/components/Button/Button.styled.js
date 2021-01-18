@@ -17,7 +17,7 @@ export const Button = styled.button`
       : props.color === "support"
       ? props.theme.support.border
       : props.theme.secondary.border};
-
+  transition: ${(props) => props.theme.secondary.transition};
   &:hover {
     color: ${(props) => props.theme.secondary.color};
     background: ${(props) =>

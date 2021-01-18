@@ -28,7 +28,7 @@ export const LinkBlock = styled.div`
   width: 33%;
   &:hover {
     background-color: ${(props) => props.theme.secondary.background};
-    transition: ${(props) => props.theme.transition};
+    transition: ${(props) => props.theme.primary.transition};
     &:nth-child(2) {
       background-color: ${(props) => props.theme.support.background};
     }

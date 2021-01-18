@@ -3,8 +3,6 @@ const theme = {
 
   fullHeight: "100vh",
 
-  transition: "0.8s",
-
   standart: {
     height: "3em",
     gutterSize: "2em",
@@ -34,6 +32,7 @@ const theme = {
     fontSize: "800",
     color: "#f15a24",
     border: "2px solid #f15a24",
+    transition: "all 0.6s ease-in-out",
     background: "#ffffff",
     hover: {
       background: "f15a24",
@@ -45,6 +44,7 @@ const theme = {
     color: "#ffffff",
     background: "rgba(241, 90, 36, 0.6)",
     border: "2px solid #000000",
+    transition: "all 0.3s ease-in-out",
     hover: {
       background: "#ffffff",
     },
