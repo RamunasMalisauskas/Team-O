@@ -123,7 +123,7 @@ function Player() {
                       setPlayer({ status: false });
                     }}
                   >
-                    CLOSE
+                    X
                   </Button>
                 </S.FlexBlock>
               </G.InputBlock>
@@ -148,16 +148,20 @@ function Player() {
               {data.length > 0 && playerPanel && (
                 <>
                   <S.FlexBlock sticky={true}>
-                    <Button
-                      color="primary"
-                      handleClick={() => {
-                        setTeam({ status: true });
-                      }}
-                    >
-                      {/* if there  is player name is selected null value is given */}
-                      ADD {player.name ? player.name.toUpperCase() : ""} TO MY
-                      TEAM
-                    </Button>
+                    {!team.status && (
+                      <Button
+                        color="primary"
+                        handleClick={() => {
+                          setTeam({ status: true });
+                        }}
+                      >
+                        {/* if there  is player name is selected null value is given */}
+                        ADD {player.name ? player.name.toUpperCase() : ""} TO MY
+                        TEAM
+                      </Button>
+                    )}
+
+                    {team.status && <S.P>SELECT TEAM:</S.P>}
 
                     {/* remove button activates remove player function and restarts player value in hook */}
 
@@ -169,7 +173,7 @@ function Player() {
                         setPlayer({ name: "" });
                       }}
                     >
-                      X
+                      DELETE
                     </Button>
                   </S.FlexBlock>
 
@@ -221,14 +225,14 @@ function Player() {
                                 setPlayer({ name: "" });
                               }}
                             >
-                              SAVE
+                              ADD
                             </Button>
                           )}
                           {/* button to close this part of section */}
                           <Button
                             handleClick={() => setTeam({ status: false })}
                           >
-                            CLOSE
+                            X
                           </Button>
                         </S.FlexBlock>
                       </G.Frame>

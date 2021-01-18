@@ -123,7 +123,7 @@ function Team() {
                       setNewTeam({ status: false });
                     }}
                   >
-                    CLOSE
+                    X
                   </Button>
                 </S.FlexBlock>
               </G.InputBlock>
@@ -260,7 +260,7 @@ function Team() {
                                 setPlayer({ name: "" });
                               }}
                             >
-                              X
+                              REMOVE
                             </Button>
                           </div>
                         </S.FlexBlock>
