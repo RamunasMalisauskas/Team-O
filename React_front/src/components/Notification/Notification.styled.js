@@ -32,7 +32,7 @@ export const Notification = styled.div`
   color: ${(props) =>
     props.color === "error" ? props.theme.primary.color : "#000"};
   background: ${(props) => props.theme.primary.background};
-  padding: 2em;
+  padding: ${(props) => props.theme.small.gutterSize};
   border: ${(props) =>
     props.color === "error"
       ? props.theme.primary.border
