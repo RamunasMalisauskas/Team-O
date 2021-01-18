@@ -13,18 +13,29 @@ router.get("/", (req, res) => {
   res.status(200).json("The API service works!");
 });
 
+// ### CREATE/CLEAR TABLE LINKS ###
+
 router.post("/users_table", (req, res) => {
   con.query(
     `CREATE TABLE users (id INT AUTO_INCREMENT KEY, email TEXT, password TEXT)`,
     (err, result) => {
       if (err) {
         return res.status(400).json({ msg: err });
-        // what happens when there is no players in database
       } else {
         res.status(200).json({ msg: "users table created" });
       }
     }
   );
+});
+
+router.delete("/users_table", (req, res) => {
+  con.query(`DELETE FROM users `, (err, result) => {
+    if (err) {
+      return res.status(400).json({ msg: err });
+    } else {
+      res.status(200).json({ msg: "users from table deleted" });
+    }
+  });
 });
 
 router.post("/players_table", (req, res) => {
